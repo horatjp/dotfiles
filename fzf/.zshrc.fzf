@@ -1,0 +1,151 @@
+# ref: https://github.com/junegunn/fzf/wiki/
+
+export FZF_DEFAULT_OPTS="--reverse --border --no-sort --prompt=' '"
+
+# fvim
+fvim() {
+
+  if [ -z "$1" ]; then
+    dir=.
+  else
+    dir="$1"
+  fi
+  
+  local file=$(find "$dir" ! -path '*.cache*' ! -path '*.git*' ! -path '*.npm*' -type f \
+               | fzf --preview 'bat --color=always --style=header,grid {}' --preview-window=right:60%)
+
+  if [ -n "$file" ]; then
+    vim $file
+  fi
+}
+
+# fssh
+function fssh() {
+  local host=$(cat <(cat ~/.ssh/config ~/.ssh/conf.d/*/* /etc/ssh/ssh_config 2> /dev/null | command grep -i '^\s*host\(name\)\? ' | awk '{for (i = 2; i <= NF; i++) print $1 " " $i}' | command grep -v '[*?]') \
+        <(command grep -oE '^[[a-z0-9.,:-]+' ~/.ssh/known_hosts | tr ',' '\n' | tr -d '[' | awk '{ print $1 " " $1 }') \
+        <(command grep -v '^\s*\(#\|$\)' /etc/hosts | command grep -Fv '0.0.0.0') |
+        awk '{if (length($2) > 0) {print $2}}' | sort -u | fzf)
+  if [ -n "$host" ]; then
+    ssh $host
+  fi
+}
+
+# fgc (git checkout) - checkout git branch including remote branches
+# ref: https://qiita.com/kamykn/items/aa9920f07487559c0c7e
+fgc() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+# flog - git commit browser
+# ref: https://qiita.com/kamykn/items/aa9920f07487559c0c7e
+flog() {
+  git log --graph --color=always \
+      --format="%C(auto)%h%d %s %C(#C0C0C0)%C(bold)%cr" "$@" |
+  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+      --bind "ctrl-m:execute:
+              (grep -o '[a-f0-9]\{7\}' | head -1 |
+              xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+              {}
+              FZF-EOF
+             "
+}
+
+# fd - cd to selected directory
+# https://qiita.com/kamykn/items/aa9920f07487559c0c7e
+fcd() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+# fadd: git add / diff をインタラクティブに．Ctrl-d で diff, Enter で add
+# https://qiita.com/reviry/items/e798da034955c2af84c5
+fadd() {
+  local out q n addfiles
+  while out=$(
+      git status --short |
+      awk '{if (substr($0,2,1) !~ / /) print $2}' |
+      fzf-tmux --multi --exit-0 --expect=ctrl-d); do
+    q=$(head -1 <<< "$out")
+    n=$[$(wc -l <<< "$out") - 1]
+    addfiles=(`echo $(tail "-$n" <<< "$out")`)
+    [[ -z "$addfiles" ]] && continue
+    if [ "$q" = ctrl-d ]; then
+      git diff --color=always $addfiles | less -R
+    else
+      git add $addfiles
+    fi
+  done
+}
+
+
+# かつていたことのあるディレクトリに移動する
+# https://qiita.com/kamykn/items/aa9920f07487559c0c7e
+fzf-z-search() {
+    local res=$(z | sort -rn | cut -c 12- | fzf)
+    if [ -n "$res" ]; then
+        BUFFER+="cd $res"
+        zle accept-line
+    else
+        return 1
+    fi
+}
+zle -N fzf-z-search
+bindkey '^z' fzf-z-search
+
+# プロセスをkill
+# ref: https://yiskw713.hatenablog.com/entry/2022/01/12/200000
+fkill() {
+  local pid
+  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+
+  if [ "x$pid" != "x" ]
+  then
+    echo $pid | xargs kill -${1:-9}
+  fi
+}
+
+# fzfでdockerコンテナに入る
+# ref: https://momozo.tech/2021/03/10/fzf%E3%81%A7zsh%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB%E4%BD%9C%E6%A5%AD%E3%82%92%E5%8A%B9%E7%8E%87%E5%8C%96/
+fdcnte() {
+  local cid
+  cid=$(docker ps | sed 1d | fzf -q "$1" | awk '{print $1}')
+  [ -n "$cid" ] && docker exec -it "$cid" /bin/bash
+}
+
+# fzfでdockerのログを取得
+# ref: https://momozo.tech/2021/03/10/fzf%E3%81%A7zsh%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB%E4%BD%9C%E6%A5%AD%E3%82%92%E5%8A%B9%E7%8E%87%E5%8C%96/
+fdl() {
+  local cid
+  cid=$(docker ps -a | sed 1d | fzf -q "$1" | awk '{print $1}')
+  [ -n "$cid" ] && docker logs -f --tail=200 "$cid"
+}
+
+# fzfでDockerコンテナ再起動
+# ref: https://momozo.tech/2021/03/10/fzf%E3%81%A7zsh%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB%E4%BD%9C%E6%A5%AD%E3%82%92%E5%8A%B9%E7%8E%87%E5%8C%96/
+fdcntre() {
+  local cid
+  cid=$(docker ps -a | sed 1d | fzf -m -q "$1" | awk '{print $1}')
+  [ -n "$cid" ] && echo $cid | xargs docker container restart
+}
+
+# docker container rm
+# ref: https://momozo.tech/2021/03/10/fzf%E3%81%A7zsh%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB%E4%BD%9C%E6%A5%AD%E3%82%92%E5%8A%B9%E7%8E%87%E5%8C%96/
+fdcntrm() {
+  local cid
+  cid=$(docker ps -a | sed 1d | fzf -m -q "$1" | awk '{print $1}')
+  [ -n "$cid" ] && echo $cid | xargs docker container rm -f
+}
+
+# docker image rm
+# ref: https://yiskw713.hatenablog.com/entry/2022/01/12/200000
+fdimgrm() {
+  local cid
+  cid=$(docker image ls -a | sed 1d | fzf -m -q "$1" | awk '{print $1}')
+  [ -n "$cid" ] && echo $cid | xargs docker image rm -f
+}

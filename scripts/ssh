@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+CMD_SSH=/usr/bin/ssh
+
+COLOR_WORD_DEFAULT="#ffffff"
+COLOR_BG_DEFAULT="#282c34"
+
+COLOR_BG_1="#005563"
+
+function color_change() {
+  word=$1
+  back=$2
+  echo -ne "\e]10;${word}\a\e]11;${back}\a"
+}
+
+
+trap "color_change \"${COLOR_WORD_DEFAULT}\" \"${COLOR_BG_DEFAULT}\"" 2
+
+color_change "${COLOR_WORD_DEFAULT}" "${COLOR_BG_1}"
+
+$CMD_SSH "$@"
+
+color_change "${COLOR_WORD_DEFAULT}" "${COLOR_BG_DEFAULT}"

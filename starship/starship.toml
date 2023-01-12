@@ -1,0 +1,73 @@
+scan_timeout = 10
+
+[battery]
+full_symbol = "🔋"
+charging_symbol = "🔌"
+discharging_symbol = "⚡"
+
+[[battery.display]]
+threshold = 30
+style = "bold red"
+
+[character]
+disabled = false
+success_symbol = "[✔ ](bold green)"
+error_symbol = "[✖ ](bold red)"
+
+[cmd_duration]
+format = "[ ⌚ $duration]($style)"
+style = "bold yellow"
+
+[directory]
+truncation_length = 5
+format = "[$path]($style)[$lock_symbol]($lock_style) "
+
+[docker_context]
+format = " [🐋 $context](blue bold)"
+
+[git_branch]
+symbol = " "
+
+[git_commit]
+commit_hash_length = 8
+style = "bold white"
+
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+
+[git_status]
+conflicted = "⚔️ "
+ahead = "🏎️ 💨 ×${count}"
+behind = "🐢 ×${count}"
+diverged = "🔱 🏎️ 💨 ×${ahead_count} 🐢 ×${behind_count}"
+untracked = "🛤️  ×${count}"
+stashed = "📦 "
+modified = "📝 ×${count}"
+staged = "🗃️  ×${count}"
+renamed = "📛 ×${count}"
+deleted = "🗑️  ×${count}"
+style = "bright-white"
+format = "$all_status$ahead_behind"
+
+[nodejs]
+format="[ 🍀 ($version )]($style)"
+disabled = false
+
+[memory_usage]
+threshold = 70
+style = "bold dimmed blue"
+format = "[ 🧺 (${ram_pct})]($style) "
+disabled = false
+
+[package]
+disabled = true
+
+[time]
+time_format = "%T"
+format = "🕙 $time($style) "
+style = "bold dimmed white"
+disabled = false
+
+[username]
+style_user = "bold dimmed blue"
+show_always = true
