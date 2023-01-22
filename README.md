@@ -14,6 +14,7 @@ Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/horatjp/dotfiles/main/setup.sh)"
 ```
 
+
 ## Components
 
 ### Windows
@@ -33,3 +34,18 @@ Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.
 * fzf
 * starship
 * asdf
+
+
+## devcontainer dotfiles 
+
+```
+{
+  "dotfiles.repository": "horatjp/dotfiles",
+  "dotfiles.targetPath": "~/dotfiles",
+  "dotfiles.installCommand": "~/dotfiles/setup-devcontainer.sh",
+}
+```
+
+> ```
+> chmod 755 setup-devcontainer.sh
+> ```
