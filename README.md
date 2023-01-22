@@ -13,3 +13,23 @@ Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/horatjp/dotfiles/main/setup.sh)"
 ```
+
+## Components
+
+### Windows
+
+* Windows settings
+* Git
+* Windows Terminal
+* WSL2
+* Docker Desktop
+* VS Code
+* Font HackGen
+
+### Linux(Debian, Ubuntu, WSL)
+
+* zsh
+* homebrew
+* fzf
+* starship
+* asdf
