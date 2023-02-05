@@ -28,7 +28,7 @@ if [ -n "$(which explorer.exe)" ]; then
     ln -sf /mnt/c/Users/$(/mnt/c/Windows/System32/cmd.exe /c "<nul set /p=%UserName%" 2>/dev/null)/.ssh ~/.ssh
   fi
 
-  sudo ln -sf ~/dotfiles/wsl/wsl.conf /etc/wsl.conf
+  echo -e "[automount]\noptions = \"metadata,umask=22,fmask=11\"" | sudo tee /etc/wsl.conf
 fi
 
 # dotfiles
