@@ -1,17 +1,38 @@
 # dotfiles
 
+
 ## Install
 
 ### Windows
 
 ```powershell
-Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/horatjp/dotfiles/main/setup.ps1')
+Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/horatjp/dotfiles/main/setup.windows.ps1')
 ```
 
-### Linux(Debian, Ubuntu, WSL)
+### macOS
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/horatjp/dotfiles/main/setup.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/horatjp/dotfiles/main/setup.macos.sh)"
+```
+
+### Windows(WSL)/macOS Shell
+
+#### Windows(WSL)
+
+```bash
+/bin/bash -c /mnt/c/Users/$(/mnt/c/Windows/System32/cmd.exe /c "<nul set /p=%UserName%" 2>/dev/null)/dotfiles/install.sh
+```
+
+#### macOS
+
+```bash
+/bin/bash -c ~/dotfiles/install.sh
+```
+
+#### Other
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/horatjp/dotfiles/main/install.sh)"
 ```
 
 
@@ -20,32 +41,53 @@ Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.
 ### Windows
 
 * Windows settings
-* Git
 * Windows Terminal
 * WSL2
 * Docker Desktop
-* VS Code
+* Visual Studio Code
 * Font HackGen
 
-### Linux(Debian, Ubuntu, WSL)
+### macOS
 
-* zsh
-* homebrew
-* fzf
-* starship
+* macOS settings
+* Kitty
+* Orbstack
+* Visual Studio Code
+* Font HackGen
+* Xquartz
+
+### Windows(WSL)/macOS Shell
+
+* Homebrew
+* Zsh
+* Znap!
+* FZF
+* Starship
 * asdf
 
 
-## devcontainer dotfiles 
+## Visual Studio Code devcontainer dotfiles 
 
+`.devcontainer/devcontainer.json`
+```json:.devcontainer/devcontainer.json
+...
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "dotfiles.repository": "horatjp/dotfiles",
+                "dotfiles.targetPath": "~/dotfiles",
+                "dotfiles.installCommand": "install.devcontainer.sh"
+            }
+        }
+    },
+...
 ```
+
+`.vscode/settings.json`
+```json:.vscode/settings.json
 {
-  "dotfiles.repository": "horatjp/dotfiles",
-  "dotfiles.targetPath": "~/dotfiles",
-  "dotfiles.installCommand": "~/dotfiles/setup-devcontainer.sh",
+    "dotfiles.repository": "horatjp/dotfiles",
+    "dotfiles.targetPath": "~/dotfiles",
+    "dotfiles.installCommand": "install.devcontainer.sh"
 }
 ```
-
-> ```
-> chmod 755 setup-devcontainer.sh
-> ```
