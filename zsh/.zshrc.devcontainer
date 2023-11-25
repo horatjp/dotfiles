@@ -1,0 +1,22 @@
+export LANG=ja_JP.UTF-8  # Character encoding
+export EDITOR=vim        # Editor
+
+setopt no_beep           # Disable beep sound
+setopt correct           # Automatically correct command spelling
+
+# alias
+[ -f ~/.zshrc.alias ] && source ~/.zshrc.alias
+alias ssh='ssh'
+
+# history
+[ -f ~/.zshrc.history ] && source ~/.zshrc.history
+
+# znap
+[ -f ~/.zshrc.znap ] && source ~/.zshrc.znap
+
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.zshrc.fzf ] && source ~/.zshrc.fzf
+
+# starship
+eval "$(starship init zsh)"
