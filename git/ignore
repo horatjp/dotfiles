@@ -1,14 +1,37 @@
-.envrc
+# Environment variables
 .env
+.envrc
+
+# Package files
+node_modules/
+bower_components/
+dist/
+vendor/
+.bundle/
+
+# Logs and cache
+*.log
+*.cache
+*.tmp
+log/
+
+# Build files
+*.o
+*.exe
+*.dll
+*.so
+*.dylib
+
+# System files
 .DS_Store
-.bundle
-.git/
-/log
-/node_modules/
-/bower_components/
-/vendor
-/tmp
-tmp/**/*
-Desktop.ini
-._*
 Thumbs.db
+Desktop.ini
+
+# IDE/Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Miscellaneous
+*.bak
