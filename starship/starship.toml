@@ -1,6 +1,7 @@
 scan_timeout = 10
 
 [battery]
+disabled = true
 full_symbol = "🔋"
 charging_symbol = "🔌"
 discharging_symbol = "⚡"
@@ -11,63 +12,53 @@ style = "bold red"
 
 [character]
 disabled = false
-success_symbol = "[✔ ](bold green)"
-error_symbol = "[✖ ](bold red)"
+success_symbol = "[➜](bold green)"
+error_symbol = "[➜](bold red)"
 
 [cmd_duration]
-format = "[ ⌚ $duration]($style)"
-style = "bold yellow"
+min_time = 1000
+format = "[ $duration](bold white dimmed)"
 
 [directory]
-truncation_length = 5
-format = "[$path]($style)[$lock_symbol]($lock_style) "
-
-[docker_context]
-format = " [🐋 $context](blue bold)"
+style = "bold cyan dimmed"
 
 [git_branch]
 symbol = " "
-
-[git_commit]
-commit_hash_length = 8
 style = "bold white"
 
-[git_state]
-format = '[\($state( $progress_current of $progress_total)\)]($style) '
-
 [git_status]
-conflicted = "⚔️ "
-ahead = "🏎️ 💨 ×${count}"
-behind = "🐢 ×${count}"
-diverged = "🔱 🏎️ 💨 ×${ahead_count} 🐢 ×${behind_count}"
-untracked = "🛤️  ×${count}"
-stashed = "📦 "
-modified = "📝 ×${count}"
-staged = "🗃️  ×${count}"
-renamed = "📛 ×${count}"
-deleted = "🗑️  ×${count}"
-style = "bright-white"
-format = "$all_status$ahead_behind"
+format     = '[$all_status$ahead_behind](bold white) '
+ahead      = '[⇡](bold green)'
+behind     = '[⇣](bold red)'
+diverged   = '[⇕](bold purple)'
+conflicted = '[=](bold orange)'
+stashed    = '[\$](bold white)'
+staged     = '[+](bold cyan)'
+untracked  = '[U](bold green)'
+modified   = '[M](bold yellow)'
+deleted    = '[D](bold red)'
 
-[nodejs]
-format="[ 🍀 ($version )]($style)"
+[hostname]
+ssh_only = false
+format = "[ $hostname ](#666666 bg:#333333) "
 disabled = false
 
 [memory_usage]
 threshold = 70
-style = "bold dimmed blue"
-format = "[ 🧺 (${ram_pct})]($style) "
+format = "[ Mem(${ram_pct})](bold red) "
 disabled = false
+
+[nodejs]
+symbol = "🍀 "
 
 [package]
 disabled = true
 
 [time]
-time_format = "%T"
-format = "🕙 $time($style) "
-style = "bold dimmed white"
+time_format = "%R"
+format = "[$time](white) "
 disabled = false
 
 [username]
-style_user = "bold dimmed blue"
+style_user = "bold blue dimmed"
 show_always = true
