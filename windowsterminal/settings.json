@@ -33,7 +33,7 @@
         "defaults": {
             "colorScheme": "One Half Dark",
             "font": {
-                "face": "HackGen Console NFJ",
+                "face": "HackGen Console NF",
                 "size": 11
             },
             "opacity": 90
