@@ -1,0 +1,13 @@
+[[ -r ~/.znap/zsh-snap/znap.zsh ]] ||
+    git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/.znap/zsh-snap
+
+source ~/.znap/zsh-snap/znap.zsh
+
+# zsh plugins
+znap source marlonrichert/zsh-autocomplete
+znap source zsh-users/zsh-autosuggestions
+znap source zsh-users/zsh-syntax-highlighting
+znap source ptavares/zsh-direnv
+
+# `znap install` adds new commands and completions.
+znap install zsh-users/zsh-completions

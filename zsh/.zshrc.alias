@@ -1,11 +1,13 @@
-alias ls='lsd'
-alias l='ls -l'
-alias la='ls -a'
-alias ll='ls -la'
-alias lt='ls --tree'
+alias ls='exa --icons --time-style=long-iso'
+alias ll='ls -lFgh --git'
+alias la='ls -lFagh --git'
+alias lt='ls -T -L 2 --git-ignore'
 
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
+
+alias relogin='exec $SHELL -l'
+alias myip="curl https://ipinfo.io/json"
 
 alias ssh='~/dotfiles/scripts/ssh'

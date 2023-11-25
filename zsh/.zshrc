@@ -1,50 +1,30 @@
-export LANG=ja_JP.UTF-8
+export LANG=ja_JP.UTF-8  # Character encoding
+export EDITOR=vim        # Editor
+
+setopt no_beep           # Disable beep sound
+setopt correct           # Automatically correct command spelling
 
 # alias
-source ~/dotfiles/zsh/.zshrc.alias
+[ -f ~/.zshrc.alias ] && source ~/.zshrc.alias
 
 # history
-source ~/dotfiles/zsh/.zshrc.history
+[ -f ~/.zshrc.history ] && source ~/.zshrc.history
 
-# enable zsh default function
-autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
-add-zsh-hook chpwd chpwd_recent_dirs
-zstyle ':chpwd:*' recent-dirs-max 100
-zstyle ':chpwd:*' recent-dirs-default yes
-zstyle ':completion:*' recent-dirs-insert both
+# znap
+[ -f ~/.zshrc.znap ] && source ~/.zshrc.znap
 
-# option
-setopt no_beep
-
-# HomeBrew
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-# asdf
-. $(brew --prefix asdf)/libexec/asdf.sh
-
-# direnv
-eval "$(direnv hook zsh)"
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.zshrc.fzf ] && source ~/.zshrc.fzf
 
 # starship
 eval "$(starship init zsh)"
 
-# fzf
-if [ -f ~/dotfiles/fzf/.fzf.zsh ]; then
-  source ~/dotfiles/fzf/.fzf.zsh
-  source ~/dotfiles/fzf/.zshrc.fzf
-fi
+# ssh-agent
+eval "$(ssh-agent -s)"
 
-# zsnap
-[[ -f ~/.zsh/zsh-snap/znap.zsh ]] ||
-    git clone --depth 1 https://github.com/marlonrichert/zsh-snap.git ~/.zsh/zsh-snap
+# asdf
+. $(brew --prefix asdf)/libexec/asdf.sh
 
-source ~/.zsh/zsh-snap/znap.zsh
-
-# zsh plugins
-znap source zsh-users/zsh-autosuggestions
-znap source zsh-users/zsh-syntax-highlighting
-znap source marlonrichert/zsh-autocomplete
-
-
-# initialize autocomplete
-autoload -Uz compinit && compinit -u
+# gh completion
+[ -n "$(which gh)" ] && eval "$(gh completion -s zsh)"
