@@ -14,7 +14,9 @@ set softtabstop=4
 set tabstop=4
 set wildmenu
 set wrapscan
-set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
+set belloff=all
+" set rtp+=/usr/local/opt/fzf
+" set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
 
 " Ask if a directory is created when saving a file if it does not already exist.
 augroup vimrc-auto-mkdir
