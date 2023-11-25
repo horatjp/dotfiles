@@ -153,14 +153,6 @@ brew install font-hackgen-nerd
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# git
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-mkdir -p ~/.config/git
-ln -sf ~/dotfiles/git/.gitconfig ~/.gitconfig
-ln -sf ~/dotfiles/git/ignore ~/.config/git/ignore
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Kitty
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 mkdir -p ~/.config/kitty

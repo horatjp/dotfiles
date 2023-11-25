@@ -77,17 +77,6 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";"
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# git
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Write-Output "# Git"
-if(!(Test-Path -Path ${HOME}\.config\git)){
-    mkdir -p ${HOME}\.config\git
-}
-New-Item -Force -Type SymbolicLink ${HOME}\.config\git\ignore -Value ${DOTFILES}\git\ignore
-New-Item -Force -Type SymbolicLink ${HOME}\.gitconfig -Value ${DOTFILES}\git\.gitconfig
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Rlogin
 Write-Output "# Rlogin"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
