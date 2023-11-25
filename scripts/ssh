@@ -1,23 +1,32 @@
 #!/usr/bin/env bash
 
+# Path to the SSH command
 CMD_SSH=/usr/bin/ssh
 
-COLOR_WORD_DEFAULT="#ffffff"
+# Default color codes
+COLOR_WORD_DEFAULT="#dcdfe4"
 COLOR_BG_DEFAULT="#282c34"
 
-COLOR_BG_1="#005563"
+# Color codes for SSH connection
+COLOR_BG_SSH="#005563"
 
-function color_change() {
-  word=$1
-  back=$2
-  echo -ne "\e]10;${word}\a\e]11;${back}\a"
+# Function to change color
+change_color() {
+    local word=$1
+    local back=$2
+    echo -ne "\033]10;${word}\007\033]11;${back}\007"
 }
 
+# Error handling
+handle_exit() {
+    change_color "${COLOR_WORD_DEFAULT}" "${COLOR_BG_DEFAULT}"
+}
 
-trap "color_change \"${COLOR_WORD_DEFAULT}\" \"${COLOR_BG_DEFAULT}\"" 2
+# Run handle_exit on error or script exit
+trap handle_exit EXIT
 
-color_change "${COLOR_WORD_DEFAULT}" "${COLOR_BG_1}"
+# Change color to SSH connection color
+change_color "${COLOR_WORD_DEFAULT}" "${COLOR_BG_SSH}"
 
+# Execute SSH command
 $CMD_SSH "$@"
-
-color_change "${COLOR_WORD_DEFAULT}" "${COLOR_BG_DEFAULT}"
