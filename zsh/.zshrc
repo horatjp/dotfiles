@@ -28,3 +28,12 @@ eval "$(ssh-agent -s)"
 
 # gh completion
 [ -n "$(which gh)" ] && eval "$(gh completion -s zsh)"
+
+# OrbStack completion
+if (( $+commands[orbctl] )); then
+  eval "$(orbctl completion zsh)"
+  compdef _orb orbctl
+  compdef _orb orb
+fi
+
+
