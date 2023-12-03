@@ -27,10 +27,10 @@ symbol = " "
 style = "bold white"
 
 [git_status]
-format     = '[$all_status$ahead_behind](bold white) '
-ahead      = '[\[${count}⇡\]](bold green)'
-behind     = '[\[${count}⇣\]](bold red)'
-diverged   = '[\[${ahead_count}⇡${behind_count}⇣\]](bold purple)'
+format     = '[$all_status$ahead_behind](white) '
+ahead      = '[\[${count}⇡\]](green)'
+behind     = '[\[${count}⇣\]](red)'
+diverged   = '[\[${ahead_count}⇡${behind_count}⇣\]](purple)'
 conflicted = '[  ](bold orange)'
 stashed    = '[${count}  ](white)'
 staged     = '[${count}  ](cyan)'
