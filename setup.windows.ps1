@@ -37,11 +37,44 @@ Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanc
 # "Automatically expand to the current folder" ON
 Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "NavPaneExpandToCurrentFolder" -Value 1
 
+# Display "This PC" at startup of Explorer
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "LaunchTo" -Value 1
+
+# "Show recently used folders" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -name "ShowFrequent" -Value 0
+
+# "Show recently used files" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -name "ShowRecent" -Value 0
+
+# "Item description popups on folders and desktop" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "ShowInfoTip" -Value 0
+
+# "Size information in folder tips" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "FolderContentsInfoTip" -Value 0
+
+# "Do not show empty drives" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "HideDrivesWithNoMedia" -Value 0
+
+# "Sync provider notifications" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "ShowSyncProviderNotifications" -Value 0
+
+# "Show files from Office.com" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -name "ShowCloudFilesInQuickAccess" -Value 0
+
+# Compact view ON
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "UseCompactMode" -Value 1
+
+# Taskbar widgets hidden
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "TaskbarDa" -Value 0
+
+# Hide web search in taskbar search box
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name "DisableSearchBoxSuggestions" -Value 1
+
 # Dark mode
-Set-ItemProperty HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0
+Set-ItemProperty HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name "AppsUseLightTheme" -Value 0
 
 # "HiberbootEnabled" OFF
-Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power" -Name HiberbootEnabled -Value 0
+Set-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power" -Name "HiberbootEnabled" -Value 0
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
