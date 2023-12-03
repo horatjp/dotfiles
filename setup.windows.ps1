@@ -130,6 +130,15 @@ rm HackGen_NF* -Recurse
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# ExplorerPatcher
+Write-Output "# ExplorerPatcher"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Invoke-WebRequest -Uri https://github.com/valinet/ExplorerPatcher/releases/download/22621.2506.60.1_9e7c1e6/ep_setup.exe -OutFile ExplorerPatcher_setup.exe -UseBasicParsing
+sudo ./ExplorerPatcher_setup.exe
+rm ExplorerPatcher_setup.exe
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # WSL
 Write-Output "# WSL"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
