@@ -1,6 +1,6 @@
-alias ls='exa --icons --time-style=long-iso'
-alias ll='ls -lFgh --git'
-alias la='ls -lFagh --git'
+alias ls='eza --icons --time-style=long-iso'
+alias ll='ls -lgh --git'
+alias la='ls -lagh --git'
 alias lt='ls -T -L 2 --git-ignore'
 
 alias ..='cd ..'
@@ -8,6 +8,7 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 alias relogin='exec $SHELL -l'
-alias myip="curl https://ipinfo.io/json"
+alias myip='curl https://ipinfo.io/json'
+alias pbcopy='clip.exe'
 
 alias ssh='~/dotfiles/scripts/ssh'
