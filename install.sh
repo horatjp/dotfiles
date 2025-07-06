@@ -71,6 +71,11 @@ ln -sf ~/dotfiles/homebrew/Brewfile ~/Brewfile
 brew bundle install --file=~/Brewfile --no-lock --verbose
 
 
+# claude
+mkdir -p ~/.claude
+ln -sf ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
+ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
+
 # git
 mkdir -p ~/.config/git
 ln -sf ~/dotfiles/git/.gitconfig ~/.gitconfig
