@@ -140,3 +140,7 @@ if [ ! -n "$(which npm)" ]; then
     claude mcp add -s user context7 -- npx -y @upstash/context7-mcp@latest
 fi
 
+# Codex
+mkdir -p ~/.codex
+ln -sf ~/dotfiles/codex/config.toml ~/.codex/config.toml
+ln -sf ~/dotfiles/codex/AGENTS.md ~/.codex/AGENTS.md
