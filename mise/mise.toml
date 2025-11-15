@@ -1,0 +1,19 @@
+# mise configuration file
+# https://mise.jdx.dev/configuration.html
+
+[tools]
+# Node.js
+node = "lts"
+
+# Python
+python = "latest"
+
+[settings]
+# Enable experimental features
+experimental = true
+
+# Auto-activate virtualenv for Python
+python_venv_auto_create = true
+
+# Use legacy version files (.tool-versions, .node-version, etc.)
+legacy_version_file = true
