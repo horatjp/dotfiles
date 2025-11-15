@@ -104,6 +104,7 @@ winget install Obsidian.Obsidian
 winget install RARLab.WinRAR
 winget install SlackTechnologies.Slack
 winget install WinSCP.WinSCP
+winget install CoreyButler.NVMforWindows
 
 # Update the environment variables
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
@@ -122,20 +123,11 @@ rm rlogin_x64.zip
 # Font HackGen
 Write-Output "# Font HackGen"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Invoke-WebRequest -Uri https://github.com/yuru7/HackGen/releases/download/v2.9.0/HackGen_NF_v2.9.0.zip -OutFile HackGen_NF.zip -UseBasicParsing
+Invoke-WebRequest -Uri https://github.com/yuru7/HackGen/releases/download/v2.10.0/HackGen_NF_v2.10.0.zip -OutFile HackGen_NF.zip -UseBasicParsing
 Expand-Archive -Path HackGen_NF.zip -DestinationPath .
 $fonts = (New-Object -ComObject Shell.Application).Namespace(0x14)
-dir HackGen_NF_v2.9.0/*.ttf | %{ $fonts.CopyHere($_.fullname) }
+dir HackGen_NF_v2.10.0/*.ttf | %{ $fonts.CopyHere($_.fullname) }
 rm HackGen_NF* -Recurse
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# ExplorerPatcher
-Write-Output "# ExplorerPatcher"
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Invoke-WebRequest -Uri https://github.com/valinet/ExplorerPatcher/releases/download/22621.2506.60.1_9e7c1e6/ep_setup.exe -OutFile ExplorerPatcher_setup.exe -UseBasicParsing
-sudo ./ExplorerPatcher_setup.exe
-rm ExplorerPatcher_setup.exe
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -150,13 +142,6 @@ New-Item -Force -Type SymbolicLink ${HOME}\.wslconfig -Value ${DOTFILES}\wsl\.ws
 # ssh
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 mkdir ${HOME}/.ssh
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# ssh-agent
-Write-Output " ssh-agent"
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Set-Service ssh-agent -StartupType Automatic
-Start-Service ssh-agent
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -195,6 +180,14 @@ $content = $content -replace '(?m)^\s*//.*$'
 $json = $content | ConvertFrom-Json
 $json | Add-Member -Type NoteProperty -Name "locale" -Value "ja"
 $json | ConvertTo-Json | Set-Content $vscodeArgvPath
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Node.js via NVM
+Write-Output "# Node.js via NVM"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+nvm install lts
+nvm use lts
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
