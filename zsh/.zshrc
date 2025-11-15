@@ -26,15 +26,6 @@ eval "$(starship init zsh)"
 # zoxide
 eval "$(zoxide init zsh)"
 
-# ssh-agent
-SSH_ENV="${HOME}/.ssh/agent.env"
-
-agent_start() {
-    ssh-agent -s -t 1h > "${SSH_ENV}"
-    chmod 600 "${SSH_ENV}"
-    source "${SSH_ENV}" > /dev/null
-}
-
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.zshrc.fzf ] && source ~/.zshrc.fzf
@@ -59,4 +50,3 @@ if [ -f "${SSH_ENV}" ]; then
 else
     agent_start
 fi
-
