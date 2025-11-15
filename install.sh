@@ -11,13 +11,13 @@ if [ "$(uname)" != 'Darwin' ]; then
   # apt
   echo "# apt"
   sudo apt-get update
-  sudo apt-get install -y build-essential curl dnsutils file fonts-ipafont git locales nfs-client procps rsync tree wget whois zip
-
-  ## apt Python build
-  sudo apt-get install -y libffi-dev libssl-dev libbz2-dev libsqlite3-dev libreadline-dev libncurses5-dev liblzma-dev tk-dev uuid-dev zlib1g-dev
+  sudo apt install -y build-essential curl dnsutils file fonts-noto-cjk git locales nfs-client rsync tree wget whois zip zsh
 
   ## apt GUI
-  sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 libgbm-dev xauth xvfb fonts-ipafont feh
+  sudo apt-get install -y libgtk-3-0t64 libgtk-3-common libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 libgbm-dev xauth xvfb feh
+
+  ## apt Python build
+  sudo apt-get install -y libffi-dev libssl-dev libbz2-dev libsqlite3-dev libreadline-dev libncurses-dev liblzma-dev tk-dev zlib1g-dev
 
   # locale
   echo "# locale"
@@ -68,7 +68,7 @@ if [ ! -n "$(which brew)" ]; then
 fi
 
 ln -sf ~/dotfiles/homebrew/Brewfile ~/Brewfile
-brew bundle install --file=~/Brewfile --no-lock --verbose
+brew bundle install --file=~/Brewfile --verbose
 
 # git
 mkdir -p ~/.config/git
@@ -83,8 +83,8 @@ ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
 ln -sf ~/dotfiles/zsh/.zshrc.alias ~/.zshrc.alias
 ln -sf ~/dotfiles/zsh/.zshrc.history ~/.zshrc.history
 
-# znap
-ln -sf ~/dotfiles/zsh/.zshrc.znap ~/.zshrc.znap
+# WSL
+ln -sf ~/dotfiles/zsh/.zshrc.wsl ~/.zshrc.wsl
 
 # starship
 mkdir -p ~/.config/starship
@@ -94,34 +94,10 @@ ln -sf ~/dotfiles/starship/starship.toml ~/.config/starship.toml
 ln -sf ~/dotfiles/fzf/.fzf.zsh ~/.fzf.zsh
 ln -sf ~/dotfiles/fzf/.zshrc.fzf ~/.zshrc.fzf
 
-# asdf
-echo "# asdf"
-ln -sf ~/dotfiles/asdf/.asdfrc ~/.asdfrc
-ln -sf ~/dotfiles/asdf/.tool-versions ~/.tool-versions
-
-is_dir() {
-  path=$1
-  [ -d "$path" ]
-}
-
-for plugin in $(awk '{print $1}' ~/.tool-versions); do
-  if ! is_dir ~/.asdf/plugins/"$plugin"; then
-    asdf plugin add "$plugin"
-  fi
-done
-
-asdf install
-
-while IFS= read -r line; do
-  if [ -n "$line" ]; then
-    asdf global ${line}
-  fi
-done < ~/.tool-versions
-
-if [ -n "$(which poetry)" ]; then
-  poetry config virtualenvs.in-project true
-fi
-
+# mise
+mkdir -p ~/.config/mise
+ln -sf ~/dotfiles/mise/mise.toml ~/.config/mise/config.toml
+mise install
 
 # Change default shell
 sudo chsh -s "$(which zsh)" $USER
@@ -134,11 +110,6 @@ exec "$(which zsh)" -l
 mkdir -p ~/.claude
 ln -sf ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
 ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
-
-if [ ! -n "$(which npm)" ]; then
-    npm install -g @anthropic-ai/claude-code
-    claude mcp add -s user context7 -- npx -y @upstash/context7-mcp@latest
-fi
 
 # Codex
 mkdir -p ~/.codex
