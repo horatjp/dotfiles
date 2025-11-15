@@ -1,14 +1,25 @@
-alias ls='eza --icons --time-style=long-iso'
-alias ll='ls -lgh --git'
-alias la='ls -lagh --git'
-alias lt='ls -T -L 2 --git-ignore'
-
+# ディレクトリ移動
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-alias relogin='exec $SHELL -l'
-alias myip='curl https://ipinfo.io/json'
-alias pbcopy='clip.exe'
+# モダンツール置き換え
+alias ls='eza --icons'                     # アイコン付きリスト表示
+alias ll='eza --icons -l'                  # 詳細リスト表示
+alias la='eza --icons -la'                 # 隠しファイル含む詳細表示
+alias lt='eza --icons -l --sort=modified'  # 更新日時順表示
+alias tree='eza --tree --icons'            # ツリー表示
+alias cat='bat'                            # シンタックスハイライト付きcat
+alias df='duf'                             # カラフルなディスク使用量表示
+alias du='dust'                            # ツリー形式のディレクトリサイズ表示
+alias top='btm'                            # グラフィカルなプロセスモニター
+alias ps='procs'                           # カラフルなプロセス表示
 
-alias ssh='~/dotfiles/scripts/ssh'
+# ユーティリティ
+alias relogin='exec $SHELL -l'             # シェル再起動
+alias myip='curl https://ipinfo.io/json'   # グローバルIP確認
+alias ports='lsof -i -P -n | grep LISTEN'  # リッスン中のポート表示
+
+
+alias ssh='~/scripts/ssh'
+
