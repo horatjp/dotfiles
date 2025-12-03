@@ -1,0 +1,58 @@
+# sheldon configuration
+# ~/.config/sheldon/plugins.toml
+
+shell = "zsh"
+
+# リアルタイム補完候補表示
+[plugins.zsh-autocomplete]
+github = "marlonrichert/zsh-autocomplete"  
+
+# 履歴ベースのコマンド提案
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"   
+
+# コマンドの構文ハイライト
+[plugins.zsh-syntax-highlighting]
+github = "zsh-users/zsh-syntax-highlighting"  
+
+
+# ----- Oh My Zsh plugins -----
+# Oh My Zsh core helpers
+[plugins.ohmyzsh-lib]
+github = "ohmyzsh/ohmyzsh"
+use = ["lib/functions.zsh", "lib/url-encode.zsh"]  # open_command, omz_urlencode
+
+# ファイル内容をクリップボードにコピー
+[plugins.ohmyzsh-copyfile]
+github = "ohmyzsh/ohmyzsh"
+dir = "plugins/copyfile" 
+
+# ファイルパスをクリップボードにコピー
+[plugins.ohmyzsh-copypath]
+github = "ohmyzsh/ohmyzsh"
+dir = "plugins/copypath"  
+
+# 圧縮ファイルを自動解凍
+[plugins.ohmyzsh-extract]
+github = "ohmyzsh/ohmyzsh"
+dir = "plugins/extract"   
+
+# mise ランタイムバージョン管理
+[plugins.ohmyzsh-mise]
+github = "ohmyzsh/ohmyzsh"
+dir = "plugins/mise"      
+
+# Docker コマンド補完
+[plugins.ohmyzsh-docker]
+github = "ohmyzsh/ohmyzsh"
+dir = "plugins/docker"    
+
+# コマンドラインから Web 検索
+[plugins.ohmyzsh-web-search]
+github = "ohmyzsh/ohmyzsh"
+dir = "plugins/web-search"  
+
+# ディレクトリごとのヒストリー管理
+[plugins.ohmyzsh-per-directory-history]
+github = "ohmyzsh/ohmyzsh"
+dir = "plugins/per-directory-history"  

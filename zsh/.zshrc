@@ -17,8 +17,8 @@ if [[ "$(uname -r)" == *microsoft* ]]; then
   [ -f ~/.zshrc.wsl ] && source ~/.zshrc.wsl
 fi
 
-# Oh My Zsh
-[ -f ~/.zshrc.oh-my-zsh ] && source ~/.zshrc.oh-my-zsh
+# sheldon
+[ -f ~/.zshrc.sheldon ] && source ~/.zshrc.sheldon
 
 # starship
 eval "$(starship init zsh)"
@@ -50,3 +50,4 @@ if [ -f "${SSH_ENV}" ]; then
 else
     agent_start
 fi
+export PATH="$HOME/.local/bin:$PATH"
