@@ -13,7 +13,7 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)     # ヒストリーと補完か�
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
- # リアルタイム補完候補表示
+# リアルタイム補完候補表示
 znap source marlonrichert/zsh-autocomplete    
 zstyle ':autocomplete:*' min-delay 0.3            # 遅延を追加してパフォーマンス向上
 zstyle ':autocomplete:*' min-input 2              # 2文字以上で補完開始
