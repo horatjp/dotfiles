@@ -20,10 +20,9 @@ zstyle ':autocomplete:*' max-lines 10             # 補完候補表示数を制�
 zstyle ':autocomplete:*' insert-unambiguous true  # 曖昧でない部分を自動挿入
 
 # 履歴ベースのコマンド提案
-znap source zsh-users/zsh-autosuggestions     
+znap source zsh-users/zsh-autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'          # サジェストの色(グレー)
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)     # ヒストリーと補完から提案 
-
 
 znap source zsh-users/zsh-syntax-highlighting  # コマンドの構文ハイライト
 
