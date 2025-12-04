@@ -24,6 +24,7 @@ znap source zsh-users/zsh-autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'          # サジェストの色(グレー)
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)     # ヒストリーと補完から提案 
 
+# コマンドの構文ハイライト
 znap source zsh-users/zsh-syntax-highlighting  
 
 
