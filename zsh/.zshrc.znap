@@ -8,8 +8,7 @@ zstyle ':znap:*' repos-dir ~/.znap/repos
 ### plugin tuning
 
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'          # サジェストの色(グレー)
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)     # ヒストリーと補完から提案
+
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
