@@ -46,5 +46,6 @@ znap source ohmyzsh/ohmyzsh plugins/per-directory-history # ディレクトリ�
 znap source ohmyzsh/ohmyzsh plugins/docker
 znap source ohmyzsh/ohmyzsh plugins/mise
 
+
 ### キーバインド
 bindkey '^ ' autosuggest-accept  # Ctrl+Space で受け入れ
