@@ -33,7 +33,7 @@ autoload -Uz is-at-least
 znap source ohmyzsh/ohmyzsh lib/functions.zsh
 znap source ohmyzsh/ohmyzsh lib/clipboard.zsh
 
-### ファイル操作
+# ファイル操作
 znap source ohmyzsh/ohmyzsh plugins/copyfile # ファイル内容をクリップボードにコピー
 znap source ohmyzsh/ohmyzsh plugins/copypath # ファイルパスをクリップボードにコピー
 znap source ohmyzsh/ohmyzsh plugins/extract  # 圧縮ファイルを自動解凍
