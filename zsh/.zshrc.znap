@@ -26,6 +26,7 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)     # ヒストリーと補完か�
 
 # コマンドの構文ハイライト
 znap source zsh-users/zsh-syntax-highlighting  
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
 
 ### Oh My Zsh plugins
