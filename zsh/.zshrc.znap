@@ -10,7 +10,7 @@ zstyle ':znap:*' repos-dir ~/.znap/repos
 
 
 
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+
 
 # リアルタイム補完候補表示
 znap source marlonrichert/zsh-autocomplete    
