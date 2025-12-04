@@ -38,7 +38,7 @@ znap source ohmyzsh/ohmyzsh plugins/copyfile # ファイル内容をクリップ
 znap source ohmyzsh/ohmyzsh plugins/copypath # ファイルパスをクリップボードにコピー
 znap source ohmyzsh/ohmyzsh plugins/extract  # 圧縮ファイルを自動解凍
 
-### ユーティリティ
+# ユーティリティ
 znap source ohmyzsh/ohmyzsh plugins/web-search # コマンドラインから Web 検索
 znap source ohmyzsh/ohmyzsh plugins/per-directory-history # ディレクトリごとのヒストリー管理
 
