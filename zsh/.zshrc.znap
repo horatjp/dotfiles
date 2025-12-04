@@ -29,7 +29,7 @@ mkdir -p "$ZSH_CACHE_DIR/completions"
 fpath=("$ZSH_CACHE_DIR/completions" $fpath)
 autoload -Uz is-at-least
 
-### 基本ライブラリ
+# 基本ライブラリ
 znap source ohmyzsh/ohmyzsh lib/functions.zsh
 znap source ohmyzsh/ohmyzsh lib/clipboard.zsh
 
