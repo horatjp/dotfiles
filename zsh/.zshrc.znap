@@ -20,8 +20,8 @@ zstyle ':autocomplete:*' min-input 2              # 2文字以上で補完開始
 zstyle ':autocomplete:*' max-lines 10             # 補完候補表示数を制限
 zstyle ':autocomplete:*' insert-unambiguous true  # 曖昧でない部分を自動挿入
 
-
-znap source zsh-users/zsh-autosuggestions      # 履歴ベースのコマンド提案
+# 履歴ベースのコマンド提案
+znap source zsh-users/zsh-autosuggestions      
 znap source zsh-users/zsh-syntax-highlighting  # コマンドの構文ハイライト
 
 
