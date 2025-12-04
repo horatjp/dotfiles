@@ -22,6 +22,7 @@ zstyle ':autocomplete:*' insert-unambiguous true  # 曖昧でない部分を自�
 
 # 履歴ベースのコマンド提案
 znap source zsh-users/zsh-autosuggestions      
+
 znap source zsh-users/zsh-syntax-highlighting  # コマンドの構文ハイライト
 
 
