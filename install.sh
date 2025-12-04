@@ -86,10 +86,8 @@ ln -sf ~/dotfiles/zsh/.zshrc.history ~/.zshrc.history
 # WSL
 ln -sf ~/dotfiles/zsh/.zshrc.wsl ~/.zshrc.wsl
 
-# sheldon
-mkdir -p ~/.config/sheldon
-ln -sf ~/dotfiles/sheldon/plugins.toml ~/.config/sheldon/plugins.toml
-ln -sf ~/dotfiles/zsh/.zshrc.sheldon ~/.zshrc.sheldon
+# Znap
+ln -sf ~/dotfiles/zsh/.zshrc.znap ~/.zshrc.znap
 
 # starship
 mkdir -p ~/.config/starship

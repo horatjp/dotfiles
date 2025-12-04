@@ -17,8 +17,8 @@ if [[ "$(uname -r)" == *microsoft* ]]; then
   [ -f ~/.zshrc.wsl ] && source ~/.zshrc.wsl
 fi
 
-# sheldon
-[ -f ~/.zshrc.sheldon ] && source ~/.zshrc.sheldon
+# znap
+[ -f ~/.zshrc.znap ] && source ~/.zshrc.znap
 
 # starship
 eval "$(starship init zsh)"
