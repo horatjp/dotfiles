@@ -3,7 +3,7 @@
 source ~/.znap/zsh-snap/znap.zsh
 
 # Znap キャッシュディレクトリ設定
-zstyle ':znap:*' repos-dir "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/znap/repos"
+zstyle ':znap:*' repos-dir ~/.zsh-plugins/repos
 
 ### plugin tuning
 zstyle ':autocomplete:*' min-delay 0.3            # 遅延を追加してパフォーマンス向上
