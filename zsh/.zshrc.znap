@@ -18,6 +18,8 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
 ### core plugins
 znap source marlonrichert/zsh-autocomplete     # リアルタイム補完候補表示
+
+
 znap source zsh-users/zsh-autosuggestions      # 履歴ベースのコマンド提案
 znap source zsh-users/zsh-syntax-highlighting  # コマンドの構文ハイライト
 
