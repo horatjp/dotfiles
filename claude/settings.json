@@ -2,7 +2,9 @@
   "env": {},
   "permissions": {
     "allow": [
-      "Read(**)"
+      "Read(**)",
+      "WebFetch(*)",
+      "Bash(mkdir:*)"
     ],
     "deny": [
       "Bash(sudo:*)",
