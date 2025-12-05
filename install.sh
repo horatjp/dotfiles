@@ -111,10 +111,11 @@ exec "$(which zsh)" -l
 
 # claude
 mkdir -p ~/.claude
-ln -sf ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
+ln -sf ~/dotfiles/ai/AGENTS.md ~/.claude/CLAUDE.md
 ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
+cp ~/dotfiles/ai/mcp.json ~/.claude.json
 
 # Codex
 mkdir -p ~/.codex
 ln -sf ~/dotfiles/codex/config.toml ~/.codex/config.toml
-ln -sf ~/dotfiles/codex/AGENTS.md ~/.codex/AGENTS.md
+ln -sf ~/dotfiles/ai/AGENTS.md ~/.codex/AGENTS.md
