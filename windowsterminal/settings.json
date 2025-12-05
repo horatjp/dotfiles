@@ -4,8 +4,9 @@
     "actions": [],
     "copyFormatting": "none",
     "copyOnSelect": false,
-    "defaultProfile": "{27c40735-802b-5fba-8898-0b8be60974b3}",
-    "keybindings": [
+    "defaultProfile": "{b62dae0e-6127-5e38-bcdd-0f77219800a9}",
+    "keybindings":
+    [
         {
             "id": "Terminal.CopyToClipboard",
             "keys": "ctrl+c"
@@ -19,21 +20,26 @@
             "keys": "alt+shift+d"
         }
     ],
-    "newTabMenu": [
+    "newTabMenu":
+    [
         {
             "type": "remainingProfiles"
         }
     ],
-    "profiles": {
-        "defaults": {
+    "profiles":
+    {
+        "defaults":
+        {
             "colorScheme": "One Half Dark",
-            "font": {
+            "font":
+            {
                 "face": "HackGen Console NF",
                 "size": 11
             },
             "opacity": 90
         },
-        "list": [
+        "list":
+        [
             {
                 "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
@@ -44,7 +50,7 @@
                 "commandline": "%SystemRoot%\\System32\\cmd.exe",
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "hidden": false,
-                "name": "\u30b3\u30de\u30f3\u30c9 \u30d7\u30ed\u30f3\u30d7\u30c8"
+                "name": "\u30b3\u30de\u30f3\u30c1E\u30d7\u30ed\u30f3\u30d7\u30c8"
             },
             {
                 "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
@@ -53,19 +59,20 @@
                 "source": "Windows.Terminal.Azure"
             },
             {
-                "guid": "{27c40735-802b-5fba-8898-0b8be60974b3}",
-                "hidden": false,
-                "name": "Debian",
-                "source": "Microsoft.WSL"
-            },
-            {
                 "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
                 "hidden": false,
                 "name": "Git Bash",
                 "source": "Git"
+            },
+            {
+                "guid": "{b62dae0e-6127-5e38-bcdd-0f77219800a9}",
+                "hidden": false,
+                "name": "Debian",
+                "source": "Microsoft.WSL"
             }
         ]
     },
     "schemes": [],
+    "theme": "dark",
     "themes": []
 }
