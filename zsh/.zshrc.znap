@@ -41,7 +41,6 @@ znap source ohmyzsh/ohmyzsh plugins/extract  # 圧縮ファイルを自動解凍
 # ユーティリティ
 znap source ohmyzsh/ohmyzsh plugins/web-search # コマンドラインから Web 検索
 
-
 # 開発ツール
 znap source ohmyzsh/ohmyzsh plugins/docker
 znap source ohmyzsh/ohmyzsh plugins/mise
