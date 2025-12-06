@@ -40,7 +40,7 @@ znap source ohmyzsh/ohmyzsh plugins/extract  # 圧縮ファイルを自動解凍
 
 # ユーティリティ
 znap source ohmyzsh/ohmyzsh plugins/web-search # コマンドラインから Web 検索
-znap source ohmyzsh/ohmyzsh plugins/per-directory-history # ディレクトリごとのヒストリー管理
+
 
 # 開発ツール
 znap source ohmyzsh/ohmyzsh plugins/docker
