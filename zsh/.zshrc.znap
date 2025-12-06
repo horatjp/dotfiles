@@ -2,6 +2,7 @@
 [[ -r ~/.znap/zsh-snap/znap.zsh ]] || git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/.znap/zsh-snap
 source ~/.znap/zsh-snap/znap.zsh
 
+
 ### Zsh Plugins
 # リアルタイム補完候補表示
 znap source marlonrichert/zsh-autocomplete    
