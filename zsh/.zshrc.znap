@@ -20,6 +20,13 @@ znap source zsh-users/zsh-syntax-highlighting
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
 
+  # オプション設定（source の前に記述）
+  PER_PROJECT_HISTORY_TAGS=(.git .hg .envrc)  # 検出マーカー
+  HISTORY_START_WITH_GLOBAL=false              # 起動時はプロジェクト履歴から
+
+  # プラグイン読み込み
+  znap source ivan-cukic/zsh-per-project-history
+
 ### Oh My Zsh plugins
 znap clone ohmyzsh/ohmyzsh
 
