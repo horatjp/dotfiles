@@ -8,6 +8,6 @@ setopt HIST_VERIFY               # ヒストリー展開時に実行前確認
 setopt HIST_NO_STORE             # historyコマンド自体は記録しない
 setopt HIST_REDUCE_BLANKS        # 余分な空白を削除
 
-# per-directory-history プラグインがHISTFILEを管理するため、ここでは設定しない
+# zsh-per-project-history プラグインが HISTFILE を管理
 # Ctrl+G でディレクトリヒストリーとグローバルヒストリーを切り替え
 
