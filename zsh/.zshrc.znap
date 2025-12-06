@@ -25,7 +25,7 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
   HISTORY_START_WITH_GLOBAL=false              # 起動時はプロジェクト履歴から
 
   # プラグイン読み込み
-  
+  znap source ivan-cukic/zsh-per-project-history
 
 ### Oh My Zsh plugins
 znap clone ohmyzsh/ohmyzsh
