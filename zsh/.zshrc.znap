@@ -5,7 +5,7 @@ source ~/.znap/zsh-snap/znap.zsh
 
 ### Zsh Plugins
 # リアルタイム補完候補表示
-znap source marlonrichert/zsh-autocomplete    
+znap source marlonrichert/zsh-autocomplete
 zstyle ':autocomplete:*' min-delay 0.3            # 遅延を追加してパフォーマンス向上
 zstyle ':autocomplete:*' min-input 2              # 2文字以上で補完開始
 zstyle ':autocomplete:*' max-lines 10             # 補完候補表示数を制限
