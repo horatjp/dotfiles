@@ -19,7 +19,6 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)     # ヒストリーと補完か�
 znap source zsh-users/zsh-syntax-highlighting  
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
-
 # プラグイン読み込み
 znap source ivan-cukic/zsh-per-project-history
 PER_PROJECT_HISTORY_TAGS=(.git .hg .envrc) # 検出マーカー
