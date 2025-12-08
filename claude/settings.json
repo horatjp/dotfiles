@@ -2,11 +2,19 @@
   "env": {},
   "permissions": {
     "allow": [
-      "Read(**)",
-      "WebFetch(*)",
-      "Bash(mkdir:*)"
+      "Read(./**/*)",
+      "Edit(./**/*)",
+      "WebSearch",
+      "WebFetch",
+      "Bash(touch:*)",
+      "Bash(mkdir:*)",
     ],
     "deny": [
+    "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/.envrc)",
+      "Read(**/*secret*)",
+      "Read(~/.ssh/**)",
       "Bash(sudo:*)",
       "Bash(rm -rf:*)",
       "Bash(git push:*)",
@@ -19,6 +27,7 @@
       "Read(./build)"
     ]
   },
+  "alwaysThinkingEnabled": true,
   "enabledPlugins": {
     "frontend-design@claude-code-plugins": true
   },
