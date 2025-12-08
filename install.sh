@@ -16,6 +16,9 @@ if [ "$(uname)" != 'Darwin' ]; then
   ## apt GUI
   sudo apt-get install -y libgtk-3-0t64 libgtk-3-common libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 libgbm-dev xauth xvfb feh
 
+  ## apt Chromium
+  sudo apt-get install -y chromium
+
   ## apt Python build
   sudo apt-get install -y libffi-dev libssl-dev libbz2-dev libsqlite3-dev libreadline-dev libncurses-dev liblzma-dev tk-dev zlib1g-dev
 
@@ -109,13 +112,19 @@ sudo chsh -s "$(which zsh)" $USER
 exec "$(which zsh)" -l
 
 
-# claude
+# Claude
 mkdir -p ~/.claude
 ln -sf ~/dotfiles/ai/AGENTS.md ~/.claude/CLAUDE.md
 ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
 cp ~/dotfiles/ai/mcp.json ~/.claude.json
+bun install -g @anthropic-ai/claude-code
 
 # Codex
 mkdir -p ~/.codex
 ln -sf ~/dotfiles/codex/config.toml ~/.codex/config.toml
 ln -sf ~/dotfiles/ai/AGENTS.md ~/.codex/AGENTS.md
+bun install -g @openai/codex
+
+# Gemini
+mkdir -p ~/.gemini
+bun install -g @google/gemini-cli
