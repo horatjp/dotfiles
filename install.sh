@@ -128,3 +128,5 @@ bun install -g @openai/codex
 # Gemini
 mkdir -p ~/.gemini
 bun install -g @google/gemini-cli
+gemini extensions install https://github.com/gemini-cli-extensions/nanobanana
+export NANOBANANA_MODEL=gemini-3-pro-image-preview
