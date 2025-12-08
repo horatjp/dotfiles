@@ -6,6 +6,13 @@ setopt correct            # コマンドのスペルを自動修正
 setopt auto_cd            # ディレクトリ名だけでcd
 setopt interactive_comments # コマンドライン上のコメントを有効化
 
+# 環境変数の読み込み
+if [ -f "$HOME/.env" ]; then
+  set -a
+  source "$HOME/.env"
+  set +a
+fi
+
 # alias
 [ -f ~/.zshrc.alias ] && source ~/.zshrc.alias
 
@@ -50,4 +57,7 @@ if [ -f "${SSH_ENV}" ]; then
 else
     agent_start
 fi
+
+# path
+export PATH="$HOME/.cache/.bun/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
