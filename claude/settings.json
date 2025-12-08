@@ -7,7 +7,7 @@
       "WebSearch",
       "WebFetch",
       "Bash(touch:*)",
-      "Bash(mkdir:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": [
     "Read(**/.env)",
