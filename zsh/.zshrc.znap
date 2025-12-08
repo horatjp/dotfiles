@@ -22,7 +22,7 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
 # プロジェクト毎の履歴管理
 znap source ivan-cukic/zsh-per-project-history
-PER_PROJECT_HISTORY_TAGS=(.git package.json pyproject.toml composer.json go.mod .per_project_history)
+PER_PROJECT_HISTORY_TAGS=(.git package.json pyproject.toml composer.json go.mod .env .mise.toml mise.toml)
 
 
 ### Oh My Zsh plugins
