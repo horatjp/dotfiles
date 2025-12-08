@@ -1,19 +1,18 @@
-[tools]
-web_search = true
-
+[features]
+web_search_request = true
 
 [mcp_servers.context7]
 command = "npx"
-args = ["-y", "@upstash/context7-mcp"]
+args = ["@upstash/context7-mcp@latest"]
 
-[mcp_servers.playwright]
+[mcp_servers.chrome-devtools]
 command = "npx"
-args = ["@playwright/mcp@latest"]
-
-[mcp_servers.filesystem]
-command = "npx"
-args = ["-y", "@modelcontextprotocol/server-filesystem"]
-
-[mcp_servers.serena]
-command = "uvx"
-args = ["--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server", "--context", "codex"]
+args = [
+  "chrome-devtools-mcp@latest",
+  "--isolated=true",
+  "--headless=true",
+  "--executablePath=/usr/bin/chromium",
+  "--chromeArg=--no-sandbox",
+  "--chromeArg=--disable-setuid-sandbox",
+  "--chromeArg=--disable-dev-shm-usage",
+]
