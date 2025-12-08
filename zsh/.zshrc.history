@@ -1,3 +1,4 @@
+# HISTFILE=~/.zsh_history          # ヒストリーファイルの保存場所
 HISTSIZE=50000                   # メモリ上に保持するヒストリー数
 SAVEHIST=100000                  # ファイルに保存するヒストリー数
 setopt EXTENDED_HISTORY          # タイムスタンプと実行時間を記録
