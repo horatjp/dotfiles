@@ -5,6 +5,9 @@
 # Node.js
 node = "lts"
 
+# Bun runtime
+bun = "latest"
+
 # Python
 python = "latest"
 
