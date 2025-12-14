@@ -149,3 +149,124 @@ fdimgrm() {
   cid=$(docker image ls -a | sed 1d | fzf -m -q "$1" | awk '{print $1}')
   [ -n "$cid" ] && echo $cid | xargs docker image rm -f
 }
+
+# ghq-fzf: ghqで管理しているリポジトリにfzfで移動
+function ghq-fzf() {
+  if ! command -v ghq >/dev/null 2>&1; then
+    if [[ -n ${WIDGET:-} ]]; then
+      zle -M "ghq command not found"
+    else
+      echo "ghq command not found" >&2
+    fi
+    return 1
+  fi
+
+  if ! command -v fzf >/dev/null 2>&1; then
+    if [[ -n ${WIDGET:-} ]]; then
+      zle -M "fzf command not found"
+    else
+      echo "fzf command not found" >&2
+    fi
+    return 1
+  fi
+
+  local repo_list selected preview_cmd repo_root selected_path
+
+  repo_root=$(ghq root 2>/dev/null)
+  if [ -z "$repo_root" ]; then
+    if [[ -n ${WIDGET:-} ]]; then
+      zle -M "ghq root not found"
+    else
+      echo "ghq root not found" >&2
+    fi
+    return 1
+  fi
+
+  repo_list=$(ghq list 2>/dev/null)
+  if [ -z "$repo_list" ]; then
+    if [[ -n ${WIDGET:-} ]]; then
+      zle -M "ghq list is empty"
+    else
+      echo "ghq list is empty" >&2
+    fi
+    return 1
+  fi
+
+  read -r -d '' preview_cmd <<'EOF'
+repo_rel="{}"
+repo_rel=${repo_rel#\'}
+repo_rel=${repo_rel%\'}
+repo="${GHQ_ROOT}/${repo_rel}"
+if [ ! -d "$repo" ]; then
+  echo "Missing directory: $repo"
+  exit
+fi
+
+printf 'Path: %s\n' "$repo"
+printf '%s\n' '──── README'
+cd "$repo" || exit
+
+readme=""
+for candidate in README.md README README.txt README.rst Readme.md; do
+  if [ -f "$candidate" ]; then
+    readme="$candidate"
+    break
+  fi
+done
+if [ -z "$readme" ]; then
+  readme=$(find . -maxdepth 2 -type f -iname 'readme*' | head -n 1)
+fi
+
+if [ -n "$readme" ]; then
+  if command -v bat >/dev/null 2>&1; then
+    bat --style=plain --color=always --line-range=1:5 "$readme"
+  else
+    sed -n '1,5p' "$readme"
+  fi
+else
+  echo '(README not found)'
+fi
+
+printf '\n%s\n' '──── Files'
+if command -v eza >/dev/null 2>&1; then
+  files=$(eza --icons=never --color=never -a 2>/dev/null | head -n 30)
+  if [ -n "$files" ]; then
+    printf '%s\n' "$files"
+  else
+    /bin/ls -pa | head -n 30
+  fi
+else
+  /bin/ls -pa | head -n 30
+fi
+
+printf '\n%s\n' '──── Git log'
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  git --no-pager log --color=always --graph --decorate --oneline -n 10
+else
+  echo '(git repository not detected)'
+fi
+EOF
+
+  selected=$(printf '%s\n' "$repo_list" | \
+    GHQ_ROOT="$repo_root" fzf --prompt='ghq ❯ ' \
+        --ansi \
+        --preview "$preview_cmd" \
+        --preview-window='right:50%,border-left,wrap' \
+        --bind 'ctrl-r:toggle-preview' \
+        --header $'Enter: cd  |  Ctrl-R: toggle preview')
+
+  if [ -z "$selected" ]; then
+    return 0
+  fi
+
+  selected_path="${repo_root}/${selected}"
+
+  if [[ -n ${WIDGET:-} ]]; then
+    BUFFER="cd ${selected_path}"
+    zle accept-line
+  else
+    cd "$selected_path"
+  fi
+}
+zle -N ghq-fzf
+bindkey '^]' ghq-fzf
