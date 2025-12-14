@@ -14,7 +14,7 @@ if [ "$(uname)" != 'Darwin' ]; then
   sudo apt install -y build-essential curl dnsutils file fonts-noto-cjk git locales nfs-client rsync tree wget whois zip zsh
 
   ## apt GUI
-  sudo apt-get install -y libgtk-3-0t64 libgtk-3-common libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 libgbm-dev xauth xvfb feh
+  sudo apt-get install -y libgtk-3-0t64 libgtk-3-common libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 libgbm-dev wl-clipboard xauth xvfb feh
 
   ## apt Chromium
   sudo apt-get install -y chromium
@@ -80,6 +80,12 @@ ln -sf ~/dotfiles/git/ignore ~/.config/git/ignore
 
 # vim
 ln -sf ~/dotfiles/vim/.vimrc ~/.vimrc
+
+# neovim
+if [ -e ~/.config/nvim ] && [ ! -L ~/.config/nvim ]; then
+  mv ~/.config/nvim ~/.config/nvim.$(date +%Y%m%d%H%M%S).bak
+fi
+ln -sf ~/dotfiles/nvim ~/.config/nvim
 
 # zsh
 ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc

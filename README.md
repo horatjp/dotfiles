@@ -64,6 +64,7 @@ Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.
 * FZF
 * Starship
 * asdf
+* Neovim (LazyVim)
 
 
 ## Visual Studio Code devcontainer dotfiles 

@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
 sudo apt-get update
-sudo apt-get install -y curl exa fzf jq vim zip zsh
+sudo apt-get install -y curl exa fzf jq neovim vim zip zsh
 
 # vim
 ln -sf ~/dotfiles/vim/.vimrc ~/.vimrc
+
+# neovim
+mkdir -p ~/.config
+rm -rf ~/.config/nvim
+ln -sf ~/dotfiles/nvim ~/.config/nvim
 
 # zsh
 ln -sf ~/dotfiles/zsh/.zshrc.devcontainer ~/.zshrc
