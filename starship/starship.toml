@@ -42,7 +42,7 @@ format = '[ $branch](white dimmed) '
 
 [git_status]
 disabled = false
-format     = '[\( $all_status$ahead_behind\)](white dimmed) '
+format     = '[$all_status$ahead_behind](white dimmed) '
 ahead      = '[\(${count}⇡\)](green dimmed)'
 behind     = '[\(${count}⇣\)](red dimmed)'
 diverged   = '[\(${ahead_count}⇡${behind_count}⇣\)](purple dimmed)'
