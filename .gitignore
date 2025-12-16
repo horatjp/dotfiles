@@ -1,0 +1,47 @@
+# dotfiles: gitignore
+# Purpose: keep OS/editor/tool-generated noise and common secrets out of version control.
+
+# --- OS junk ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --- Editor swap / backups ---
+*~
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# --- Logs ---
+*.log
+
+# --- Common secrets (keep examples committed) ---
+.env
+.env.*
+!.env.example
+
+*.pem
+*.key
+*.p12
+*.pfx
+*.kdbx
+
+# --- Tool caches ---
+.direnv/
+node_modules/
+__pycache__/
+*.py[cod]
+
+# --- Other ---
+.github/
+.claude/
