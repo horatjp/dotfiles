@@ -122,6 +122,8 @@ exec "$(which zsh)" -l
 mkdir -p ~/.claude
 ln -sf ~/dotfiles/ai/AGENTS.md ~/.claude/CLAUDE.md
 ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
+ln -sf ~/dotfiles/claude/commands ~/.claude/commands
+ln -sf ~/dotfiles/claude/skills ~/.claude/skills
 cp ~/dotfiles/ai/mcp.json ~/.claude.json
 bun install -g @anthropic-ai/claude-code
 
