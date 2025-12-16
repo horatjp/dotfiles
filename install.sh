@@ -138,3 +138,11 @@ mkdir -p ~/.gemini
 bun install -g @google/gemini-cli
 gemini extensions install https://github.com/gemini-cli-extensions/nanobanana
 export NANOBANANA_MODEL=gemini-3-pro-image-preview
+
+# GitHub Copilot
+mkdir -p ~/.github
+ln -sf ~/dotfiles/ai/AGENTS.md ~/.github/copilot-instructions.md
+ln -sf ~/dotfiles/github/copilot-commit-message-instructions.md ~/.github/copilot-commit-message-instructions.md
+ln -sf ~/dotfiles/github/instructions ~/.github/instructions
+ln -sf ~/dotfiles/github/prompts ~/.github/prompts
+# Note: cp -r ~/.github .github to use in the project
