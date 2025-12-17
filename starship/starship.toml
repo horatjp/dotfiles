@@ -1,4 +1,5 @@
 format = """
+$container\
 $all
 """
 
@@ -26,7 +27,7 @@ format = '[ 󱎫 $duration ](white dimmed)'
 
 [container]
 disabled = false
-format = "[󰡨 ](white dimmed)"
+format = "[ ](white dimmed)"
 
 [directory]
 truncation_length = 3
@@ -48,7 +49,7 @@ behind     = '[\(${count}⇣\)](red dimmed)'
 diverged   = '[\(${ahead_count}⇡${behind_count}⇣\)](purple dimmed)'
 conflicted = '[  ](bold orange dimmed)'
 stashed    = '[  ${count} ](white dimmed)'
-staged     = '[ ${count} ](cyan dimmed)'
+staged     = '[󰐕${count} ](cyan dimmed)'
 untracked  = '[󰻭 ${count} ](green dimmed)'
 modified   = '[ ${count} ](yellow dimmed)'
 deleted    = '[󱀷 ${count} ](red dimmed)'
