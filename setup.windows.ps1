@@ -83,6 +83,7 @@ Write-Output "# winget"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 winget install Amazon.Kindle
 winget install Apple.iTunes
+winget install AutoHotkey.AutoHotkey
 winget install dbeaver.dbeaver
 winget install Docker.DockerDesktop
 winget install gerardog.gsudo
@@ -180,6 +181,25 @@ $content = $content -replace '(?m)^\s*//.*$'
 $json = $content | ConvertFrom-Json
 $json | Add-Member -Type NoteProperty -Name "locale" -Value "ja"
 $json | ConvertTo-Json | Set-Content $vscodeArgvPath
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# AutoHotkey startup
+Write-Output "# AutoHotkey startup"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+$StartupFolder = [Environment]::GetFolderPath("Startup")
+$AHKScriptPath = "${DOTFILES}\AutoHotkey\AutoHotkey.ahk"
+
+if (Test-Path -Path $AHKScriptPath) {
+    $WScriptShell = New-Object -ComObject WScript.Shell
+    $Shortcut = $WScriptShell.CreateShortcut("$StartupFolder\AutoHotkey.lnk")
+    $Shortcut.TargetPath = $AHKScriptPath
+    $Shortcut.WorkingDirectory = "${DOTFILES}\AutoHotkey"
+    $Shortcut.Save()
+    Write-Output "Created startup shortcut for AutoHotkey"
+} else {
+    Write-Output "Warning: AutoHotkey script not found at $AHKScriptPath"
+}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
