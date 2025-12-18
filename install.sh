@@ -130,6 +130,7 @@ ln -sf ~/dotfiles/prettier/.prettierignore ~/.prettierignore
 mkdir -p ~/.claude
 ln -sf ~/dotfiles/ai/AGENTS.md ~/.claude/CLAUDE.md
 ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
+ln -sf ~/dotfiles/claude/agents ~/.claude/agents
 ln -sf ~/dotfiles/claude/commands ~/.claude/commands
 ln -sf ~/dotfiles/claude/skills ~/.claude/skills
 cp ~/dotfiles/ai/mcp.json ~/.claude.json
