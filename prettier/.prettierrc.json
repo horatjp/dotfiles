@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "printWidth": 120,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "proseWrap": "preserve",
+  "overrides": [
+    {
+      "files": "*.md",
+      "options": {
+        "proseWrap": "preserve",
+        "printWidth": 120
+      }
+    },
+    {
+      "files": ["Makefile", ".gitconfig"],
+      "options": {
+        "useTabs": true
+      }
+    },
+    {
+      "files": "*.py",
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120
+      }
+    }
+  ]
+}

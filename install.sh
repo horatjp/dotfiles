@@ -118,6 +118,14 @@ sudo chsh -s "$(which zsh)" $USER
 exec "$(which zsh)" -l
 
 
+# EditorConfig
+ln -sf ~/dotfiles/editorconfig/.editorconfig ~/.editorconfig
+
+# Prettier
+echo "# Prettier"
+ln -sf ~/dotfiles/prettier/.prettierrc.json ~/.prettierrc.json
+ln -sf ~/dotfiles/prettier/.prettierignore ~/.prettierignore
+
 # Claude
 mkdir -p ~/.claude
 ln -sf ~/dotfiles/ai/AGENTS.md ~/.claude/CLAUDE.md
