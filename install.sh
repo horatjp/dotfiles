@@ -153,4 +153,4 @@ ln -sf ~/dotfiles/ai/AGENTS.md ~/.github/copilot-instructions.md
 ln -sf ~/dotfiles/github/copilot-commit-message-instructions.md ~/.github/copilot-commit-message-instructions.md
 ln -sf ~/dotfiles/github/instructions ~/.github/instructions
 ln -sf ~/dotfiles/github/prompts ~/.github/prompts
-# Note: cp -rL ~/.github .github to use in the project
+# Note: cp -rL ~/.github .github
