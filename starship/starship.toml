@@ -76,3 +76,89 @@ time_format = '%Y-%m-%d %R'
 disabled = true
 show_always = true
 format = "[ $user](bold blue dimmed) "
+
+# 言語モジュール
+[aws]
+format = "[$symbol($profile )]($style)"
+
+[bun]
+format = "[$symbol($version )]($style)"
+
+[cmake]
+format = "[$symbol($version )]($style)"
+
+[conda]
+format = "[$symbol$environment ]($style)"
+
+[deno]
+format = "[$symbol($version )]($style)"
+
+[docker_context]
+format = "[$symbol$context ]($style)"
+
+[dotnet]
+format = "[$symbol($version )]($style)"
+
+[elixir]
+format = "[$symbol($version )]($style)"
+
+[elm]
+format = "[$symbol($version )]($style)"
+
+[gcloud]
+format = "[$symbol$account(@$domain) ]($style)"
+
+[golang]
+format = "[$symbol($version )]($style)"
+
+[haskell]
+format = "[$symbol($version )]($style)"
+
+[java]
+format = "[$symbol($version )]($style)"
+
+[julia]
+format = "[$symbol($version )]($style)"
+
+[kotlin]
+format = "[$symbol($version )]($style)"
+
+[lua]
+format = "[$symbol($version )]($style)"
+
+[nim]
+format = "[$symbol($version )]($style)"
+
+[nodejs]
+format = "[$symbol($version )]($style)"
+
+[ocaml]
+format = "[$symbol($version )]($style)"
+
+[perl]
+format = "[$symbol($version )]($style)"
+
+[php]
+format = "[$symbol($version )]($style)"
+
+[python]
+format = "[$symbol($version )]($style)"
+
+[ruby]
+format = "[$symbol($version )]($style)"
+
+[rust]
+format = "[$symbol($version )]($style)"
+
+[scala]
+format = "[$symbol($version )]($style)"
+
+[swift]
+format = "[$symbol($version )]($style)"
+
+[terraform]
+format = "[$symbol$workspace ]($style)"
+
+[zig]
+format = "[$symbol($version )]($style)"
+
