@@ -94,6 +94,7 @@ winget install Google.Chrome
 winget install Google.ChromeRemoteDesktop
 winget install Google.Drive
 winget install Inkscape.Inkscape
+winget install mulaRahul.Keyviz
 winget install Levitsky.FontBase
 winget install LINE.LINE
 winget install Microsoft.PowerToys
