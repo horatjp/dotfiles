@@ -16,3 +16,5 @@
     defaultBranch = main
 [pull]
     rebase = false
+[ghq]
+	root = ~/projects
