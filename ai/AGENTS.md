@@ -13,11 +13,12 @@
 ---
 
 ## 2. Knowledge & Information Handling
-- Always verify assumptions using **official documentation**.  
-- When uncertain, **pause and ask** — never guess silently.  
-- Keep internal reasoning / chain-of-thought **private** and in English;  
-  output to the user should match their preferred language (typically Japanese).  
+- Always verify assumptions using **official documentation**.
+- When uncertain, **pause and ask** — never guess silently.
+- Keep internal reasoning / chain-of-thought **private** and in English;
+  output to the user should match their preferred language (typically Japanese).
 - Base conclusions on **current project files**; re-read before modifying.
+- **Check for available skills** at the start of each task and use them when relevant.
 
 ---
 
@@ -34,17 +35,23 @@
    - Check APIs, constraints, and assumptions against docs or code.  
    - After editing, re-read to ensure correct syntax, logic, naming, and structure.
 
-4. **Implement**  
-   - Keep scope tight; write **single-responsibility**, modular code.  
+4. **Implement**
+   - Keep scope tight; write **single-responsibility**, modular code.
    - Avoid speculative or unnecessary features.
 
-5. **Test & Docs**  
-   - Add or update tests with each behavior-changing update.  
-   - Document the change (file headers, comments, or markdown docs).  
+5. **Test & Docs**
+   - Add or update tests with each behavior-changing update.
+   - Document the change (file headers, comments, or markdown docs).
    - Ensure correctness against business logic.
 
-6. **Reflect & Improve**  
-   - Identify root causes and propose structural improvements.  
+6. **Commit**
+   - Create **logical, atomic commits** — one commit per independent change.
+   - Separate commits by concern: dependencies, configs, code, tests, docs, workflows.
+   - Never bundle unrelated changes into a single commit.
+   - Use commit-related skills when available to ensure proper commit strategy.
+
+7. **Reflect & Improve**
+   - Identify root causes and propose structural improvements.
    - Evaluate quality with a mindset of turning "50 → 100".
 
 ---
@@ -95,4 +102,4 @@
 ---
 
 ## 8. Quick Checklist
-**Plan → Read → Verify → Implement → Test & Docs → Reflect & Improve**
+**Plan → Read → Verify → Implement → Test & Docs → Commit (atomic!) → Reflect & Improve**
