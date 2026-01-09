@@ -78,6 +78,9 @@ mkdir -p ~/.config/git
 ln -sf ~/dotfiles/git/.gitconfig ~/.gitconfig
 ln -sf ~/dotfiles/git/ignore ~/.config/git/ignore
 
+# tmux
+ln -sf ~/dotfiles/tmux/.tmux.conf ~/.tmux.conf
+
 # vim
 ln -sf ~/dotfiles/vim/.vimrc ~/.vimrc
 
