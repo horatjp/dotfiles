@@ -1,19 +1,18 @@
+[include]
+    path = ~/.gitconfig.local
 
 [color]
-  branch = auto
-  diff = auto
-  interactive = auto
-  status = auto
-  ui = auto
-
+    branch = auto
+    diff = auto
+    interactive = auto
+    status = auto
+    ui = auto
 [credential]
-        helper = store
+    helper = store
 [core]
-        filemode = false
-        autocrlf = input
+    filemode = false
+    autocrlf = input
 [init]
-        defaultBranch = main
-
+    defaultBranch = main
 [pull]
-  rebase = false
-
+    rebase = false

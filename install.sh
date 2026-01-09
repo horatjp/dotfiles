@@ -78,6 +78,16 @@ mkdir -p ~/.config/git
 ln -sf ~/dotfiles/git/.gitconfig ~/.gitconfig
 ln -sf ~/dotfiles/git/ignore ~/.config/git/ignore
 
+# Create .gitconfig.local if it doesn't exist
+if [ ! -f ~/.gitconfig.local ]; then
+    cat > ~/.gitconfig.local <<EOF
+[user]
+    name = YOUR_NAME
+    email = YOUR_EMAIL
+EOF
+    echo "Created ~/.gitconfig.local - Please edit it to set your name and email"
+fi
+
 # tmux
 ln -sf ~/dotfiles/tmux/.tmux.conf ~/.tmux.conf
 
