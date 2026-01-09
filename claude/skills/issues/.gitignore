@@ -1,0 +1,2 @@
+# Exclude issues directory from git (personal data)
+issues/
