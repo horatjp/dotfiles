@@ -1,0 +1,15 @@
+# Path: ~/.config/sesh/sesh.toml
+# What: sesh configuration.
+# Why: keep session ordering stable and provide a place for future tweaks.
+
+sort_order = ["tmux", "config", "tmuxinator", "zoxide"]
+
+# Examples (uncomment to enable)
+# blacklist = ["scratch"]
+# dir_length = 2
+# preview_command = "eza --all --git --icons --color=always {}"
+
+[[session]]
+name = "dotfiles"
+path = "~/dotfiles"
+startup_script = "nvim"

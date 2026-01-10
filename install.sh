@@ -88,9 +88,6 @@ EOF
     echo "Created ~/.gitconfig.local - Please edit it to set your name and email"
 fi
 
-# tmux
-ln -sf ~/dotfiles/tmux/.tmux.conf ~/.tmux.conf
-
 # vim
 ln -sf ~/dotfiles/vim/.vimrc ~/.vimrc
 
@@ -118,6 +115,20 @@ ln -sf ~/dotfiles/starship/starship.toml ~/.config/starship.toml
 # fzf
 ln -sf ~/dotfiles/fzf/.fzf.zsh ~/.fzf.zsh
 ln -sf ~/dotfiles/fzf/.zshrc.fzf ~/.zshrc.fzf
+
+# tmux
+mkdir -p ~/.config/tmux
+ln -sf ~/dotfiles/tmux/tmux.conf ~/.config/tmux/tmux.conf
+ln -sf ~/dotfiles/tmux/scripts ~/.config/tmux/scripts
+# TPM (tmux plugin manager)
+if [ ! -d ~/.tmux/plugins/tpm ]; then
+  mkdir -p ~/.tmux/plugins
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+
+# sesh
+mkdir -p ~/.config/sesh
+ln -sf ~/dotfiles/sesh/sesh.toml ~/.config/sesh/sesh.toml
 
 # mise
 mkdir -p ~/.config/mise
