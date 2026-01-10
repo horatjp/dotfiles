@@ -23,6 +23,9 @@
       "Bash(cp:*)",
       "WebSearch",
       "WebFetch",
+      "Skill(git-commit)",
+      "Skill(agent-memory)",
+      "Skill(issues)",
       "mcp__context7",
       "mcp__chrome-devtools"
     ],
