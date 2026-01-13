@@ -61,3 +61,4 @@ fi
 # path
 export PATH="$HOME/.cache/.bun/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
