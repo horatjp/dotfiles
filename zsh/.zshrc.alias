@@ -14,6 +14,9 @@ alias df='duf'                                     # カラフルなディスク
 alias du='dust'                                    # ツリー形式のディレクトリサイズ表示
 alias top='btm'                                    # グラフィカルなプロセスモニター
 alias ps='procs'                                   # カラフルなプロセス表示
+alias vi='nvim'                                    # neovimへ移行
+alias vim='nvim'                                   # neovimへ移行
+alias view='nvim -R'                               # 読み取り専用モード
 
 # ユーティリティ
 alias relogin='exec $SHELL -l'             # シェル再起動

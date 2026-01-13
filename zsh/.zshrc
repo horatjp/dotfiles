@@ -1,6 +1,6 @@
 export LANG=ja_JP.UTF-8   # 文字コード
 export LC_ALL=ja_JP.UTF-8 # ロケール
-export EDITOR=vim         # エディタ
+export EDITOR=nvim         # エディタ
 setopt no_beep            # ビープ音を鳴らさない
 setopt correct            # コマンドのスペルを自動修正
 setopt auto_cd            # ディレクトリ名だけでcd
