@@ -17,6 +17,16 @@
         "--chromeArg=--disable-setuid-sandbox",
         "--chromeArg=--disable-dev-shm-usage"
       ]
+    },
+    "gemini": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@rlabs-inc/gemini-mcp"
+      ],
+      "env": {
+        "GEMINI_API_KEY": "${GEMINI_API_KEY}"
+      }
     }
   }
 }
