@@ -21,11 +21,14 @@
       "Bash(mkdir:*)",
       "Bash(mv:*)",
       "Bash(cp:*)",
+      "Bash(ls:*)",
+      "Bash(codex:*)",
       "WebSearch",
       "WebFetch",
       "Skill(git-commit)",
       "Skill(agent-memory)",
       "Skill(issues)",
+      "Skill(codex)",
       "mcp__context7",
       "mcp__chrome-devtools"
     ],
@@ -43,10 +46,13 @@
       "Bash(curl:*)",
       "Bash(wget:*)"
     ],
-    "ask": ["Bash(git push:*)"]
+    "ask": [
+      "Bash(git push:*)"
+    ]
   },
   "enabledPlugins": {
-    "frontend-design@claude-plugins-official": true
+    "frontend-design@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true
 }
