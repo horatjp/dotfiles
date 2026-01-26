@@ -1,4 +1,4 @@
-# HISTFILE=~/.zsh_history          # ヒストリーファイルの保存場所
+HISTFILE=~/.zsh_history          # ヒストリーファイルの保存場所
 HISTSIZE=50000                   # メモリ上に保持するヒストリー数
 SAVEHIST=100000                  # ファイルに保存するヒストリー数
 setopt EXTENDED_HISTORY          # タイムスタンプと実行時間を記録
@@ -8,7 +8,3 @@ setopt HIST_IGNORE_SPACE         # スペースで始まるコマンドは記録
 setopt HIST_VERIFY               # ヒストリー展開時に実行前確認
 setopt HIST_NO_STORE             # historyコマンド自体は記録しない
 setopt HIST_REDUCE_BLANKS        # 余分な空白を削除
-
-# zsh-per-project-history プラグインが HISTFILE を管理
-# Ctrl+G でディレクトリヒストリーとグローバルヒストリーを切り替え
-
