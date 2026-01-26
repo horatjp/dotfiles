@@ -163,7 +163,9 @@ bun install -g @anthropic-ai/claude-code
 # Codex
 mkdir -p ~/.codex
 ln -sf ~/dotfiles/codex/config.toml ~/.codex/config.toml
-ln -sf ~/dotfiles/ai/AGENTS.md ~/.codex/AGENTS.md
+ln -sf ~/dotfiles/codex/AGENTS.md ~/.codex/AGENTS.md
+mkdir -p ~/.codex/superpowers
+git clone https://github.com/obra/superpowers.git ~/.codex/superpowers
 bun install -g @openai/codex
 
 # Gemini
