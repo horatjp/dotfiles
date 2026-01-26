@@ -35,3 +35,6 @@ Desktop.ini
 
 # Miscellaneous
 *.bak
+
+# Other
+.project-command-history
