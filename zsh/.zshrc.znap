@@ -22,6 +22,7 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
 # プロジェクト毎の履歴管理
 znap source horatjp/project-command-history
+PCH_DEBUG=0
 
 ### Oh My Zsh plugins
 znap clone ohmyzsh/ohmyzsh
