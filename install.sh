@@ -121,9 +121,9 @@ mkdir -p ~/.config/tmux
 ln -sf ~/dotfiles/tmux/tmux.conf ~/.config/tmux/tmux.conf
 ln -sf ~/dotfiles/tmux/scripts ~/.config/tmux/scripts
 # TPM (tmux plugin manager)
-if [ ! -d ~/.tmux/plugins/tpm ]; then
-  mkdir -p ~/.tmux/plugins
-  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+if [ ! -d ~/.config/tmux/plugins/tpm ]; then
+  mkdir -p ~/.config/tmux/plugins
+  git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 fi
 
 # sesh
