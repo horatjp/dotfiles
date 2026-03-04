@@ -82,6 +82,8 @@ config.keys = {
   { key = "t", mods = "CTRL|SHIFT", action = wezterm.action.SpawnTab("CurrentPaneDomain") },
   -- Close tab / pane
   { key = "w", mods = "CTRL|SHIFT", action = wezterm.action.CloseCurrentPane({ confirm = true }) },
+  -- Copy mode
+  { key = "c", mods = "CTRL|SHIFT", action = wezterm.action.ActivateCopyMode },
   -- Move between tabs
   { key = "Tab", mods = "CTRL", action = wezterm.action.ActivateTabRelative(1) },
   { key = "Tab", mods = "CTRL|SHIFT", action = wezterm.action.ActivateTabRelative(-1) },
