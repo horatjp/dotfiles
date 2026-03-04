@@ -7,3 +7,7 @@ alias pbcopy='clip.exe' # クリップボードにコピー
 alias pbpaste='powershell.exe -command "Get-Clipboard"' # 貼り付け
 alias open='explorer.exe'
 
+# WezTerm cwd reporting
+precmd() {
+  printf "\033]7;file://%s%s\033\\" "$HOSTNAME" "$PWD"
+}

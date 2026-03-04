@@ -105,7 +105,9 @@ winget install NickeManarin.ScreenToGif
 winget install Obsidian.Obsidian
 winget install RARLab.WinRAR
 winget install SlackTechnologies.Slack
+winget install wez.wezterm
 winget install WinSCP.WinSCP
+
 winget install CoreyButler.NVMforWindows
 
 # Update the environment variables
@@ -144,6 +146,13 @@ New-Item -Force -Type SymbolicLink ${HOME}\.wslconfig -Value ${DOTFILES}\wsl\.ws
 # ssh
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 mkdir ${HOME}/.ssh
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# WezTerm
+Write-Output "# WezTerm"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+New-Item -Force -Type SymbolicLink ${HOME}\.wezterm.lua -Value ${DOTFILES}\wezterm\.wezterm.lua
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
