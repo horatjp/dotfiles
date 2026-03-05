@@ -24,6 +24,18 @@ config.font_size = 11.0
 -- Appearance
 -- - - - - - - - - - - - - - - - - - - - - - - -
 config.color_scheme = "OneHalfDark"
+config.colors = {
+  brights = {
+    "#636d83",  -- 8: bright black / dark gray (明るく)
+    "#e06c75",  -- 9: bright red
+    "#98c379",  -- 10: bright green
+    "#e5c07b",  -- 11: bright yellow
+    "#61afef",  -- 12: bright blue
+    "#c678dd",  -- 13: bright magenta
+    "#56b6c2",  -- 14: bright cyan
+    "#ffffff",  -- 15: bright white
+  },
+}
 config.window_background_opacity = 0.9
 config.window_decorations = "TITLE | RESIZE"
 config.initial_cols = 100
