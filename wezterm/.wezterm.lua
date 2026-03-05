@@ -62,6 +62,26 @@ local function wsl_cwd(pane)
 end
 
 -- - - - - - - - - - - - - - - - - - - - - - - -
+-- Tab title
+-- - - - - - - - - - - - - - - - - - - - - - - -
+local function get_title(pane)
+  local cwd = pane.current_working_dir
+  if cwd then
+    return cwd.file_path:match("([^/\\]+)[/\\]?$") or "shell"
+  end
+  return "shell"
+end
+
+wezterm.on("format-tab-title", function(tab, _, _, _, _, max_width)
+  local title = get_title(tab.active_pane)
+  return " " .. wezterm.truncate_right(title, max_width - 4) .. " "
+end)
+
+wezterm.on("format-window-title", function(tab)
+  return get_title(tab.active_pane)
+end)
+
+-- - - - - - - - - - - - - - - - - - - - - - - -
 -- Key bindings
 -- - - - - - - - - - - - - - - - - - - - - - - -
 config.keys = {
