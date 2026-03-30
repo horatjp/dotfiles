@@ -1,24 +1,27 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
--- - - - - - - - - - - - - - - - - - - - - - - -
--- Default shell: WSL (Debian)
--- - - - - - - - - - - - - - - - - - - - - - - -
-config.default_domain = "WSL:Debian"
+local is_windows = wezterm.target_triple:find("windows") ~= nil
 
-config.wsl_domains = {
-  {
-    name = "WSL:Debian",
-    distribution = "Debian",
-    default_cwd = "~",
-  },
-}
+-- - - - - - - - - - - - - - - - - - - - - - - -
+-- Default shell: WSL (Debian) on Windows, zsh on macOS/Linux
+-- - - - - - - - - - - - - - - - - - - - - - - -
+if is_windows then
+  config.default_domain = "WSL:Debian"
+  config.wsl_domains = {
+    {
+      name = "WSL:Debian",
+      distribution = "Debian",
+      default_cwd = "~",
+    },
+  }
+end
 
 -- - - - - - - - - - - - - - - - - - - - - - - -
 -- Font
 -- - - - - - - - - - - - - - - - - - - - - - - -
 config.font = wezterm.font("HackGen Console NF")
-config.font_size = 11.0
+config.font_size = is_windows and 11.0 or 15.0
 
 -- - - - - - - - - - - - - - - - - - - - - - - -
 -- Appearance
@@ -53,12 +56,15 @@ config.show_new_tab_button_in_tab_bar = false
 -- Live config reload
 config.automatically_reload_config = true
 
--- Extract Linux path from WSL URL (strips /wsl.localhost/Distro prefix)
-local function wsl_cwd(pane)
+-- Extract cwd from pane (strips /wsl.localhost/Distro prefix on Windows)
+local function get_cwd(pane)
   local cwd_url = pane:get_current_working_dir()
   if not cwd_url then return nil end
   local path = cwd_url.file_path
-  return path:match("^/wsl[^/]*/[^/]+(.+)") or (path:match("^/home/") and path) or nil
+  if is_windows then
+    return path:match("^/wsl[^/]*/[^/]+(.+)") or (path:match("^/home/") and path) or nil
+  end
+  return path
 end
 
 -- - - - - - - - - - - - - - - - - - - - - - - -
@@ -85,22 +91,22 @@ end)
 -- Key bindings
 -- - - - - - - - - - - - - - - - - - - - - - - -
 config.keys = {
-  -- Split pane: horizontal (right) - inherit WSL cwd
+  -- Split pane: horizontal (right) - inherit cwd
   {
     key = "d", mods = "CTRL|SHIFT",
     action = wezterm.action_callback(function(window, pane)
       window:perform_action(
-        wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain", cwd = wsl_cwd(pane) }),
+        wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain", cwd = get_cwd(pane) }),
         pane
       )
     end),
   },
-  -- Split pane: vertical (down) - inherit WSL cwd
+  -- Split pane: vertical (down) - inherit cwd
   {
     key = "e", mods = "CTRL|SHIFT",
     action = wezterm.action_callback(function(window, pane)
       window:perform_action(
-        wezterm.action.SplitVertical({ domain = "CurrentPaneDomain", cwd = wsl_cwd(pane) }),
+        wezterm.action.SplitVertical({ domain = "CurrentPaneDomain", cwd = get_cwd(pane) }),
         pane
       )
     end),
