@@ -163,6 +163,12 @@ curl -o ~/.config/kitty/onehalf-dark.conf https://raw.githubusercontent.com/sonp
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# WezTerm
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ln -sf ~/dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Visual Studio Code
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 mkdir -p ~/Library/Application\ Support/Code/User/
