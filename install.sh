@@ -3,8 +3,7 @@
 set -e
 
 # sudo
-echo "`whoami` ALL=(root) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/`whoami`
-
+echo "$(whoami) ALL=(root) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$(whoami)
 
 # not macOS
 if [ "$(uname)" != 'Darwin' ]; then
@@ -29,7 +28,6 @@ if [ "$(uname)" != 'Darwin' ]; then
   sudo update-locale LANG=ja_JP.UTF-8
 fi
 
-
 # macOS
 if [ "$(uname)" == 'Darwin' ]; then
   if [ -n "$(which xhost)" ]; then
@@ -37,7 +35,6 @@ if [ "$(uname)" == 'Darwin' ]; then
     xhost + localhost
   fi
 fi
-
 
 # WSL
 if [ -n "$(which explorer.exe)" ]; then
@@ -57,17 +54,17 @@ fi
 # brew
 if [ ! -n "$(which brew)" ]; then
 
-    echo "# brew"
-    export NONINTERACTIVE=1
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo "# brew"
+  export NONINTERACTIVE=1
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-    if [ "$(uname)" == 'Darwin' ]; then
-        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    elif [ "$(uname)" == 'Linux' ]; then
-        echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
-        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    fi
+  if [ "$(uname)" == 'Darwin' ]; then
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>~/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [ "$(uname)" == 'Linux' ]; then
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>~/.zprofile
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  fi
 fi
 
 ln -sf ~/dotfiles/homebrew/Brewfile ~/Brewfile
@@ -80,12 +77,12 @@ ln -sf ~/dotfiles/git/ignore ~/.config/git/ignore
 
 # Create .gitconfig.local if it doesn't exist
 if [ ! -f ~/.gitconfig.local ]; then
-    cat > ~/.gitconfig.local <<EOF
+  cat >~/.gitconfig.local <<EOF
 [user]
     name = YOUR_NAME
     email = YOUR_EMAIL
 EOF
-    echo "Created ~/.gitconfig.local - Please edit it to set your name and email"
+  echo "Created ~/.gitconfig.local - Please edit it to set your name and email"
 fi
 
 # vim
@@ -96,6 +93,10 @@ if [ -e ~/.config/nvim ] && [ ! -L ~/.config/nvim ]; then
   mv ~/.config/nvim ~/.config/nvim.$(date +%Y%m%d%H%M%S).bak
 fi
 ln -sf ~/dotfiles/nvim ~/.config/nvim
+
+# scripts
+ln -sf ~/dotfiles/scripts ~/scripts
+chmod +x ~/dotfiles/scripts/*
 
 # zsh
 ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
@@ -140,7 +141,6 @@ sudo chsh -s "$(which zsh)" $USER
 
 # Relogin shell
 exec "$(which zsh)" -l
-
 
 # EditorConfig
 ln -sf ~/dotfiles/editorconfig/.editorconfig ~/.editorconfig
