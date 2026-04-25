@@ -145,10 +145,6 @@ exec "$(which zsh)" -l
 # EditorConfig
 ln -sf ~/dotfiles/editorconfig/.editorconfig ~/.editorconfig
 
-# Prettier
-echo "# Prettier"
-ln -sf ~/dotfiles/prettier/.prettierrc.json ~/.prettierrc.json
-ln -sf ~/dotfiles/prettier/.prettierignore ~/.prettierignore
 
 # Claude
 mkdir -p ~/.claude
