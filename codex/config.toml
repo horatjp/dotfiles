@@ -1,3 +1,6 @@
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
+
 [features]
 web_search_request = true
 
@@ -10,5 +13,51 @@ command = "npx"
 args = [ "chrome-devtools-mcp@latest", "--isolated=true", "--headless=true", "--executablePath=/usr/bin/chromium", "--chromeArg=--no-sandbox", "--chromeArg=--disable-setuid-sandbox", "--chromeArg=--disable-dev-shm-usage" ]
 
 [mcp_servers.pencil]
-command = "/Users/horatjp/.vscode/extensions/highagency.pencildev-0.6.36/out/mcp-server-darwin-arm64"
+command = "/Users/horatjp/.pencil/mcp/visual_studio_code/out/mcp-server-darwin-arm64"
 args = [ "--app", "visual_studio_code" ]
+
+[projects."/Users/horatjp"]
+trust_level = "trusted"
+
+[projects."/Users/horatjp/Documents/Codex/2026-04-24/new-chat"]
+trust_level = "trusted"
+
+[projects."/Users/horatjp/Documents/Codex/2026-04-24/new-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/horatjp/Documents/Codex/2026-04-24/mac-slack"]
+trust_level = "trusted"
+
+[projects."/Users/horatjp/Documents/Codex/2026-04-25/files-mentioned-by-the-user-260424220924315"]
+trust_level = "trusted"
+
+[projects."/Users/horatjp/Documents/Codex/2026-04-25/https-ma-ju-co-jp"]
+trust_level = "trusted"
+
+[projects."/Users/horatjp/dotfiles"]
+trust_level = "trusted"
+
+[marketplaces.openai-bundled]
+last_updated = "2026-04-25T00:18:38Z"
+source_type = "local"
+source = "/Users/horatjp/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-04-24T14:18:34Z"
+source_type = "local"
+source = "/Users/horatjp/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[plugins."browser-use@openai-bundled"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[tui.model_availability_nux]
+"gpt-5.5" = 1

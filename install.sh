@@ -148,20 +148,18 @@ ln -sf ~/dotfiles/editorconfig/.editorconfig ~/.editorconfig
 
 # Claude
 mkdir -p ~/.claude
-ln -sf ~/dotfiles/ai/AGENTS.md ~/.claude/CLAUDE.md
+ln -sf ~/dotfiles/claude/AGENTS.md ~/.claude/CLAUDE.md
 ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
 ln -sf ~/dotfiles/claude/agents ~/.claude/agents
 ln -sf ~/dotfiles/claude/commands ~/.claude/commands
 ln -sf ~/dotfiles/claude/skills ~/.claude/skills
-cp ~/dotfiles/ai/mcp.json ~/.claude.json
+cp ~/dotfiles/claude/mcp.json ~/.claude.json
 bun install -g @anthropic-ai/claude-code
 
 # Codex
 mkdir -p ~/.codex
 ln -sf ~/dotfiles/codex/config.toml ~/.codex/config.toml
 ln -sf ~/dotfiles/codex/AGENTS.md ~/.codex/AGENTS.md
-mkdir -p ~/.codex/superpowers
-git clone https://github.com/obra/superpowers.git ~/.codex/superpowers
 bun install -g @openai/codex
 
 # Gemini
@@ -172,7 +170,7 @@ export NANOBANANA_MODEL=gemini-3-pro-image-preview
 
 # GitHub Copilot
 mkdir -p ~/.github
-ln -sf ~/dotfiles/ai/AGENTS.md ~/.github/copilot-instructions.md
+ln -sf ~/dotfiles/github/AGENTS.md ~/.github/copilot-instructions.md
 ln -sf ~/dotfiles/github/copilot-commit-message-instructions.md ~/.github/copilot-commit-message-instructions.md
 ln -sf ~/dotfiles/github/instructions ~/.github/instructions
 ln -sf ~/dotfiles/github/prompts ~/.github/prompts
