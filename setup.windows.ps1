@@ -7,6 +7,13 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# PowerShell settings
+Write-Output "# PowerShell settings"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -scope CurrentUser
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # dotfiles
 Write-Output "# dotfiles"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -28,83 +35,137 @@ if(!(Test-Path -Path ${DOTFILES} )) {
 # Windows settings
 Write-Output "# Windows settings"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# "Hide extensions for known file types" OFF
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "HideFileExt" -Value 0
 
-# "Show hidden files, folders, and drives" ON
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "Hidden" -Value 1
+## ========== エクスプローラー表示設定 ==========
 
-# "Automatically expand to the current folder" ON
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "NavPaneExpandToCurrentFolder" -Value 1
+# "登録されている拡張子は表示しない" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "HideFileExt" -Value 0
 
-# Display "This PC" at startup of Explorer
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "LaunchTo" -Value 1
+# "隠しファイル、隠しフォルダ、および隠しドライブを表示する" ON
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "Hidden" -Value 1
 
-# "Show recently used folders" OFF
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -name "ShowFrequent" -Value 0
+# "自動的に現在のフォルダーまで展開する" ON
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "NavPaneExpandToCurrentFolder" -Value 1
 
-# "Show recently used files" OFF
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -name "ShowRecent" -Value 0
+# エクスプローラーの起動時「PC」を表示
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "LaunchTo" -Value 1
 
-# "Item description popups on folders and desktop" OFF
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "ShowInfoTip" -Value 0
+# フルパスをタイトルバーに表示
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState -Name "FullPath" -Value 1
 
-# "Size information in folder tips" OFF
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "FolderContentsInfoTip" -Value 0
+# コンパクトビュー ON
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "UseCompactMode" -Value 1
 
-# "Do not show empty drives" OFF
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "HideDrivesWithNoMedia" -Value 0
+## ========== エクスプローラーポップアップ設定 ==========
 
-# "Sync provider notifications" OFF
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "ShowSyncProviderNotifications" -Value 0
+# "フォルダとデスクトップの項目説明ポップアップ" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "ShowInfoTip" -Value 0
 
-# "Show files from Office.com" OFF
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -name "ShowCloudFilesInQuickAccess" -Value 0
+# "フォルダヒントのサイズ情報" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "FolderContentsInfoTip" -Value 0
 
-# Compact view ON
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "UseCompactMode" -Value 1
+## ========== エクスプローラー表示内容設定 ==========
 
-# Taskbar widgets hidden
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -name "TaskbarDa" -Value 0
+# "最近使用したフォルダの表示" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name "ShowFrequent" -Value 0
 
-# Hide web search in taskbar search box
-Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name "DisableSearchBoxSuggestions" -Value 1
+# "最近使用したファイルの表示" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name "ShowRecent" -Value 0
 
-# Dark mode
+# "Office.comのファイルの表示" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name "ShowCloudFilesInQuickAccess" -Value 0
+
+# "空のドライブは表示しない" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "HideDrivesWithNoMedia" -Value 0
+
+# "同期プロバイダー通知" OFF
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "ShowSyncProviderNotifications" -Value 0
+
+## ========== タスクバー設定 ==========
+
+# タスクバーの検索アイコンを非表示
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name "SearchboxTaskbarMode" -Value 0
+
+# タスクバーのタスクビューボタンを非表示
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "ShowTaskViewButton" -Value 0
+
+# タスクバー・検索ボックスWeb検索非表示
+New-Item -Path 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer' -Force | Out-Null
+New-ItemProperty HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name "DisableSearchBoxSuggestions" -Value 1 -Force | Out-Null
+
+# タスクバーでアニメーション効果を無効化
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "TaskbarAnimations" -Value 0
+
+## ========== スタート画面設定 ==========
+
+# 最近追加したアプリを表示しない
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name "ShowRecentList" -Value 0
+
+# よく使うアプリを表示しない
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name "ShowFrequentList" -Value 0
+
+# 最近開いた項目をスタート、ジャンプリスト、ファイルエクスプローラーに表示しない
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "Start_TrackDocs" -Value 0
+
+# ヒント、ショートカット、新しいアプリなどのおすすめを表示しない
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "Start_IrisRecommendations" -Value 0
+
+# スタート画面にアカウント関連の通知を表示しない
+Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name "Start_AccountNotifications" -Value 0
+
+## ========== その他のシステム設定 ==========
+
+# クリップボード履歴オン
+Set-ItemProperty HKCU:\Software\Microsoft\Clipboard -Name "EnableClipboardHistory" -Value 1
+
+# ダークモード
 Set-ItemProperty HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name "AppsUseLightTheme" -Value 0
 
-# "HiberbootEnabled" OFF
+# "高速スタートアップを有効にする" チェックOFF
 Set-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power" -Name "HiberbootEnabled" -Value 0
+
+## ========== 設定の反映 ==========
+
+# エクスプローラーを再起動して設定を反映
+Stop-Process -Name explorer -Force
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Uninstall unnecessary apps
+Write-Output "# Uninstall unnecessary apps"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+winget uninstall "Windows Web Experience Pack"
+winget uninstall Microsoft.OneDrive
+winget uninstall "Power Automate"
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # winget
 Write-Output "# winget"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+winget install Adobe.Acrobat.Reader.64-bit
 winget install Amazon.Kindle
 winget install Apple.iTunes
 winget install AutoHotkey.AutoHotkey
-winget install dbeaver.dbeaver
+winget install DBeaver.DBeaver.Community
 winget install Docker.DockerDesktop
-winget install gerardog.gsudo
-winget install GIMP.GIMP
+winget install GIMP.GIMP.3
 winget install Git.Git
-winget install GNU.Nano
 winget install Google.Chrome
-winget install Google.ChromeRemoteDesktop
-winget install Google.Drive
+winget install Google.GoogleDrive
+winget install Gyan.FFmpeg
 winget install Inkscape.Inkscape
-winget install mulaRahul.Keyviz
 winget install Levitsky.FontBase
 winget install LINE.LINE
-winget install Microsoft.PowerToys
 winget install Microsoft.VisualStudioCode
 winget install Mozilla.Thunderbird
 winget install Mp3tag.Mp3tag
+winget install Neovim.Neovim
 winget install NickeManarin.ScreenToGif
-winget install Obsidian.Obsidian
 winget install RARLab.WinRAR
+winget install Raycast.Raycast
 winget install SlackTechnologies.Slack
+winget install 7zip.7zip
 winget install wez.wezterm
 winget install WinSCP.WinSCP
 
@@ -113,12 +174,15 @@ winget install CoreyButler.NVMforWindows
 # Update the environment variables
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
+# sudo 有効
+sudo config --enable normal
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Rlogin
 Write-Output "# Rlogin"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Invoke-WebRequest -Uri https://github.com/kmiya-culti/RLogin/files/13221806/rlogin_x64.zip -OutFile rlogin_x64.zip -UseBasicParsing
+Invoke-WebRequest -Uri https://github.com/kmiya-culti/RLogin/releases/download/2.31.0/rlogin_x64.zip -OutFile rlogin_x64.zip -UseBasicParsing
 Expand-Archive -Path rlogin_x64.zip -DestinationPath ${HOME}\RLogin
 rm rlogin_x64.zip
 
@@ -138,7 +202,7 @@ rm HackGen_NF* -Recurse
 # WSL
 Write-Output "# WSL"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-wsl --install --distribution Debian
+sudo wsl --install Debian
 New-Item -Force -Type SymbolicLink ${HOME}\.wslconfig -Value ${DOTFILES}\wsl\.wslconfig
 
 
@@ -159,7 +223,26 @@ New-Item -Force -Type SymbolicLink ${HOME}\.wezterm.lua -Value ${DOTFILES}\wezte
 # Windows Terminal
 Write-Output "# Windows Terminal"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-New-Item -Force -Type SymbolicLink $env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json -Value ${DOTFILES}\windowsterminal\settings.json
+$settingsPath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+$settings = if (Test-Path $settingsPath) { Get-Content $settingsPath | ConvertFrom-Json } else { @{} }
+
+$debianProfile = $settings.profiles.list | Where-Object { $_.name -eq "Debian" }
+if ($debianProfile) {
+    $settings.defaultProfile = $debianProfile.guid
+} else {
+    Write-Output "Warning: Debian profile not found. Set default profile manually after WSL setup."
+}
+
+$settings.profiles.defaults = @{
+    colorScheme = "One Half Dark"
+    font = @{
+        face = "HackGen Console NF"
+        size = 11
+    }
+    opacity = 90
+}
+
+$settings | ConvertTo-Json -Depth 10 | Set-Content $settingsPath
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -194,6 +277,18 @@ $json | ConvertTo-Json | Set-Content $vscodeArgvPath
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Neovim alias
+Write-Output "# Neovim alias"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+$profileContent = "`nSet-Alias vi nvim`nSet-Alias vim nvim"
+if (!(Test-Path -Path $PROFILE)) {
+    New-Item -Path $PROFILE -ItemType File -Force | Out-Null
+}
+Add-Content -Path $PROFILE -Value $profileContent
+. $PROFILE
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # AutoHotkey startup
 Write-Output "# AutoHotkey startup"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -210,14 +305,6 @@ if (Test-Path -Path $AHKScriptPath) {
 } else {
     Write-Output "Warning: AutoHotkey script not found at $AHKScriptPath"
 }
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Node.js via NVM
-Write-Output "# Node.js via NVM"
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-nvm install lts
-nvm use lts
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
