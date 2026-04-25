@@ -41,8 +41,8 @@ eval "$(zoxide init zsh)"
 eval "$(mise activate zsh)"
 eval "$(mise completion zsh)"
 
-# docker completion
-(( $+commands[docker] )) && source <(docker completion zsh)
+# docker completion (WSL: skip if daemon is not running)
+(( $+commands[docker] )) && docker info &>/dev/null && source <(docker completion zsh)
 
 # ssh-agent
 SSH_ENV="${HOME}/.ssh/agent.env"
@@ -61,4 +61,3 @@ if [ -f "${SSH_ENV}" ]; then
 else
     agent_start
 fi
-
