@@ -38,3 +38,5 @@ Desktop.ini
 
 # Other
 .project-command-history
+
+**/.claude/settings.local.json

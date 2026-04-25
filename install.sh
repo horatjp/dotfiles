@@ -72,21 +72,22 @@ brew bundle install --file=~/Brewfile --verbose
 
 # git
 mkdir -p ~/.config/git
-ln -sf ~/dotfiles/git/.gitconfig ~/.gitconfig
+ln -sf ~/dotfiles/git/config ~/.config/git/config
 ln -sf ~/dotfiles/git/ignore ~/.config/git/ignore
 
-# Create .gitconfig.local if it doesn't exist
-if [ ! -f ~/.gitconfig.local ]; then
-  cat >~/.gitconfig.local <<EOF
+# Create config.local if it doesn't exist
+if [ ! -f ~/.config/git/config.local ]; then
+  cat >~/.config/git/config.local <<EOF
 [user]
     name = YOUR_NAME
     email = YOUR_EMAIL
 EOF
-  echo "Created ~/.gitconfig.local - Please edit it to set your name and email"
+  echo "Created ~/.config/git/config.local - Please edit it to set your name and email"
 fi
 
 # vim
-ln -sf ~/dotfiles/vim/.vimrc ~/.vimrc
+mkdir -p ~/.config/vim
+ln -sf ~/dotfiles/vim/vimrc ~/.config/vim/vimrc
 
 # neovim
 if [ -e ~/.config/nvim ] && [ ! -L ~/.config/nvim ]; then
