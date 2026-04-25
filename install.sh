@@ -99,23 +99,22 @@ ln -sf ~/dotfiles/scripts ~/scripts
 chmod +x ~/dotfiles/scripts/*
 
 # zsh
-ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
-ln -sf ~/dotfiles/zsh/.zshrc.alias ~/.zshrc.alias
-ln -sf ~/dotfiles/zsh/.zshrc.history ~/.zshrc.history
+mkdir -p ~/.config/zsh
+ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
+ln -sf ~/dotfiles/zsh/.zshrc ~/.config/zsh/.zshrc
+ln -sf ~/dotfiles/zsh/.zshrc.alias ~/.config/zsh/.zshrc.alias
+ln -sf ~/dotfiles/zsh/.zshrc.history ~/.config/zsh/.zshrc.history
 
 # WSL
-ln -sf ~/dotfiles/zsh/.zshrc.wsl ~/.zshrc.wsl
+ln -sf ~/dotfiles/zsh/.zshrc.wsl ~/.config/zsh/.zshrc.wsl
 
 # Znap
-ln -sf ~/dotfiles/zsh/.zshrc.znap ~/.zshrc.znap
+ln -sf ~/dotfiles/zsh/.zshrc.znap ~/.config/zsh/.zshrc.znap
+ln -sf ~/dotfiles/zsh/.zshrc.fzf ~/.config/zsh/.zshrc.fzf
 
 # starship
 mkdir -p ~/.config/starship
 ln -sf ~/dotfiles/starship/starship.toml ~/.config/starship.toml
-
-# fzf
-ln -sf ~/dotfiles/fzf/.fzf.zsh ~/.fzf.zsh
-ln -sf ~/dotfiles/fzf/.zshrc.fzf ~/.zshrc.fzf
 
 # tmux
 mkdir -p ~/.config/tmux

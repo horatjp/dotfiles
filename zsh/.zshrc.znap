@@ -24,31 +24,6 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 znap source horatjp/project-command-history
 PCH_DEBUG=0
 
-### Oh My Zsh plugins
-znap clone ohmyzsh/ohmyzsh
-
-# 補完キャッシュ設定（docker/mise などが補完ファイルを生成する）
-ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/oh-my-zsh"
-mkdir -p "$ZSH_CACHE_DIR/completions"
-fpath=("$ZSH_CACHE_DIR/completions" $fpath)
-autoload -Uz is-at-least
-
-# 基本ライブラリ
-znap source ohmyzsh/ohmyzsh lib/functions.zsh
-znap source ohmyzsh/ohmyzsh lib/clipboard.zsh
-
-# ファイル操作
-znap source ohmyzsh/ohmyzsh plugins/copyfile # ファイル内容をクリップボードにコピー
-znap source ohmyzsh/ohmyzsh plugins/copypath # ファイルパスをクリップボードにコピー
-znap source ohmyzsh/ohmyzsh plugins/extract  # 圧縮ファイルを自動解凍
-
-# ユーティリティ
-znap source ohmyzsh/ohmyzsh plugins/web-search # コマンドラインから Web 検索
-
-# 開発ツール
-znap source ohmyzsh/ohmyzsh plugins/docker
-znap source ohmyzsh/ohmyzsh plugins/mise
-
 
 ### キーバインド
 bindkey '^ ' autosuggest-accept  # Ctrl+Space で受け入れ

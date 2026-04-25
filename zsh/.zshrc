@@ -1,9 +1,9 @@
-export LANG=ja_JP.UTF-8   # 文字コード
-export LC_ALL=ja_JP.UTF-8 # ロケール
-export EDITOR=nvim         # エディタ
-setopt no_beep            # ビープ音を鳴らさない
-setopt correct            # コマンドのスペルを自動修正
-setopt auto_cd            # ディレクトリ名だけでcd
+export LANG=ja_JP.UTF-8     # 文字コード
+export LC_ALL=ja_JP.UTF-8   # ロケール
+export EDITOR=nvim          # エディタ
+setopt no_beep              # ビープ音を鳴らさない
+setopt correct              # コマンドのスペルを自動修正
+setopt auto_cd              # ディレクトリ名だけでcd
 setopt interactive_comments # コマンドライン上のコメントを有効化
 
 # 環境変数の読み込み
@@ -14,18 +14,18 @@ if [ -f "$HOME/.env" ]; then
 fi
 
 # alias
-[ -f ~/.zshrc.alias ] && source ~/.zshrc.alias
+[ -f "$ZDOTDIR/.zshrc.alias" ] && source "$ZDOTDIR/.zshrc.alias"
 
 # history
-[ -f ~/.zshrc.history ] && source ~/.zshrc.history
+[ -f "$ZDOTDIR/.zshrc.history" ] && source "$ZDOTDIR/.zshrc.history"
 
 # WSL
 if [[ "$(uname -r)" == *microsoft* ]]; then
-  [ -f ~/.zshrc.wsl ] && source ~/.zshrc.wsl
+  [ -f "$ZDOTDIR/.zshrc.wsl" ] && source "$ZDOTDIR/.zshrc.wsl"
 fi
 
 # znap
-[ -f ~/.zshrc.znap ] && source ~/.zshrc.znap
+[ -f "$ZDOTDIR/.zshrc.znap" ] && source "$ZDOTDIR/.zshrc.znap"
 
 # starship
 eval "$(starship init zsh)"
@@ -34,11 +34,15 @@ eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
 # fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f ~/.zshrc.fzf ] && source ~/.zshrc.fzf
+(( $+commands[fzf] )) && eval "$(fzf --zsh)"
+[ -f "$ZDOTDIR/.zshrc.fzf" ] && source "$ZDOTDIR/.zshrc.fzf"
 
 # mise
 eval "$(mise activate zsh)"
+eval "$(mise completion zsh)"
+
+# docker completion
+(( $+commands[docker] )) && source <(docker completion zsh)
 
 # ssh-agent
 SSH_ENV="${HOME}/.ssh/agent.env"
@@ -58,7 +62,3 @@ else
     agent_start
 fi
 
-# path
-export PATH="$HOME/.cache/.bun/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
