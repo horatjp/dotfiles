@@ -49,6 +49,10 @@ if [ -n "$(which explorer.exe)" ]; then
   fi
 
   echo -e "[automount]\noptions = \"metadata,umask=22,fmask=11\"" | sudo tee /etc/wsl.conf
+
+  # DNS
+  echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
+  echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf > /dev/null
 fi
 
 # brew
