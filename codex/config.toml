@@ -37,8 +37,23 @@ trust_level = "trusted"
 [projects."/Users/horatjp/dotfiles"]
 trust_level = "trusted"
 
+[projects."/Users/horatjp/projects/project-command-history"]
+trust_level = "trusted"
+
+[projects."/Users/horatjp/Documents/Codex/2026-04-26/files-mentioned-by-the-user-260426112337412"]
+trust_level = "trusted"
+
+[projects."/Users/horatjp/Documents/Codex/2026-04-26/uni"]
+trust_level = "trusted"
+
+[projects."/Users/horatjp/Documents/Codex/2026-04-26/15-eizo-1920x1200"]
+trust_level = "trusted"
+
+[projects."/Users/horatjp/sandbox"]
+trust_level = "trusted"
+
 [marketplaces.openai-bundled]
-last_updated = "2026-04-25T00:18:38Z"
+last_updated = "2026-04-26T05:08:26Z"
 source_type = "local"
 source = "/Users/horatjp/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
@@ -60,4 +75,4 @@ enabled = true
 enabled = true
 
 [tui.model_availability_nux]
-"gpt-5.5" = 1
+"gpt-5.5" = 4
