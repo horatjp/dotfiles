@@ -155,17 +155,17 @@ ln -sf ~/dotfiles/claude/agents ~/.claude/agents
 ln -sf ~/dotfiles/claude/commands ~/.claude/commands
 ln -sf ~/dotfiles/claude/skills ~/.claude/skills
 cp ~/dotfiles/claude/mcp.json ~/.claude.json
-bun install -g @anthropic-ai/claude-code
+curl -fsSL https://claude.ai/install.sh | bash
 
 # Codex
 mkdir -p ~/.codex
 ln -sf ~/dotfiles/codex/config.toml ~/.codex/config.toml
 ln -sf ~/dotfiles/codex/AGENTS.md ~/.codex/AGENTS.md
-bun install -g @openai/codex
+npm install -g @openai/codex
 
 # Gemini
 mkdir -p ~/.gemini
-bun install -g @google/gemini-cli
+npm install -g @google/gemini-cli
 gemini extensions install https://github.com/gemini-cli-extensions/nanobanana
 export NANOBANANA_MODEL=gemini-3-pro-image-preview
 
