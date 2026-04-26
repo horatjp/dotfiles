@@ -58,11 +58,12 @@ if [ ! -n "$(which brew)" ]; then
   export NONINTERACTIVE=1
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
+  mkdir -p ~/.config/zsh
   if [ "$(uname)" == 'Darwin' ]; then
-    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>~/.zprofile
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>~/.config/zsh/.zprofile
     eval "$(/opt/homebrew/bin/brew shellenv)"
   elif [ "$(uname)" == 'Linux' ]; then
-    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>~/.zprofile
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>~/.config/zsh/.zprofile
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
   fi
 fi
