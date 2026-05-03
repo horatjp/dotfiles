@@ -163,8 +163,9 @@ curl -fsSL https://claude.ai/install.sh | bash
 
 # Codex
 mkdir -p ~/.codex
-ln -sf ~/dotfiles/codex/config.toml ~/.codex/config.toml
 ln -sf ~/dotfiles/codex/AGENTS.md ~/.codex/AGENTS.md
+ln -sf ~/dotfiles/codex/skills ~/.codex/skills
+cp ~/dotfiles/claude/config.toml ~/.codex/config.toml
 npm install -g @openai/codex
 
 # Gemini
