@@ -151,6 +151,12 @@ exec "$(which zsh)" -l
 ln -sf ~/dotfiles/editorconfig/.editorconfig ~/.editorconfig
 
 
+# karabiner
+if [ "$(uname)" == 'Darwin' ]; then
+  mkdir -p ~/.config/karabiner
+  ln -sf ~/dotfiles/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
+fi
+
 # Claude
 mkdir -p ~/.claude
 ln -sf ~/dotfiles/claude/AGENTS.md ~/.claude/CLAUDE.md
