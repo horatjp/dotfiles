@@ -293,9 +293,6 @@ brew install --cask slack
 # IINA
 brew install --cask iina
 
-# Mp3tag
-brew install --cask mp3tag
-
 # Steam
 brew install --cask steam
 
