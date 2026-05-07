@@ -1,4 +1,3 @@
-brew "1password-cli"
 brew "act"
 brew "autoconf"
 brew "bat"
