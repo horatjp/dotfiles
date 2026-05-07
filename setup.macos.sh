@@ -305,6 +305,9 @@ brew install --cask yacreader
 # Brave
 brew install --cask brave-browser
 
+# Doll
+brew install --cask doll
+
 # Mac App Store
 brew install mas
 
