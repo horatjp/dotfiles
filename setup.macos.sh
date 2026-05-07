@@ -299,8 +299,8 @@ brew install --cask mp3tag
 # Steam
 brew install --cask steam
 
-# YACReader
-brew install --cask yacreader
+# Simple Comic
+brew install --cask simple-comic
 
 # Brave
 brew install --cask brave-browser
