@@ -208,17 +208,9 @@ sudo pmset -a displaysleep 30
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 export NONINTERACTIVE=1
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+mkdir -p ~/.config/zsh
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.config/zsh/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)" > /dev/null
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# dotfiles
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if [ ! -d ~/dotfiles ]; then
-  echo "# clone dotfiles"
-  git clone https://github.com/horatjp/dotfiles ~/dotfiles
-fi
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
