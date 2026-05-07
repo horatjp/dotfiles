@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
 
 set -e
-
 sudo -v
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# dotfiles
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+if [ ! -d ~/dotfiles ]; then
+  echo "# clone dotfiles"
+  git clone https://github.com/horatjp/dotfiles ~/dotfiles
+fi
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
