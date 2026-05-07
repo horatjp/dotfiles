@@ -314,8 +314,8 @@ mas install 539883307
 # Amazon Kindle
 mas install 302584613
 
-# Badgeify
-mas install 6738112492
+# NewFile - Quick File Creation
+mas install 1629057582
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
