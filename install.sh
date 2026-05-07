@@ -94,10 +94,8 @@ fi
 mkdir -p ~/.config/vim
 ln -sf ~/dotfiles/vim/vimrc ~/.config/vim/vimrc
 
-# neovim
-if [ -e ~/.config/nvim ] && [ ! -L ~/.config/nvim ]; then
-  mv ~/.config/nvim ~/.config/nvim.$(date +%Y%m%d%H%M%S).bak
-fi
+# Neovim
+mkdir -p ~/.config/nvim
 ln -sf ~/dotfiles/nvim ~/.config/nvim
 
 # scripts
