@@ -363,6 +363,24 @@ defaults write org.xquartz.X11 app_to_run ""
 # OpenGL を有効にする
 defaults write org.xquartz.X11 enable_iglx -bool true
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# karabiner
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+mkdir -p ~/.config/karabiner
+ln -sf ~/dotfiles/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Network Drive (SMB)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ln -sf ~/dotfiles/launchagents/com.user.mountsmb.plist ~/Library/LaunchAgents/com.user.mountsmb.plist
+launchctl load ~/Library/LaunchAgents/com.user.mountsmb.plist
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# zmk-battery-center
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/kot149/zmk-battery-center/main/scripts/install_mac.sh)"
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Rosetta 2
