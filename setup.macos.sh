@@ -250,6 +250,7 @@ brew install --cask cleanshot
 
 # 1password
 brew install --cask 1password
+brew install --cask 1password-cli
 
 # Claude
 brew install --cask claude
