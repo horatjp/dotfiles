@@ -44,6 +44,13 @@ eval "$(mise completion zsh)"
 # docker completion (WSL: skip if daemon is not running)
 (( $+commands[docker] )) && docker info &>/dev/null && source <(docker completion zsh)
 
+# OrbStack completion
+if (( $+commands[orbctl] )); then
+  eval "$(orbctl completion zsh)"
+  compdef _orb orbctl
+  compdef _orb orb
+fi
+
 # ssh-agent
 SSH_ENV="${HOME}/.ssh/agent.env"
 
