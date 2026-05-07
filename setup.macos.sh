@@ -327,7 +327,8 @@ brew install font-hackgen-nerd
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # WezTerm
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-ln -sf ~/dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
+mkdir -p ~/.config/wezterm
+ln -sf ~/dotfiles/wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
