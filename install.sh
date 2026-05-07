@@ -55,19 +55,19 @@ if [ -n "$(which explorer.exe)" ]; then
   echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf > /dev/null
 fi
 
-# brew
+# Homebrew
 if [ ! -n "$(which brew)" ]; then
 
-  echo "# brew"
+  echo "# Homebrew"
   export NONINTERACTIVE=1
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
   mkdir -p ~/.config/zsh
   if [ "$(uname)" == 'Darwin' ]; then
-    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>~/.config/zsh/.zprofile
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.config/zsh/.zprofile
     eval "$(/opt/homebrew/bin/brew shellenv)"
   elif [ "$(uname)" == 'Linux' ]; then
-    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>~/.config/zsh/.zprofile
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.config/zsh/.zprofile
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
   fi
 fi
