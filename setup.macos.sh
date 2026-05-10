@@ -119,6 +119,9 @@ defaults write NSGlobalDomain InitialKeyRepeat -int 15
 # 長押し時のアクセント記号入力無効
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
+# Fn キーを標準のファンクションキーとして使用
+defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true
+
 # 最初の文字を大文字にしない
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 
