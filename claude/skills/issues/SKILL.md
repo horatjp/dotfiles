@@ -1,6 +1,7 @@
 ---
 name: issues
 description: 個人タスクとプロジェクトISSUEを一元管理するスキル。ユーザーが「ISSUEを作って」「タスクを確認」などと指示した時、またはコード内のTODOコメントを発見した時に使用。
+context: fork
 ---
 
 # Issues
