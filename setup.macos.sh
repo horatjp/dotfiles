@@ -264,6 +264,9 @@ brew install --cask codex
 # Google Chrome
 brew install --cask google-chrome
 
+# Google Japanese IME
+brew install --cask google-japanese-ime
+
 # Google Drive
 brew install --cask google-drive
 
