@@ -58,5 +58,18 @@
     "superpowers@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /Users/horatjp/.claude/hooks/allow_bash_newline_comments.py"
+          }
+        ]
+      }
+    ]
+  }
 }
