@@ -279,6 +279,9 @@ brew install --cask dbeaver-community
 # SmoothCSV
 brew install --cask smoothcsv
 
+# AltTab
+brew install --cask alt-tab
+
 # KeyCastr
 brew install --cask keycastr
 
