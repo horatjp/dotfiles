@@ -117,7 +117,6 @@ ln -sf ~/dotfiles/zsh/.zshrc.znap ~/.config/zsh/.zshrc.znap
 ln -sf ~/dotfiles/zsh/.zshrc.fzf ~/.config/zsh/.zshrc.fzf
 
 # starship
-mkdir -p ~/.config/starship
 ln -sf ~/dotfiles/starship/starship.toml ~/.config/starship.toml
 
 # tmux

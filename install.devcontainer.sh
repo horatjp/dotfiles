@@ -21,7 +21,6 @@ ln -sf ~/dotfiles/zsh/.zshrc.znap ~/.zshrc.znap
 
 # starship
 curl -sS https://starship.rs/install.sh | sh -s -- --yes
-mkdir -p ~/.config/starship
 ln -sf ~/dotfiles/starship/starship.toml ~/.config/starship.toml
 
 # fzf
