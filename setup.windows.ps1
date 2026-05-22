@@ -216,8 +216,8 @@ mkdir ${HOME}/.ssh
 # WezTerm
 Write-Output "# WezTerm"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-New-Item -Force -Type SymbolicLink ${HOME}\.wezterm.lua -Value ${DOTFILES}\wezterm\.wezterm.lua
-
+New-Item -ItemType Directory -Force -Path ${HOME}\.config\wezterm | Out-Null
+New-Item -Force -Type SymbolicLink ${HOME}\.config\wezterm\wezterm.lua -Value ${DOTFILES}\wezterm\wezterm.lua
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Windows Terminal
