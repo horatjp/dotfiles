@@ -11,6 +11,9 @@ bun = "latest"
 # Python
 python = "latest"
 
+# Go
+go = "latest"
+
 [settings]
 # Enable experimental features
 experimental = true
