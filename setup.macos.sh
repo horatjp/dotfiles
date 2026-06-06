@@ -282,6 +282,9 @@ brew install --cask smoothcsv
 # AltTab
 brew install --cask alt-tab
 
+# Rectangle
+brew install --cask rectangle
+
 # KeyCastr
 brew install --cask keycastr
 
