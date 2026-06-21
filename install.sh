@@ -158,6 +158,9 @@ ln -sf ~/dotfiles/claude/skills ~/.claude/skills
 cp ~/dotfiles/claude/mcp.json ~/.claude.json
 curl -fsSL https://claude.ai/install.sh | bash
 
+# agmsg (agent messaging)
+bash <(curl -fsSL https://raw.githubusercontent.com/fujibee/agmsg/main/setup.sh)
+
 # Codex
 mkdir -p ~/.codex
 ln -sf ~/dotfiles/codex/AGENTS.md ~/.codex/AGENTS.md
