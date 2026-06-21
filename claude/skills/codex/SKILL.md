@@ -20,10 +20,16 @@ description: |
 
 ## 実行方法
 
-以下のコマンドをBashで実行して結果を確認します。
+読み取りのみ（レビュー・調査）:
 
 ```bash
-codex exec --full-auto --sandbox read-only --cd "$PWD" "<リクエスト内容>"
+codex exec --sandbox read-only --skip-git-repo-check --cd "$PWD" "<リクエスト内容>"
+```
+
+ファイル書き込みあり（実装・修正）:
+
+```bash
+codex exec --sandbox workspace-write --skip-git-repo-check --cd "$PWD" "<リクエスト内容>"
 ```
 
 ## 使用例
@@ -31,29 +37,30 @@ codex exec --full-auto --sandbox read-only --cd "$PWD" "<リクエスト内容>"
 ### コードレビューを依頼
 
 ```bash
-codex exec --full-auto --sandbox read-only --cd "$PWD" "src/auth.tsのコードをレビューして、改善点があれば教えてください"
+codex exec --sandbox read-only --skip-git-repo-check --cd "$PWD" "src/auth.tsのコードをレビューして、改善点があれば教えてください"
 ```
 
 ### 設計相談
 
 ```bash
-codex exec --full-auto --sandbox read-only --cd "$PWD" "認証システムをJWTからセッションベースに変更する場合の影響範囲を分析してください"
+codex exec --sandbox read-only --skip-git-repo-check --cd "$PWD" "認証システムをJWTからセッションベースに変更する場合の影響範囲を分析してください"
 ```
 
 ### バグ調査
 
 ```bash
-codex exec --full-auto --sandbox read-only --cd "$PWD" "ログイン時にセッションが維持されない問題の原因を調査してください"
+codex exec --sandbox read-only --skip-git-repo-check --cd "$PWD" "ログイン時にセッションが維持されない問題の原因を調査してください"
 ```
 
 ## オプション
 
-- `--full-auto`: 完全自動モード（対話なし）
-- `--sandbox read-only`: 読み取り専用のサンドボックスで実行（安全）
+- `--sandbox read-only`: 読み取り専用（レビュー・調査向け）
+- `--sandbox workspace-write`: ファイル書き込みあり（実装・修正向け）
+- `--skip-git-repo-check`: trusted directory 外でも実行を許可
 - `--cd <dir>`: 作業ディレクトリを指定
 
 ## 注意事項
 
-- Codexは読み取り専用モードで実行されるため、ファイルの変更は行いません
+- `read-only` モードではファイルの変更は行いません
 - 結果はセカンドオピニオンとして参考にし、最終判断はユーザーが行ってください
 - 長時間のタスクの場合、進捗が表示されます
