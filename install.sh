@@ -178,6 +178,7 @@ ln -sf ~/dotfiles/github/copilot-commit-message-instructions.md ~/.github/copilo
 ln -sf ~/dotfiles/github/instructions ~/.github/instructions
 ln -sf ~/dotfiles/github/prompts ~/.github/prompts
 # Note: cp -rL ~/.github .github
+npm install -g @github/copilot
 
 # agmsg (agent messaging)
 bash <(curl -fsSL https://raw.githubusercontent.com/fujibee/agmsg/main/setup.sh)
