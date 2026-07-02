@@ -1,6 +1,6 @@
 ---
 name: git-commit
-description: Gitコミットを作成する際のヘルパー。変更内容を分析し、Gitmoji付きのConventional Commits準拠のメッセージを生成します。ハンク単位での論理的な分割とリバート可能なコミットを推奨します。
+description: Gitコミットの作成を依頼された時に使用。「コミットして」「commit」などの指示や、作業の区切りでコミットが必要になった時。
 context: fork
 ---
 
@@ -36,6 +36,12 @@ git log --oneline -10
 - コミットメッセージの粒度感・文体を合わせる
 - プロジェクト固有の慣習（scope記法など）を確認する
 
+直近10件に今回使う type の実例がない場合のみ、過去を検索する：
+
+```bash
+git log --oneline --grep='<type>' -20
+```
+
 ### 3. 現在の状態を確認
 
 ```bash
@@ -45,13 +51,30 @@ git diff --staged
 git diff
 ```
 
-### 4. 変更をハンク単位で分析・分割
+### 4. 変更を論理的な単位で分析・分割
 
-論理的に独立した単位ごとにコミットを分割する：
+論理的に独立した単位ごとにコミットを分割する。
+
+**ファイル単位で分割できる場合（基本）:**
 
 ```bash
-# インタラクティブにハンクを選択
-git add -p <file>
+git add <file1> <file2>
+```
+
+**1ファイル内に複数の変更が混在する場合（ハンク単位の分割）:**
+
+対話的な `git add -p` はこの環境では使用できない。パッチ編集で部分ステージする：
+
+```bash
+# 1. 文脈行を減らした差分を一時ファイルに保存（近接した変更がハンク分離しやすくなる）
+git diff -U1 -- <file> > /tmp/split.patch
+
+# 2. パッチを編集し、先にコミットしたい変更のハンクだけ残す
+#    ハンクは @@ 行から次の @@ 行の手前まで。ハンク単位で丸ごと削除し、@@ 行の数値は書き換えない
+
+# 3. 編集したパッチをインデックスに適用し、内容を確認
+git apply --cached /tmp/split.patch
+git diff --cached
 ```
 
 **分割の判断基準：**
@@ -103,68 +126,9 @@ EOF
 | 🔒️ | :lock: | fix | セキュリティ/プライバシー問題の修正 |
 | 🔥 | :fire: | - | コード/ファイルの削除 |
 
-### 依存関係
+### 最頻出に該当がない場合
 
-| Gitmoji | Code | Type | 説明 |
-|---------|------|------|------|
-| ➕ | :heavy_plus_sign: | build | 依存関係の追加 |
-| ➖ | :heavy_minus_sign: | build | 依存関係の削除 |
-| ⬆️ | :arrow_up: | build | 依存関係のアップグレード |
-| ⬇️ | :arrow_down: | build | 依存関係のダウングレード |
-| 📌 | :pushpin: | build | 依存関係を特定バージョンに固定 |
-
-### UI/UX
-
-| Gitmoji | Code | Type | 説明 |
-|---------|------|------|------|
-| 💄 | :lipstick: | style | UI/スタイルファイルの追加・更新 |
-| 🚸 | :children_crossing: | - | UX/ユーザビリティの改善 |
-| ♿️ | :wheelchair: | - | アクセシビリティの改善 |
-| 📱 | :iphone: | - | レスポンシブデザイン対応 |
-
-### 設定/ビルド
-
-| Gitmoji | Code | Type | 説明 |
-|---------|------|------|------|
-| 🔧 | :wrench: | chore | 設定ファイルの追加・更新 |
-| 🔨 | :hammer: | chore | 開発スクリプトの追加・更新 |
-| 👷 | :construction_worker: | ci | CIビルドシステムの追加・更新 |
-| 💚 | :green_heart: | ci | CIビルドの修正 |
-| 🚀 | :rocket: | - | デプロイ |
-
-### コード品質
-
-| Gitmoji | Code | Type | 説明 |
-|---------|------|------|------|
-| 🚨 | :rotating_light: | - | コンパイラ/linterの警告修正 |
-| ⚰️ | :coffin: | - | デッドコードの削除 |
-| 💡 | :bulb: | - | ソースコードのコメント追加・更新 |
-| 🏷️ | :label: | - | 型の追加・更新 |
-| 🩹 | :adhesive_bandage: | fix | 重大でない問題の簡易修正 |
-| ✏️ | :pencil2: | - | タイポ修正 |
-
-### その他
-
-| Gitmoji | Code | Type | 説明 |
-|---------|------|------|------|
-| 🎉 | :tada: | - | プロジェクト開始 |
-| 🔖 | :bookmark: | - | リリース/バージョンタグ |
-| 💥 | :boom: | - | 破壊的変更の導入 |
-| ⏪ | :rewind: | revert | 変更の取り消し |
-| 🔀 | :twisted_rightwards_arrows: | - | ブランチマージ |
-| 📦 | :package: | build | コンパイルファイル/パッケージの追加・更新 |
-| 🚚 | :truck: | - | リソースの移動/リネーム |
-| 🌱 | :seedling: | - | シードファイルの追加・更新 |
-| 🗃️ | :card_file_box: | - | データベース関連の変更 |
-| 🏗️ | :building_construction: | - | アーキテクチャ変更 |
-| 🧱 | :bricks: | - | インフラ関連の変更 |
-| 🙈 | :see_no_evil: | - | .gitignoreファイルの追加・更新 |
-| 🔐 | :closed_lock_with_key: | - | シークレットの追加・更新 |
-| 🚧 | :construction: | - | 作業中（WIP） |
-| 🔊 | :loud_sound: | - | ログの追加・更新 |
-| 🔇 | :mute: | - | ログの削除 |
-| 🌐 | :globe_with_meridians: | - | 国際化/ローカライゼーション |
-| ⚗️ | :alembic: | - | 実験的な変更 |
+依存関係・UI/UX・CI/ビルド・コード品質などのGitmojiは、同ディレクトリの `gitmoji-reference.md` を参照する。
 
 ## 分割例
 
@@ -181,11 +145,11 @@ git add package.json package-lock.json
 git commit -m "⬆️ build: React を 18.2 から 18.3 にアップグレード"
 
 # 2. バグ修正
-git add -p src/components/LoginForm.tsx
+git add src/components/LoginForm.tsx
 git commit -m "🐛 fix: メールアドレス検証の正規表現を修正"
 
 # 3. 新機能
-git add -p src/components/UserProfile.tsx
+git add src/components/UserProfile.tsx
 git commit -m "✨ feat: ユーザープロフィール編集機能を追加"
 
 # 4. テスト
@@ -203,19 +167,13 @@ git commit -m "✅ test: ユーザープロフィール編集のテストを追�
 
 ## トラブルシューティング
 
-### コミットが大きすぎた場合
+### コミットが大きすぎた・間違ったファイルをコミットした場合
+
+`git reset` は権限設定で拒否されているため、ユーザーに実行を依頼する：
 
 ```bash
-# 最後のコミットを取り消してやり直し（新しいコミットを作る）
-git reset HEAD~1
-git add -p
-```
-
-### 間違ったファイルをコミットした場合
-
-```bash
-# ステージングを戻して新しいコミットを作成
-git reset --soft HEAD~1
+# ユーザーに `! git reset --soft HEAD~1` の実行を依頼
+# その後、ステージングを整理して新しいコミットを作成
 git restore --staged <不要なファイル>
 git commit -m "メッセージ"
 ```
