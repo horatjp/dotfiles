@@ -1,9 +1,10 @@
 ---
 name: pdr-manager
 description: >
-  システム開発プロジェクトにおける意思決定を Project Decision Record（PDR）として記録・管理する。
-  新規追加・更新・上書きの3種類の操作を使い分け、docs/pdr/ 配下の latest/ と archive/ で鮮度を保つ。
-  「意思決定を残して」「PDRに追加して」「pdr-manager」などのフレーズで使用する。
+  システム開発プロジェクトの意思決定（アーキテクチャ・技術選定・設計方針・インフラ構成など）を
+  Project Decision Record（PDR）として記録・参照・変更する時に使用。
+  「意思決定を残して」「PDRに追加して」「PDRを更新して」「pdr-manager」などのフレーズや、
+  docs/pdr/ 配下のファイルを扱う時。
 ---
 
 ## PDR（Project Decision Record）とは
