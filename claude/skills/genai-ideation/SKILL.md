@@ -184,14 +184,16 @@ digraph ideation {
 - 「これは素晴らしいアイデアです」→ レッドチーム検証を実施する
 - 「完璧なアイデアが見つかりました」→ 懸念点と次の検証ステップを必ず提示
 
-## Tools Recommendation
+## Tools
+
+調査には WebSearch / WebFetch を使う（市場調査、競合分析、具体例の収集）。
+
+以下はClaudeからは実行できないため、ユーザー自身の作業として提案する外部ツール：
 
 | ツール | 用途 |
 |--------|------|
-| ChatGPT Pro | 調査の最優先選択肢（Deep Research） |
-| NotebookLM | 情報のスライド化、ポッドキャスト化 |
-| Google Sheets AI関数 | 複数の疑問を一括処理 |
-| WebSearch/WebFetch | 市場調査、競合分析 |
+| NotebookLM | 収集した情報のスライド化、ポッドキャスト化 |
+| Deep Research系サービス | 長時間の深掘り調査 |
 
 ## Output Format
 
