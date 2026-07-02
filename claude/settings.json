@@ -28,7 +28,6 @@
       "WebSearch",
       "WebFetch",
       "Skill(git-commit)",
-      "Skill(agent-memory)",
       "Skill(issues)",
       "Skill(codex)",
       "mcp__context7",
