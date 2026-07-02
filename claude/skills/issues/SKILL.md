@@ -6,7 +6,9 @@ context: fork
 
 # Issues
 
-個人タスクとプロジェクトISSUEを一元管理するスキルです。ISSUEは `.claude/skills/issues/issues/` に保存されます。
+個人タスクとプロジェクトISSUEを一元管理するスキルです。ISSUEは `~/.claude/skills/issues/issues/` に保存されます。
+
+**重要:** カレントディレクトリはプロジェクト側にあるため、相対パス `issues/` は使わず、必ず絶対パス `~/.claude/skills/issues/issues/` を指定する。
 
 ## 使用タイミング
 
@@ -46,8 +48,8 @@ issues/
 ### 1. 連番を決定
 
 ```bash
-LAST_NUM=$(find issues -name "*.md" -type f 2>/dev/null | \
-  sed 's/.*\/\([0-9]\+\)-.*/\1/' | sort -n | tail -1)
+LAST_NUM=$(find ~/.claude/skills/issues/issues -name "*.md" -type f 2>/dev/null | \
+  sed -E 's/.*\/([0-9]+)-.*/\1/' | sort -n | tail -1)
 NEXT_NUM=$(printf "%03d" $((10#${LAST_NUM:-0} + 1)))
 ```
 
@@ -158,7 +160,7 @@ due: 2025-01-15
 ### 1. すべてのISSUE一覧
 
 ```bash
-rg --no-ignore --hidden '^title:' issues/
+rg --no-ignore --hidden '^title:' ~/.claude/skills/issues/issues/
 ```
 
 `--no-ignore --hidden` フラグは必須（issues ディレクトリは .gitignore 対象のため）
@@ -167,15 +169,15 @@ rg --no-ignore --hidden '^title:' issues/
 
 ```bash
 # TODO状態のISSUE
-rg --no-ignore --hidden '^status: todo$' issues/ -l | \
+rg --no-ignore --hidden '^status: todo$' ~/.claude/skills/issues/issues/ -l | \
   xargs rg --no-ignore --hidden '^title:'
 
 # 作業中のISSUE
-rg --no-ignore --hidden '^status: in-progress$' issues/ -l | \
+rg --no-ignore --hidden '^status: in-progress$' ~/.claude/skills/issues/issues/ -l | \
   xargs rg --no-ignore --hidden '^title:'
 
 # 完了したISSUE
-rg --no-ignore --hidden '^status: done$' issues/ -l | \
+rg --no-ignore --hidden '^status: done$' ~/.claude/skills/issues/issues/ -l | \
   xargs rg --no-ignore --hidden '^title:'
 ```
 
@@ -183,11 +185,11 @@ rg --no-ignore --hidden '^status: done$' issues/ -l | \
 
 ```bash
 # 高優先度ISSUE
-rg --no-ignore --hidden '^priority: high$' issues/ -l | \
+rg --no-ignore --hidden '^priority: high$' ~/.claude/skills/issues/issues/ -l | \
   xargs rg --no-ignore --hidden '^title:'
 
 # 緊急ISSUE
-rg --no-ignore --hidden '^priority: urgent$' issues/ -l | \
+rg --no-ignore --hidden '^priority: urgent$' ~/.claude/skills/issues/issues/ -l | \
   xargs rg --no-ignore --hidden '^title:'
 ```
 
@@ -195,18 +197,18 @@ rg --no-ignore --hidden '^priority: urgent$' issues/ -l | \
 
 ```bash
 # 特定プロジェクトのISSUE
-rg --no-ignore --hidden '^project: dotfiles$' issues/ -l | \
+rg --no-ignore --hidden '^project: dotfiles$' ~/.claude/skills/issues/issues/ -l | \
   xargs rg --no-ignore --hidden '^(title|status|priority):'
 
 # 個人タスク
-rg --no-ignore --hidden '^project: personal$' issues/ -l | \
+rg --no-ignore --hidden '^project: personal$' ~/.claude/skills/issues/issues/ -l | \
   xargs rg --no-ignore --hidden '^title:'
 ```
 
 ### 5. タグで検索
 
 ```bash
-rg --no-ignore --hidden '^tags:.*\[.*react.*\]' issues/ -i -l | \
+rg --no-ignore --hidden '^tags:.*\[.*react.*\]' ~/.claude/skills/issues/issues/ -i -l | \
   xargs rg --no-ignore --hidden '^title:'
 ```
 
@@ -215,14 +217,15 @@ rg --no-ignore --hidden '^tags:.*\[.*react.*\]' issues/ -i -l | \
 ```bash
 # 今日から7日以内
 TODAY=$(date +%Y-%m-%d)
-rg --no-ignore --hidden "^due: " issues/ | \
-  awk -v today="$TODAY" '$2 >= today && $2 <= today+7'
+LIMIT=$(date -v+7d +%Y-%m-%d)
+rg --no-ignore --hidden '^due: ' ~/.claude/skills/issues/issues/ | \
+  awk -v today="$TODAY" -v limit="$LIMIT" '$2 >= today && $2 <= limit'
 ```
 
 ### 7. 全文検索（必要な場合のみ）
 
 ```bash
-rg --no-ignore --hidden '<キーワード>' issues/ -i
+rg --no-ignore --hidden '<キーワード>' ~/.claude/skills/issues/issues/ -i
 ```
 
 ### 8. ファイルを読み込み
@@ -241,10 +244,11 @@ rg --no-ignore --hidden '<キーワード>' issues/ -i
 
 ```bash
 # アーカイブディレクトリを作成
-mkdir -p issues/.archive/$(date +%Y-%m)
+mkdir -p ~/.claude/skills/issues/issues/.archive/$(date +%Y-%m)
 
 # 完了ISSUEを移動
-mv issues/001-issue.md issues/.archive/2025-01/
+mv ~/.claude/skills/issues/issues/001-issue.md \
+  ~/.claude/skills/issues/issues/.archive/$(date +%Y-%m)/
 ```
 
 ## コード内TODOコメントの処理
