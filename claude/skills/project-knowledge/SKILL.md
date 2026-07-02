@@ -175,12 +175,10 @@ knowledge/decisions/2025-12-01-old-api.md
 
 ## 8. 報告
 
-`knowledge/` を読み書きしたら必ずユーザーに伝える:
+`knowledge/` の読み書きをサイレントで行わない。
 
-- 「`knowledge/decisions/xxx.md` を読みました」
-- 「`knowledge/research/xxx.md` に書き込みました」
-
-サイレントで読み書きしない。
+- **書き込みは必ず個別に報告する**: 「`knowledge/research/xxx.md` に書き込みました」
+- **読み込みはまとめて1行で報告する**: 「knowledge/ から3件読みました（mistakes.md、decisions/2026-05-18-xxx.md、research/yyy.md）」
 
 ---
 
