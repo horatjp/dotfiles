@@ -6,9 +6,9 @@ context: fork
 
 # Issues
 
-個人タスクとプロジェクトISSUEを一元管理するスキルです。ISSUEは `~/.claude/skills/issues/issues/` に保存されます。
+個人タスクとプロジェクトISSUEを一元管理するスキルです。ISSUEは `<skill-dir>/issues/` に保存されます。
 
-**重要:** カレントディレクトリはプロジェクト側にあるため、相対パス `issues/` は使わず、必ず絶対パス `~/.claude/skills/issues/issues/` を指定する。
+**重要:** `<skill-dir>` はこのスキルの配置ディレクトリ（スキル起動時に "Base directory for this skill" として渡されるパス）。カレントディレクトリはプロジェクト側にあるため、相対パス `issues/` をそのまま使わず、以下のコマンド例の `<skill-dir>` を実際のパスに置き換えて実行する。
 
 ## 使用タイミング
 
@@ -48,7 +48,7 @@ issues/
 ### 1. 連番を決定
 
 ```bash
-LAST_NUM=$(find ~/.claude/skills/issues/issues -name "*.md" -type f 2>/dev/null | \
+LAST_NUM=$(find <skill-dir>/issues -name "*.md" -type f 2>/dev/null | \
   sed -E 's/.*\/([0-9]+)-.*/\1/' | sort -n | tail -1)
 NEXT_NUM=$(printf "%03d" $((10#${LAST_NUM:-0} + 1)))
 ```
@@ -160,7 +160,7 @@ due: 2025-01-15
 ### 1. すべてのISSUE一覧
 
 ```bash
-rg --no-ignore --hidden '^title:' ~/.claude/skills/issues/issues/
+rg --no-ignore --hidden '^title:' <skill-dir>/issues/
 ```
 
 `--no-ignore --hidden` フラグは必須（issues ディレクトリは .gitignore 対象のため）
@@ -169,15 +169,15 @@ rg --no-ignore --hidden '^title:' ~/.claude/skills/issues/issues/
 
 ```bash
 # TODO状態のISSUE
-rg --no-ignore --hidden '^status: todo$' ~/.claude/skills/issues/issues/ -l | \
+rg --no-ignore --hidden '^status: todo$' <skill-dir>/issues/ -l | \
   xargs rg --no-ignore --hidden '^title:'
 
 # 作業中のISSUE
-rg --no-ignore --hidden '^status: in-progress$' ~/.claude/skills/issues/issues/ -l | \
+rg --no-ignore --hidden '^status: in-progress$' <skill-dir>/issues/ -l | \
   xargs rg --no-ignore --hidden '^title:'
 
 # 完了したISSUE
-rg --no-ignore --hidden '^status: done$' ~/.claude/skills/issues/issues/ -l | \
+rg --no-ignore --hidden '^status: done$' <skill-dir>/issues/ -l | \
   xargs rg --no-ignore --hidden '^title:'
 ```
 
@@ -185,11 +185,11 @@ rg --no-ignore --hidden '^status: done$' ~/.claude/skills/issues/issues/ -l | \
 
 ```bash
 # 高優先度ISSUE
-rg --no-ignore --hidden '^priority: high$' ~/.claude/skills/issues/issues/ -l | \
+rg --no-ignore --hidden '^priority: high$' <skill-dir>/issues/ -l | \
   xargs rg --no-ignore --hidden '^title:'
 
 # 緊急ISSUE
-rg --no-ignore --hidden '^priority: urgent$' ~/.claude/skills/issues/issues/ -l | \
+rg --no-ignore --hidden '^priority: urgent$' <skill-dir>/issues/ -l | \
   xargs rg --no-ignore --hidden '^title:'
 ```
 
@@ -197,18 +197,18 @@ rg --no-ignore --hidden '^priority: urgent$' ~/.claude/skills/issues/issues/ -l 
 
 ```bash
 # 特定プロジェクトのISSUE
-rg --no-ignore --hidden '^project: dotfiles$' ~/.claude/skills/issues/issues/ -l | \
+rg --no-ignore --hidden '^project: dotfiles$' <skill-dir>/issues/ -l | \
   xargs rg --no-ignore --hidden '^(title|status|priority):'
 
 # 個人タスク
-rg --no-ignore --hidden '^project: personal$' ~/.claude/skills/issues/issues/ -l | \
+rg --no-ignore --hidden '^project: personal$' <skill-dir>/issues/ -l | \
   xargs rg --no-ignore --hidden '^title:'
 ```
 
 ### 5. タグで検索
 
 ```bash
-rg --no-ignore --hidden '^tags:.*\[.*react.*\]' ~/.claude/skills/issues/issues/ -i -l | \
+rg --no-ignore --hidden '^tags:.*\[.*react.*\]' <skill-dir>/issues/ -i -l | \
   xargs rg --no-ignore --hidden '^title:'
 ```
 
@@ -218,14 +218,14 @@ rg --no-ignore --hidden '^tags:.*\[.*react.*\]' ~/.claude/skills/issues/issues/ 
 # 今日から7日以内
 TODAY=$(date +%Y-%m-%d)
 LIMIT=$(date -v+7d +%Y-%m-%d)
-rg --no-ignore --hidden '^due: ' ~/.claude/skills/issues/issues/ | \
+rg --no-ignore --hidden '^due: ' <skill-dir>/issues/ | \
   awk -v today="$TODAY" -v limit="$LIMIT" '$2 >= today && $2 <= limit'
 ```
 
 ### 7. 全文検索（必要な場合のみ）
 
 ```bash
-rg --no-ignore --hidden '<キーワード>' ~/.claude/skills/issues/issues/ -i
+rg --no-ignore --hidden '<キーワード>' <skill-dir>/issues/ -i
 ```
 
 ### 8. ファイルを読み込み
@@ -244,11 +244,11 @@ rg --no-ignore --hidden '<キーワード>' ~/.claude/skills/issues/issues/ -i
 
 ```bash
 # アーカイブディレクトリを作成
-mkdir -p ~/.claude/skills/issues/issues/.archive/$(date +%Y-%m)
+mkdir -p <skill-dir>/issues/.archive/$(date +%Y-%m)
 
 # 完了ISSUEを移動
-mv ~/.claude/skills/issues/issues/001-issue.md \
-  ~/.claude/skills/issues/issues/.archive/$(date +%Y-%m)/
+mv <skill-dir>/issues/001-issue.md \
+  <skill-dir>/issues/.archive/$(date +%Y-%m)/
 ```
 
 ## コード内TODOコメントの処理
