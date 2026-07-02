@@ -194,10 +194,13 @@ knowledge/decisions/2025-12-01-old-api.md
 
 ## プロジェクトへの導入方法
 
-`templates/CLAUDE.md` をプロジェクトルートにコピーして使う:
+`templates/CLAUDE.md` を使う。**プロジェクトルートに CLAUDE.md が既にある場合は上書きしない。**
 
 ```bash
+# CLAUDE.md がない場合のみ: テンプレートをコピー
 cp <skill-dir>/templates/CLAUDE.md <project-root>/CLAUDE.md
 ```
+
+CLAUDE.md が既にある場合は、テンプレート内の「ナレッジ管理」セクションだけを既存ファイルに追記する。
 
 初回セッションで「初期セットアップして」と伝えると `knowledge/` ディレクトリ一式が作成される。
