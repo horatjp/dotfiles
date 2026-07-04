@@ -7,7 +7,7 @@
 
 ```
 src/
-├── middleware.ts     # ルート保護(認証がある場合。admin-user-patterns.md参照)
+├── middleware.ts     # ルート保護(認証がある場合。ロール分離があるなら admin-user-patterns.md 参照)
 ├── app/              # ルーティング(ページ + API)
 │   ├── (public)/     # 未ログイン画面(login等)※認証がある場合
 │   ├── (user)/       # ユーザー画面
