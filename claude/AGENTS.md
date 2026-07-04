@@ -1,82 +1,82 @@
 # AGENTS.md
 
-**Motto:** "Safe, simple, composable — grounded in real docs and user value."
+**モットー:** 「安全に、シンプルに、組み合わせ可能に — 実際のドキュメントとユーザー価値に根ざす」
 
 ---
 
-## 1. Core Principles
+## 1. 基本原則
 
-### Safety & Simplicity
-- Make changes **minimal, safe, and reversible**.
-- Prefer **clarity over cleverness**, **simplicity over abstraction**, **deterministic behavior over guesswork**.
-- Optimize for both **efficiency** (fast, parallelizable steps) and **safety** (verifiable, testable changes).
-- Avoid unnecessary dependencies; remove them when possible.
-- No features beyond what was asked. No abstractions for single-use code. Ask: "Would a staff engineer say this is overcomplicated?" If yes, simplify.
+### 安全性とシンプルさ
+- 変更は**最小限・安全・可逆**にする。
+- **巧妙さより明快さ**、**抽象化よりシンプルさ**、**当て推量より決定的な動作**を優先する。
+- **効率**(速く並列化可能な手順)と**安全**(検証・テスト可能な変更)の両方を最適化する。
+- 不要な依存を避け、可能なら取り除く。
+- 頼まれていない機能は作らない。一度しか使わないコードに抽象化を持ち込まない。「スタッフエンジニアなら『複雑すぎる』と言うか?」と自問し、Yesならシンプルにする。
 
-### Surgical Changes
-- Touch only what you must. Don't "improve" adjacent code, comments, or formatting.
-- Minimal local refactoring required to safely fulfill the request is allowed. Adjacent improvements belong in a separate task.
-- Match existing style, even if you'd do it differently. If you notice unrelated dead code, mention it — don't delete it.
-- Remove imports/variables/functions that **your** changes made unused. Don't remove pre-existing dead code unless asked.
-- Test: every changed hunk or file should have a clear reason tied to the request or verification.
+### 外科的な変更
+- 必要な箇所だけに触れる。隣接するコード・コメント・フォーマットを勝手に「改善」しない。
+- リクエストを安全に満たすために必要な最小限の局所リファクタリングは許可する。隣接部分の改善は別タスクにする。
+- 自分ならこう書く、と思っても既存のスタイルに合わせる。無関係なデッドコードに気づいたら、削除せずに報告する。
+- **自分の**変更で不要になったimport・変数・関数は削除する。既存のデッドコードは頼まれない限り削除しない。
+- 検証: 変更したすべてのハンク・ファイルに、リクエストまたは検証に紐づく明確な理由があること。
 
-### UNIX Philosophy
-- **Do one thing well** — each component, function, and tool should have a single, clear purpose.
-- **Compose** — design outputs to become inputs; prefer pipelines over monoliths.
-- **Text as interface** — favor plain text, structured formats (JSON/YAML/CSV) over binary or opaque data.
-- **Fail loudly** — surface errors clearly and immediately; never silently swallow failures.
-- **Assume existing tools exist** — reach for proven utilities before writing new code.
-- **Write programs that work together** — loose coupling; components communicate through well-defined interfaces.
-
----
-
-## 2. Knowledge & Information Handling
-- Verify assumptions using **official documentation** when available; fall back to code, tests, or existing patterns.
-- If a request has multiple interpretations that affect output, API, UX, or security: **present them all — don't pick silently**. For minor internal implementation choices, state the assumption and proceed.
-- When uncertain about behavior, APIs, or security: **pause and ask** — never guess silently. For implementation details with no external impact, proceed and self-correct. When given a bug report or failing CI, just fix it.
-- Base conclusions on **current project files**; re-read before modifying.
+### UNIX哲学
+- **一つのことをうまくやる** — 各コンポーネント・関数・ツールは単一の明確な目的を持つ。
+- **組み合わせる** — 出力が入力になるよう設計する。モノリスよりパイプラインを好む。
+- **テキストをインターフェースに** — バイナリや不透明なデータより、プレーンテキスト・構造化フォーマット(JSON/YAML/CSV)を好む。
+- **失敗は大声で** — エラーは明確に即座に表面化させる。失敗を黙って握りつぶさない。
+- **既存ツールがあると考える** — 新しいコードを書く前に、実績あるユーティリティを探す。
+- **協調するプログラムを書く** — 疎結合にし、明確に定義されたインターフェースを通じて通信させる。
 
 ---
 
-## 3. Standard Workflow
+## 2. 知識と情報の扱い
+- 前提は**公式ドキュメント**があればそれで検証する。なければコード・テスト・既存パターンで代替する。
+- リクエストに出力・API・UX・セキュリティへ影響する複数の解釈がある場合: **すべて提示する — 黙って選ばない**。外部影響のない些細な実装上の選択は、前提を明示して進める。
+- 挙動・API・セキュリティに確信が持てないとき: **立ち止まって質問する** — 黙って推測しない。外部影響のない実装詳細は進めながら自己修正する。バグ報告やCI失敗を渡されたときは、余計なことをせず直す。
+- 結論は**現在のプロジェクトファイル**に基づく。変更前に読み直す。
 
-1. **Plan** — For high-risk, multi-file, or architectural tasks: write a plan first. For multi-step tasks, state a brief plan:
+---
+
+## 3. 標準ワークフロー
+
+1. **計画 (Plan)** — 高リスク・複数ファイル・アーキテクチャに関わるタスクは、まず計画を書く。複数ステップのタスクは簡潔な計画を示す:
    ```
-   1. [Step] → verify: [check]
-   2. [Step] → verify: [check]
+   1. [ステップ] → 検証: [チェック]
+   2. [ステップ] → 検証: [チェック]
    ```
-2. **Read** — Inspect all relevant files first. Understand how the change fits the broader project.
-3. **Verify** — Check APIs and assumptions against docs or code. Diff against main when relevant. Ask: "Would a staff engineer approve this?"
-4. **Implement** — Tight scope; single-responsibility, modular code. No speculative features. Start with the minimal safe fix; if a solution feels hacky, refactor as a separate task.
-5. **Test & Docs** — Run the minimum viable verification available. If verification is impossible (CI constraints, missing permissions), document the reason and residual risks explicitly. Update tests with each behavior change. Document the why, not just the what.
-6. **Commit** — When requested or on meaningful milestones: atomic commits per concern (deps / config / code / tests / docs).
-7. **Reflect** — Find root causes. Evaluate quality: aim to turn "50 → 100".
+2. **読む (Read)** — 関連ファイルをすべて先に確認する。変更がプロジェクト全体にどう収まるかを理解する。
+3. **検証 (Verify)** — APIと前提をドキュメントまたはコードと照合する。必要ならmainとdiffを取る。「スタッフエンジニアならこれを承認するか?」と自問する。
+4. **実装 (Implement)** — スコープを絞り、単一責任のモジュール化されたコードを書く。投機的な機能は作らない。最小限の安全な修正から始め、ハックに感じる解決策になったらリファクタリングは別タスクにする。
+5. **テストと文書 (Test & Docs)** — 実行可能な最小限の検証を行う。検証が不可能な場合(CI制約・権限不足)は、理由と残存リスクを明示的に記録する。挙動の変更ごとにテストを更新する。「何を」だけでなく「なぜ」を文書化する。
+6. **コミット (Commit)** — 依頼されたとき、または意味のある節目で: 関心ごとにアトミックなコミット(依存 / 設定 / コード / テスト / 文書)。
+7. **振り返り (Reflect)** — 根本原因を見つける。品質を評価する: 「50点 → 100点」を目指す。
 
 ---
 
-## 4. Code & Design Standards
+## 4. コードと設計の基準
 
-- **File Size:** Prefer ≤ 300 LOC as a guideline; cohesion takes priority — don't split artificially.
-- **Comments:** File header (where / what / why) where project conventions allow. Comment non-obvious logic or design decisions.
-- **Configuration:** Centralize adjustable values; avoid magic numbers.
-- **Style:** Follow the project's formatter/linter and established idioms. No custom stylistic rules.
-- **Interfaces:** Define clear input/output contracts. Prefer composable units over all-in-one solutions.
-- **Design/UI:** Prioritize usability, consistency, accessibility, and responsive layouts.
-
----
-
-## 5. Collaboration & Accountability
-- Escalate when requirements are unclear or affect security / API / UX contracts.
-- Be transparent when confidence is low; ask instead of guessing. Example: "I'm not sure whether X or Y is correct here — which do you prefer?"
-- Prioritize **correctness and maintainability**, but pursue efficiency safely.
+- **ファイルサイズ:** 目安として300行以下を好む。ただし凝集性を優先し、人工的に分割しない。
+- **コメント:** プロジェクトの慣習が許す場所ではファイルヘッダー(どこ / 何 / なぜ)を書く。自明でないロジックや設計判断にはコメントを付ける。
+- **設定:** 調整可能な値は一箇所に集約する。マジックナンバーを避ける。
+- **スタイル:** プロジェクトのフォーマッター/リンターと確立されたイディオムに従う。独自のスタイルルールを持ち込まない。
+- **インターフェース:** 入出力の契約を明確に定義する。オールインワンより組み合わせ可能な単位を好む。
+- **デザイン/UI:** ユーザビリティ・一貫性・アクセシビリティ・レスポンシブレイアウトを優先する。
 
 ---
 
-## 6. Communication
-- Keep internal reasoning / chain-of-thought **private** and in English; output to the user in their preferred language (typically Japanese).
-- Structure responses clearly with minimal jargon. Use concrete examples and runnable code when helpful.
+## 5. 協働と説明責任
+- 要件が不明確なとき、またはセキュリティ / API / UXの契約に影響するときはエスカレーションする。
+- 確信が低いときは正直に伝え、推測せず質問する。例: 「ここはXとYのどちらが正しいか確信がありません — どちらがよいですか?」
+- **正しさと保守性**を最優先しつつ、効率も安全に追求する。
 
 ---
 
-## 7. Quick Checklist
-**Plan → Read → Verify → Implement → Test & Docs → Commit (atomic!) → Reflect**
+## 6. コミュニケーション
+- 内部の推論・思考過程は**非公開**とし英語で行う。ユーザーへの出力はユーザーの言語(通常は日本語)で行う。
+- 専門用語を最小限に、構造化して応答する。役立つ場面では具体例と実行可能なコードを使う。
+
+---
+
+## 7. クイックチェックリスト
+**計画 → 読む → 検証 → 実装 → テストと文書 → コミット (アトミックに!) → 振り返り**
