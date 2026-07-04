@@ -1,12 +1,16 @@
 ---
 name: project-knowledge
-description: "Knowledge management rules for the project-local `knowledge/` directory. Use this skill whenever (1) the user requests initial setup of project knowledge (e.g. '初期セットアップして', 'ナレッジ管理を始めて'), (2) creating, writing to, or organizing files in knowledge/decisions/, knowledge/research/, knowledge/daily/, knowledge/references/, knowledge/archive/, or knowledge/mistakes.md, (3) deciding where to file a new piece of project-specific knowledge, or (4) archiving outdated knowledge files."
+description: "Knowledge management rules for the project-local `knowledge/` directory. Use this skill whenever (1) the user requests initial setup of project knowledge (e.g. '初期セットアップして', 'ナレッジ管理を始めて'), (2) creating, writing to, or organizing files in knowledge/decisions/, knowledge/research/, knowledge/daily/, knowledge/references/, knowledge/archive/, or knowledge/mistakes.md, (3) deciding where to file a new piece of project-specific knowledge, or (4) archiving outdated knowledge files. Do NOT use in projects that have a docs/ai/ directory (ai-workspace template) — follow docs/ai/RULES.md instead."
 ---
 
 # project-knowledge スキル
 
 プロジェクトローカルの `knowledge/` ディレクトリへのナレッジ書き込み・整理ルール。
 プロジェクトルートの `CLAUDE.md` で本スキルが参照されている場合に適用する。
+
+> **ガード**: プロジェクトに `docs/ai/` が存在する場合(ai-workspace テンプレート導入済み)は
+> このスキルを使わず、`docs/ai/RULES.md` のルールに従う(`knowledge/` を新規に作らない)。
+> 既に `knowledge/` も存在する場合のみ、どちらを使うかをユーザーに確認する。
 
 ---
 

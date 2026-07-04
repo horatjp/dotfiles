@@ -5,7 +5,14 @@ description: >
   Project Decision Record（PDR）として記録・参照・変更する時に使用。
   「意思決定を残して」「PDRに追加して」「PDRを更新して」「pdr-manager」などのフレーズや、
   docs/pdr/ 配下のファイルを扱う時。
+  ただし docs/ai/ を運用しているプロジェクト(ai-workspace テンプレート導入済み)では
+  使用せず、docs/ai/RULES.md のルールに従って decisions/ に記録する。
 ---
+
+> **ガード**: プロジェクトに `docs/ai/` が存在する場合はこのスキルを使わない。
+> 意思決定は `docs/ai/RULES.md` のルーティングに従い `docs/ai/decisions/` に記録する
+> (`docs/pdr/` を新規に作らない)。既に `docs/pdr/` も存在する場合のみ、
+> どちらに記録するかをユーザーに確認する。
 
 ## PDR（Project Decision Record）とは
 
