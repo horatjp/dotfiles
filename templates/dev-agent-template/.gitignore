@@ -1,0 +1,16 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# エディタ
+.idea/
+.vscode/
+*.swp
+
+# 秘密情報(knowledge/やSkillに書かず、ローカル+Secretsで管理する)
+.env
+.env.*
+*.local.md
+
+# ログ
+*.log

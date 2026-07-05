@@ -43,6 +43,8 @@ __pycache__/
 *.py[cod]
 
 # --- Other ---
-.github/
-.claude/
+# リポジトリ直下のみ無視する(先頭の / でアンカー)。
+# templates/ 配下のテンプレートが同梱する .github/ .claude/ は追跡対象。
+/.github/
+/.claude/
 .project-command-history/
