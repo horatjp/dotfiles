@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{サイト名}} リニューアルデザイン案</title>
+<style>
+  :root {
+    --ink: #1f2328;
+    --sub: #57606a;
+    --line: #d8dde3;
+    --bg: #f6f8fa;
+    --card: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.7;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 56px 24px 80px; }
+  header h1 { font-size: 28px; letter-spacing: 0.02em; }
+  header p.lead { color: var(--sub); margin-top: 8px; font-size: 15px; }
+  section.diagnosis {
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 24px 28px; margin-top: 32px;
+  }
+  section.diagnosis h2 { font-size: 16px; margin-bottom: 12px; }
+  section.diagnosis ol { padding-left: 1.4em; font-size: 14.5px; color: var(--sub); }
+  section.diagnosis li + li { margin-top: 6px; }
+  section.diagnosis ul { padding-left: 1.4em; font-size: 14.5px; color: var(--sub); }
+  .cards { display: grid; gap: 20px; margin-top: 36px; }
+  @media (min-width: 720px) { .cards { grid-template-columns: repeat({{列数。第4案を含め4枚なら2(=2×2)、3枚なら3}}, 1fr); } }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 24px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .card .tag {
+    align-self: flex-start; font-size: 12px; font-weight: 700;
+    padding: 3px 10px; border-radius: 999px; color: #fff;
+  }
+  .card h3 { font-size: 18px; }
+  .card p.concept { font-size: 14px; }
+  .card dl { font-size: 13px; color: var(--sub); display: grid; gap: 8px; }
+  .card dt { font-weight: 700; color: var(--ink); }
+  .card dd { margin-top: 2px; }
+  .card a.open {
+    margin-top: auto; text-align: center; text-decoration: none;
+    background: var(--ink); color: #fff; padding: 10px 0; border-radius: 6px;
+    font-size: 14px; font-weight: 700;
+  }
+  .card a.open:hover, .card a.open:focus-visible { opacity: 0.85; outline-offset: 2px; }
+  footer.note { margin-top: 40px; font-size: 12.5px; color: var(--sub); border-top: 1px solid var(--line); padding-top: 16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>{{サイト名}} リニューアルデザイン案</h1>
+    <p class="lead">{{日付}} / 現状診断にもとづく {{案の数(第4案を含む)}} 方向の比較</p>
+  </header>
+
+  <!-- 診断サマリー: ステップ2で共有した要点を3〜5個 -->
+  <section class="diagnosis">
+    <h2>現状サイトの診断(要点)</h2>
+    <ol>
+      <li>{{診断ポイント1}}</li>
+      <li>{{診断ポイント2}}</li>
+      <li>{{診断ポイント3}}</li>
+    </ol>
+  </section>
+
+  <!-- 想定サイト構成(IA): 手順4の0で作った全案共通のページ構成表を載せる -->
+  <section class="diagnosis">
+    <h2>想定サイト構成(全案共通)</h2>
+    <ul>
+      <li><b>トップ</b> — {{玄関としての役割1行}}</li>
+      <li><b>{{ページ名}}</b> — {{役割1行。ページの数だけliを複製}}</li>
+    </ul>
+  </section>
+
+  <!-- 競合ポジショニングマップ: references/competitor-research.md で導出した2軸+座標。
+       CSS/SVGの簡易散布図でもよいが、描画に不安があれば下の表形式を使う(壊れた図より正確な表)。
+       自社(現状)と各案は競合と色で区別し、案の座標も必ず置く -->
+  <section class="diagnosis">
+    <h2>競合ポジショニングマップ</h2>
+    <p style="font-size: 13.5px; color: var(--sub); margin-bottom: 10px;">軸: {{横軸(例: 価格訴求 ↔ 品質訴求)}} × {{縦軸(例: 大衆的 ↔ 専門的)}} / 業界の共通項: {{全社が寄っていた側を1行}}</p>
+    <ul>
+      <li><b>{{競合名}}</b> — ({{横}}, {{縦}}) {{配置理由1行。競合の数だけliを複製}}</li>
+      <li><b>自社(現状)</b> — ({{横}}, {{縦}}) {{配置理由1行}}</li>
+      <li><b>案1〜4</b> — {{各案の座標と、現状からどこへ動くか1行ずつ}}</li>
+    </ul>
+  </section>
+
+  <!-- 内容ギャップ表: コンテンツ種類×直接競合+自社。○/×/△(形骸化)。
+       「競合の過半が○で自社が×」の行が内容ギャップ=新設セクション・IAの根拠 -->
+  <section class="diagnosis">
+    <h2>内容ギャップ表</h2>
+    <table style="width: 100%; border-collapse: collapse; font-size: 13.5px; color: var(--sub);">
+      <tr style="border-bottom: 1px solid var(--line); text-align: left;">
+        <th style="padding: 6px 8px;">コンテンツ</th><th>{{A社}}</th><th>{{B社}}</th><th>自社</th><th>判定</th>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--line);">
+        <td style="padding: 6px 8px;">{{コンテンツ種類。行を複製}}</td><td>{{○/×/△}}</td><td>{{○/×/△}}</td><td>{{○/×/△}}</td><td>{{ギャップ/差別化資産/—}}</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- 案カード: 案の数だけ以下の <div class="card"> を複製する -->
+  <!-- 注意: tagの背景に使うキーカラーは白文字とのコントラストをscripts/check_contrast.pyで確認し、
+       本文AAがNGなら同系の濃い色に振ること(例: 金 #c2a35c → #8a6d2f) -->
+  <div class="cards">
+    <div class="card">
+      <span class="tag" style="background: {{案1キーカラー}}">案1</span>
+      <h3>{{案の固有名(内容から命名。既製のスタイル名は使わない)}}</h3>
+      <p class="concept">{{戦略1行(誰に・何を一番伝える案か)}}</p>
+      <dl>
+        <dt>動かす数字(KPI仮説)</dt><dd>{{この案が動かす数字1行(手順1の目的から導出)}}</dd>
+        <dt>解決する課題</dt><dd>{{診断のどれに効くか}}</dd>
+        <dt>向いている場合</dt><dd>{{どんな狙いのとき選ぶか}}</dd>
+        <dt>トレードオフ</dt><dd>{{この案が捨てているもの}}</dd>
+        <dt>必要な素材</dt><dd>{{本実装に必要な写真・素材(FPOで指定した撮影リストの要約)。追加不要なら「現状素材で可」}}</dd>
+      </dl>
+      <a class="open" href="{{ファイル名.html}}">この案を開く</a>
+    </div>
+
+    <!-- 第4案(画像カンプ案)のカード: 画像があれば画像ファイルへ、プロンプトのみならtxtへリンクする。
+         HTML案が2つの構成でも表記は「案4」で固定する(SKILL.md前提の呼称ルール) -->
+    <div class="card">
+      <span class="tag" style="background: #57606a">案4</span>
+      <h3>{{第4案の固有名}}(画像カンプ案)</h3>
+      <p class="concept">{{戦略1行}}</p>
+      <dl>
+        <dt>動かす数字(KPI仮説)</dt><dd>{{この案が動かす数字1行}}</dd>
+        <dt>この案の状態</dt><dd>{{生成済みの画像 / 生成用プロンプトのみ(Codex等で生成→アップロードで反映)}}</dd>
+        <dt>選ばれた場合</dt><dd>カンプから骨格・配色・階層を抽出し、HTML版に仕上げます</dd>
+      </dl>
+      <a class="open" href="{{案4の画像ファイル または image-prompt-◯◯.txt}}">{{画像/プロンプト}}を開く</a>
+    </div>
+  </div>
+
+  <footer class="note">
+    ※ HTMLの各案はトップページ相当の1ページ、第4案は画像カンプです(選定後にHTML化します)。掲載内容は現状サイトから引き継いだ情報をもとにしており、
+    {{ダミー箇所があればここに明記(例: お客様の声はダミー、◯◯の写真は生成イメージです)}}。
+    プレビュー環境でリンクや写真が表示されない場合は、各HTMLファイルをダウンロードしてブラウザで直接開いてください。
+  </footer>
+
+</div>
+</body>
+</html>
