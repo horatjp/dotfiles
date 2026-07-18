@@ -42,6 +42,32 @@ node_modules/
 __pycache__/
 *.py[cod]
 
+# --- Third-party skills ---
+# skills CLI (npx skills) で導入する外部配布スキルは追跡しない。
+# 再インストール: npx -y skills add cloudflare/skills -g --all (install.sh 参照)
+claude/skills/agents-sdk/
+claude/skills/cloudflare/
+claude/skills/cloudflare-email-service/
+claude/skills/cloudflare-one/
+claude/skills/cloudflare-one-migrations/
+claude/skills/durable-objects/
+claude/skills/sandbox-sdk/
+claude/skills/turnstile-spin/
+claude/skills/web-perf/
+claude/skills/workers-best-practices/
+claude/skills/wrangler/
+codex/skills/agents-sdk/
+codex/skills/cloudflare/
+codex/skills/cloudflare-email-service/
+codex/skills/cloudflare-one/
+codex/skills/cloudflare-one-migrations/
+codex/skills/durable-objects/
+codex/skills/sandbox-sdk/
+codex/skills/turnstile-spin/
+codex/skills/web-perf/
+codex/skills/workers-best-practices/
+codex/skills/wrangler/
+
 # --- Other ---
 # リポジトリ直下のみ無視する(先頭の / でアンカー)。
 # templates/ 配下のテンプレートが同梱する .github/ .claude/ は追跡対象。

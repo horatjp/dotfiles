@@ -179,5 +179,11 @@ ln -sf ~/dotfiles/github/prompts ~/.github/prompts
 # Note: cp -rL ~/.github .github
 npm install -g @github/copilot
 
+# Cloudflare Wrangler
+npm install -g wrangler
+
+# Third-party skills (gitでは追跡しない / .gitignore 参照)
+npx -y skills add cloudflare/skills -g --all
+
 # agmsg (agent messaging)
 bash <(curl -fsSL https://raw.githubusercontent.com/fujibee/agmsg/main/setup.sh)
