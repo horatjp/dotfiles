@@ -52,6 +52,7 @@
       "Bash(git push:*)"
     ]
   },
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "PermissionRequest": [
       {
