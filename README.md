@@ -65,6 +65,7 @@ Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.
 * Starship
 * asdf
 * Tmux
+* Herdr
 * Neovim (LazyVim)
 
 

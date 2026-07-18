@@ -1,0 +1,6 @@
+# herdr configuration
+# https://herdr.dev/docs/configuration/
+# デフォルト値の確認: herdr --default-config
+
+[ui]
+agent_panel_sort = "spaces"

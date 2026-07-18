@@ -129,9 +129,10 @@ if [ ! -d ~/.config/tmux/plugins/tpm ]; then
   git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 fi
 
-# sesh
-mkdir -p ~/.config/sesh
-ln -sf ~/dotfiles/sesh/sesh.toml ~/.config/sesh/sesh.toml
+# herdr
+# 設定ディレクトリにはログ・ソケットも作られるため config.toml のみリンクする
+mkdir -p ~/.config/herdr
+ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 
 # mise
 mkdir -p ~/.config/mise
