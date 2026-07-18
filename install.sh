@@ -133,6 +133,7 @@ fi
 # 設定ディレクトリにはログ・ソケットも作られるため config.toml のみリンクする
 mkdir -p ~/.config/herdr
 ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
+herdr plugin install smarzban/herdr-file-viewer --yes
 
 # mise
 mkdir -p ~/.config/mise

@@ -4,3 +4,14 @@
 
 [ui]
 agent_panel_sort = "spaces"
+
+# herdr-file-viewer プラグイン (https://github.com/smarzban/herdr-file-viewer)
+[[keys.command]]
+key = "prefix+f"
+type = "shell"
+command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewer"
+
+[[keys.command]]
+key = "prefix+shift+f"
+type = "shell"
+command = "herdr plugin action invoke open-file-viewer-tab --plugin herdr-file-viewer"
