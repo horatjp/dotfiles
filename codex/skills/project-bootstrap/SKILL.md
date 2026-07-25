@@ -149,5 +149,7 @@ ln -s AGENTS.md <project-root>/GEMINI.md
 | `assets/agents-md-append.md` | フェーズ4で展開先 AGENTS.md の末尾に追記する実装ルール |
 | `assets/handoff/` | フェーズ4で `docs/ai/references/` へコピーする実装規約 |
 
-`assets/ai-workspace/` は `templates/ai-workspace-template`(dotfiles)のコピー。
-どちらかを変更したら、もう一方も同じ内容に更新すること。
+`assets/ai-workspace/` がテンプレートの唯一の実体(旧 `templates/ai-workspace-template` は
+project-template リポジトリ https://github.com/horatjp/project-template に統合され削除済み)。
+新規プロジェクトでは project-template の利用を優先し、本スキルは project-template を
+使わないプロジェクトの下地作りに使う。

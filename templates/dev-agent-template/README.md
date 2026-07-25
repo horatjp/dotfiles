@@ -40,7 +40,7 @@ Skill化 + GitHub Issues管理 + worktree並列実行 + 自動改善ループの
 - リポジトリはこのテンプレートをベースに作成 or 既存リポジトリにこの構成をコピー
 - **symlinkを作成する**: `ln -s AGENTS.md CLAUDE.md && ln -s AGENTS.md GEMINI.md`
   (Codex CLI等は `AGENTS.md` を読みますが、Claude Code / Gemini CLI は
-  `CLAUDE.md` / `GEMINI.md` を読むため。ai-workspace-template と同じ方式です)
+  `CLAUDE.md` / `GEMINI.md` を読むため)
 - **ラベルを作成する(必須)**: `./scripts/setup-labels.sh`
   (todo / blocked / in-progress / needs-human に加え、`.claude/skills/` 配下から
   検出した `skill/<name>` ラベルが作成されます。Skillを追加したら再実行してください)
@@ -129,7 +129,7 @@ scribe(または人間)のレビューを経てmainに反映されます。
   本文パース(`Depends on:`)をそちらに置き換えるとより堅牢になります
 - 事業やプロジェクトが複数ある場合、Skillの共通部分だけ別リポジトリに切り出して
   git submoduleやsparse-checkoutで共有する運用も可能です
-- **ai-workspace-template(`docs/ai/`)導入済みのプロジェクトと併用する場合**は、
+- **docs/ai/ 方式(旧 ai-workspace-template)導入済みのプロジェクトと併用する場合**は、
   `docs/ai/` を知識層の正とし、このテンプレートの `knowledge/` はコピーしません
   (decisions/researchは `docs/ai/RULES.md` の書式で `docs/ai/` 配下へ)。
   各Skillの `learnings/` は並列worktree対応(1エントリ1ファイル)のためそのまま使います。
