@@ -1,209 +1,95 @@
 ---
 name: project-knowledge
-description: "Knowledge management rules for the project-local `knowledge/` directory. Use this skill whenever (1) the user requests initial setup of project knowledge (e.g. '初期セットアップして', 'ナレッジ管理を始めて'), (2) creating, writing to, or organizing files in knowledge/decisions/, knowledge/research/, knowledge/daily/, knowledge/references/, knowledge/archive/, or knowledge/mistakes.md, (3) deciding where to file a new piece of project-specific knowledge, or (4) archiving outdated knowledge files. Do NOT use in projects that have a docs/ai/ directory (ai-workspace template) — follow docs/ai/RULES.md instead."
+description: >
+  プロジェクトの意思決定・技術調査・バグ解決・参照資料・学びを記録・参照・更新する時に使用。
+  「意思決定を残して」「決定記録に追加して」「PDRに追加して」「ナレッジ管理を始めて」
+  「初期セットアップして」などのフレーズや、docs/decisions/・docs/knowledge/・docs/pdr/・
+  knowledge/ 配下のファイルを扱う時。プロジェクトの既存方式を自動判定し、それに従う。
+  旧 pdr-manager スキルの機能を統合済み。
 ---
 
 # project-knowledge スキル
 
-プロジェクトローカルの `knowledge/` ディレクトリへのナレッジ書き込み・整理ルール。
-プロジェクトルートの `CLAUDE.md` で本スキルが参照されている場合に適用する。
+プロジェクトのナレッジ(意思決定・調査・参照資料・学び)の記録・整理ルール。
+旧来の `knowledge/` 方式に加え、pdr-manager(`docs/pdr/` 方式)と
+project-template 標準方式(`docs/decisions/`・`docs/knowledge/`)を統合した後継。
 
-> **ガード**: プロジェクトに `docs/ai/` が存在する場合(ai-workspace テンプレート導入済み)は
-> このスキルを使わず、`docs/ai/RULES.md` のルールに従う(`knowledge/` を新規に作らない)。
-> 既に `knowledge/` も存在する場合のみ、どちらを使うかをユーザーに確認する。
+## 方式の判定(最初に必ず行う)
 
----
+プロジェクトに以下が存在するかを上から順に確認し、最初に該当した方式に従う。
+**方式を勝手に混在・新設しない。**
 
-## 1. 初期セットアップ（初回のみ）
+| 存在するもの | 方式 | ルール |
+|---|---|---|
+| `docs/decisions/`(project-template 由来) | 標準方式 | 本ファイルの「標準方式」節 |
+| `docs/ai/` | ai-workspace 方式 | `docs/ai/RULES.md` に従う |
+| `docs/pdr/` | PDR 方式 | `references/pdr.md` を読んで従う |
+| `knowledge/` | knowledge 方式 | `references/knowledge-dir.md` を読んで従う |
+| いずれも無い | 新規導入 | 下の「新規導入」節 |
 
-「初期セットアップして」「ナレッジ管理を始めて」と言われたら以下を作成:
+複数が併存する場合は、どちらに書くかをユーザーに確認する。
 
-```
-knowledge/
-├── decisions/      # 判断・選択・方針・制約
-├── research/       # 技術調査・バグ解決
-├── daily/          # 作業ログ（オプション）
-├── references/     # 一次資料・URL集
-├── archive/        # 廃止ファイルの退避先
-└── mistakes.md     # AIのミス記録
-```
+## 新規導入
 
-空フォルダには `.gitkeep` を置く。セットアップ後、ユーザーに構造と各役割を伝え、`knowledge/PROJECT.md` にプロジェクト概要を書くよう提案する。
+ナレッジ管理を始めたいプロジェクトには標準方式を提案する:
 
----
+1. `docs/decisions/`・`docs/knowledge/` を作成する(必要になってから。空フォルダを先に量産しない)
+2. 本格的なプロジェクト基盤(AGENTS.md・changes/・STATUS 等)ごと整えたい場合は
+   [project-template](https://github.com/horatjp/project-template) の導入を提案する
+3. 旧方式のプロジェクトを標準方式へ移行したい場合は project-template の `MIGRATION.md` に従う(移行は任意)
 
-## 2. 書き込みルーティング
+## 標準方式(project-template 準拠)
+
+### 書き込みルーティング
 
 「後で書く」はしない。会話中に都度書き込む。
 
 | 何が起きたか | 書き先 |
 |---|---|
-| A vs B で判断した・設計方針を決めた・制約を設けた | `decisions/` |
-| 技術を調査・比較・評価した | `research/` （調査テンプレート） |
-| バグ・問題を解決した | `research/` （バグ解決テンプレート） |
-| 今日の作業ログ・次回やること | `daily/`（長いセッションの日のみ） |
-| 参照したURL・仕様書・外部資料 | `references/` |
-| ユーザーから訂正を受けた（3条件を満たす場合のみ） | `mistakes.md` |
+| 方針・技術選定・設計・制約を決めた | `docs/decisions/YYYY-MM-DD-topic.md` |
+| 技術を調査した / バグを解決した / 一次資料・URLを参照した | `docs/knowledge/topic-subtopic.md`(1件1ファイル) |
+| AI自身の作業のしかたで失敗した | `docs/learnings.md`(ゲート: 根本原因特定・再発性・する/しないで書ける、の3条件すべて) |
 
-**境界の判断**: 「調査して採用を決めた」場合は両方に書く（research/ に調査結果、decisions/ に選定理由）。
+既存ファイルと主題が同じなら新規作成せず既存を更新する。
 
-**pdr-manager との境界**: プロジェクトに `docs/pdr/` が存在する場合、重要な意思決定（アーキテクチャ・技術選定・インフラ構成など）は pdr-manager スキルで `docs/pdr/` に記録し、`decisions/` には日々の軽い判断のみを書く。`docs/pdr/` が存在しない場合はすべて `decisions/` に書く（勝手に `docs/pdr/` を作らない）。
+### frontmatter(OKF 互換の方言)
 
-**プロジェクト横断の知見**（他プロジェクトでも使える知識）が出たら `knowledge/` には書かず、ユーザーに確認する:「共通ナレッジ置き場（例: `~/knowledge/`）に保存しますか？」→ 「はい」なら書き先をユーザーに指定してもらい、その場所に書く。
+decisions:
 
+```yaml
 ---
-
-## 3. ファイル命名規則
-
-- **decisions**: `YYYY-MM-DD-topic.md`（例: `2026-05-18-database-choice.md`）
-- **research**: `topic-subtopic.md`（例: `yfinance-rate-limit.md`、`auth-token-expiry-bug.md`）
-- **daily**: `YYYY-MM-DD.md`
-- **references**: `kebab-case-title.md`（例: `stripe-api-docs.md`）
-
----
-
-## 4. 書き込みフォーマット
-
-### 共通フロントマター
-
-```markdown
----
-date: YYYY-MM-DD
-tags: [relevant, tags]
-related: [decisions/2026-05-18-xxx.md]   # knowledge/ からの相対パス
+type: decision
+title: <決定の一言>
+description: <一行要約。ファイルを開かずに関連判断できる粒度で>
+status: stable          # draft | stable | deprecated
+superseded_by:          # deprecated のとき必須
+stale_after:            # 任意(YYYY-MM-DD)。時限性のある決定のみ
+tags: []
+generated:
+  by: agent:<tool-name>@<role>   # 例: agent:claude-code@coder。人間は human:<id>
+  at: YYYY-MM-DD
+verified: []            # 空=未検証。書式: [{by: ..., at: YYYY-MM-DD}]
 ---
 ```
 
-### research/ — 技術調査テンプレート
+knowledge は `type: research | reference` で、他は同じ(reference は `stale_after` を特に推奨)。
 
-```markdown
----
-date: YYYY-MM-DD
-tags: [...]
-related: []
----
+本文の目安 — decision: 背景 / 決定と理由 / 検討した代替案 / 再検討の条件。
+research: 調査背景 / 比較・評価 / 結論。バグ解決: 症状 / 原因 / 修正 / 再発防止のシグナル。
+reference: URL / なぜ保存したか / 要点の抜き書き。
 
-# <ライブラリ/技術名>: <調査テーマ>
+### 運用ルール
 
-## 調査背景
-なぜ調べたか（1-2行）
+- 既存の決定を覆すときは新しい決定記録を起こし、その場で旧記録を
+  `status: deprecated` + `superseded_by` にする(誤字・補足はそのまま編集)
+- `verified` を付けられるのは `generated.by` と異なる `by` だけ(自己検証禁止)。
+  本文の内容を変更したら既存の `verified` を削除する
+- 読むときは `deprecated`・`stale_after` 超過を判断根拠にしない。不備があっても
+  読み取りを止めず、問題は修正提案として報告する
+- 日付は環境の現在日付を確認して書く。記憶から推測しない
+- プロジェクト横断の知見はプロジェクト内に書かず、保存先をユーザーに確認する
 
-## 比較・評価
-| 選択肢 | 長所 | 短所 |
-|---|---|---|
+### 報告
 
-## 結論
-採用した/しなかった結論と理由
-
-## 参考
-- URL (why_saved: ...)
-```
-
-### research/ — バグ解決テンプレート
-
-```markdown
----
-date: YYYY-MM-DD
-tags: [bug, ...]
-related: []
----
-
-# <コンポーネント>: <症状の一言>
-
-## 症状
-再現手順・エラーメッセージ
-
-## 原因
-根本原因
-
-## 修正
-具体的な対処（コードスニペット可）
-
-## 再発防止
-次回このパターンに気づくためのシグナル
-```
-
-### references/ フォーマット
-
-```markdown
----
-date: YYYY-MM-DD
-why_saved: <なぜ保存したか1行>
-last_checked: YYYY-MM-DD
----
-
-# <タイトル>
-
-URL: <url>
-
-<必要なら要約や引用>
-```
-
----
-
-## 5. `mistakes.md` への追記ルール
-
-以下3問に**すべて「はい」**と答えられる場合のみ追記:
-
-1. ユーザーからの明示的な訂正か？（自分の気づきは「いいえ」）
-2. 同じパターンが別の場面でも起こり得るか？（一度きりの偶発は「いいえ」）
-3. 「する/しない」で次回の行動を明記できるか？（曖昧な反省は「いいえ」）
-
-形式:
-
-```markdown
-## YYYY-MM-DD: <一言で何を間違えたか>
-**Signal**: このミスが起きそうな状況・トリガー
-**Root Cause**: なぜ間違えたか
-**Prevention**: 次回から具体的に何をする/しない
-```
-
----
-
-## 6. `daily/` のアーカイブ
-
-ユーザーから指示があったときのみ、前月以前の `daily/` ファイルを `knowledge/archive/YYYY-MM/daily/` に退避する（自律的にはアーカイブしない）。
-
-未完了のタスクが残っている場合は、アーカイブ前に新しい `daily/YYYY-MM-DD.md` に転記する。
-
----
-
-## 7. アーカイブ運用
-
-廃止・古くなったファイルは削除せず、**ユーザーの指示があったときのみ** `knowledge/archive/YYYY-MM/` に退避する。
-
-```
-knowledge/decisions/2025-12-01-old-api.md
-  → knowledge/archive/2026-05/decisions/2025-12-01-old-api.md
-```
-
----
-
-## 8. 報告
-
-`knowledge/` の読み書きをサイレントで行わない。
-
-- **書き込みは必ず個別に報告する**: 「`knowledge/research/xxx.md` に書き込みました」
-- **読み込みはまとめて1行で報告する**: 「knowledge/ から3件読みました（mistakes.md、decisions/2026-05-18-xxx.md、research/yyy.md）」
-
----
-
-## 9. 作業スタイル
-
-- シンプルで読みやすいものを優先する。不要な装飾・冗長な説明は省く。
-- 既存ファイルのパターン・命名規則に合わせる。
-
----
-
-## プロジェクトへの導入方法
-
-`templates/CLAUDE.md` を使う。**プロジェクトルートに CLAUDE.md が既にある場合は上書きしない。**
-
-```bash
-# CLAUDE.md がない場合のみ: テンプレートをコピー
-cp <skill-dir>/templates/CLAUDE.md <project-root>/CLAUDE.md
-```
-
-CLAUDE.md が既にある場合は、テンプレート内の「ナレッジ管理」セクションだけを既存ファイルに追記する。
-
-初回セッションで「初期セットアップして」と伝えると `knowledge/` ディレクトリ一式が作成される。
+読み書きをサイレントで行わない。書き込みは個別に報告し
+(「`docs/decisions/xxx.md` に書き込みました」)、読み込みはまとめて1行で報告する。
