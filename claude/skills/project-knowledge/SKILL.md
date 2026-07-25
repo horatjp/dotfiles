@@ -5,11 +5,6 @@ description: "Knowledge management rules for the project-local `knowledge/` dire
 
 # project-knowledge スキル
 
-> **DEPRECATED**: 新規プロジェクトでは使わない(後継: [project-template](https://github.com/horatjp/project-template))。
-> 本スキルは `knowledge/` を運用中の既存プロジェクト専用。既存プロジェクトも
-> project-template の `MIGRATION.md` に従った移行を推奨し、全プロジェクトの移行完了後に
-> 本スキルは削除する。
-
 プロジェクトローカルの `knowledge/` ディレクトリへのナレッジ書き込み・整理ルール。
 プロジェクトルートの `CLAUDE.md` で本スキルが参照されている場合に適用する。
 

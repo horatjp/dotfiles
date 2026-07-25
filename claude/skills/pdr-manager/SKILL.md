@@ -9,11 +9,6 @@ description: >
   使用せず、docs/ai/RULES.md のルールに従って decisions/ に記録する。
 ---
 
-> **DEPRECATED**: 新規プロジェクトでは使わない(後継: [project-template](https://github.com/horatjp/project-template) の
-> `docs/decisions/` 方式)。本スキルは `docs/pdr/` を運用中の既存プロジェクト専用。
-> 既存プロジェクトも project-template の `MIGRATION.md` に従った移行を推奨し、
-> 全プロジェクトの移行完了後に本スキルは削除する。
-
 > **ガード**: プロジェクトに `docs/ai/` が存在する場合はこのスキルを使わない。
 > 意思決定は `docs/ai/RULES.md` のルーティングに従い `docs/ai/decisions/` に記録する
 > (`docs/pdr/` を新規に作らない)。既に `docs/pdr/` も存在する場合のみ、
