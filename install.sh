@@ -180,6 +180,9 @@ ln -sf ~/dotfiles/github/prompts ~/.github/prompts
 # Note: cp -rL ~/.github .github
 npm install -g @github/copilot
 
+# Kimi Code CLI
+npm install -g @moonshot-ai/kimi-code
+
 # Cloudflare Wrangler
 npm install -g wrangler
 
