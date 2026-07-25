@@ -35,7 +35,7 @@ describe("POST /api/reservations", () => {
 
 - **`.env.example`** — 必要な環境変数を全部列挙(値はダミーか説明)
 - **README** — セットアップ手順(clone → install → migrate → dev が3コマンド以内)+ デプロイ手順
-- デプロイ先の選定理由が `docs/ai/decisions/` にあること
+- デプロイ先の選定理由が `docs/decisions/` にあること
 
 ### 環境別の手順・注意点
 

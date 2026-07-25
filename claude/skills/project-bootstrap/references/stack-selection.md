@@ -66,5 +66,5 @@ Cloudflareは要件がエッジに合うときだけ選ぶ(互換性調査コス
 
 > スタック: Next.js + Prisma + PostgreSQL、デプロイ先: Vercel + Neon。単一チーム・中規模CRUD・常駐処理なしのため。
 
-選定理由(候補・比較・決め手)は `docs/ai/decisions/` に impact: high で必ず記録する
-(書式は `docs/ai/RULES.md` に従う。下地展開前に決めた場合は、展開時にまとめて書く)。
+選定理由(候補・比較・決め手)は `docs/decisions/` に必ず記録する
+(書式は `docs/decisions/_template.md`。下地展開前に決めた場合は、展開時にまとめて書く)。
