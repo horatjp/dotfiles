@@ -68,6 +68,10 @@ codex/skills/web-perf/
 codex/skills/workers-best-practices/
 codex/skills/wrangler/
 
+# --- ローカル専用スキル ---
+# 手元でのみ使う(配布・共有しない)スキルは追跡しない。
+claude/skills/character-studio/
+
 # --- Other ---
 # リポジトリ直下のみ無視する(先頭の / でアンカー)。
 # templates/ 配下のテンプレートが同梱する .github/ .claude/ は追跡対象。
