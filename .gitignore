@@ -72,8 +72,10 @@ codex/skills/wrangler/
 # --- ローカル専用スキル ---
 # 手元でのみ使う(配布・共有しない)スキルは追跡しない。
 claude/skills/character-studio/
-codex/skills/character-studio/
+claude/skills/fanclub-video/
 claude/skills/video-production/
+codex/skills/character-studio/
+codex/skills/fanclub-video
 codex/skills/video-production/
 
 # --- Other ---
