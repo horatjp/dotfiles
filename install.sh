@@ -135,6 +135,10 @@ mkdir -p ~/.config/herdr
 ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 herdr plugin install smarzban/herdr-file-viewer --yes
 
+# druk
+mkdir -p ~/.config/druk
+ln -sf ~/dotfiles/druk/config.json ~/.config/druk/config.json
+
 # mise
 mkdir -p ~/.config/mise
 ln -sf ~/dotfiles/mise/mise.toml ~/.config/mise/config.toml

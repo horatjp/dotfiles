@@ -1,7 +1,10 @@
+tap "letstri/tap"
+
 brew "act"
 brew "autoconf"
 brew "bat"
 brew "bottom"
+brew "druk"
 brew "duf"
 brew "eza"
 brew "fd"
