@@ -24,3 +24,13 @@ alias myip='curl https://ipinfo.io/json'   # グローバルIP確認
 alias ports='lsof -i -P -n | grep LISTEN'  # リッスン中のポート表示
 
 alias ssh='~/scripts/ssh'
+
+# agmsg: Codexをshim経由で起動しセッションを監視対象にする（未導入マシンは素のcodex）
+codex() {
+  local shim="$HOME/.agents/skills/agmsg/scripts/drivers/types/codex/codex-shim.sh"
+  if [[ -x $shim ]]; then
+    "$shim" "$@"
+  else
+    command codex "$@"
+  fi
+}
