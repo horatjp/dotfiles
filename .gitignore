@@ -53,6 +53,7 @@ claude/skills/cloudflare-one-migrations/
 claude/skills/durable-objects/
 claude/skills/sandbox-sdk/
 claude/skills/turnstile-spin/
+claude/skills/herdr
 claude/skills/web-perf/
 claude/skills/workers-best-practices/
 claude/skills/wrangler/

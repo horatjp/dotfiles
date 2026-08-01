@@ -192,6 +192,9 @@ npm install -g wrangler
 
 # Third-party skills (gitでは追跡しない / .gitignore 参照)
 npx -y skills add cloudflare/skills -g --all
+npx -y skills add herdrdev/herdr --skill herdr -g
+# skills CLI が張る相対リンクは ~/.claude/skills 経由だと壊れるため絶対パスで張り直す
+ln -sfn ~/.agents/skills/herdr ~/dotfiles/claude/skills/herdr
 
 # agmsg (agent messaging)
 bash <(curl -fsSL https://raw.githubusercontent.com/fujibee/agmsg/main/setup.sh)
