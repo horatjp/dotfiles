@@ -190,6 +190,9 @@ npm install -g @moonshot-ai/kimi-code
 # Cloudflare Wrangler
 npm install -g wrangler
 
+# Dev Container CLI
+npm install -g @devcontainers/cli
+
 # Third-party skills (gitでは追跡しない / .gitignore 参照)
 npx -y skills add cloudflare/skills -g --all
 npx -y skills add herdrdev/herdr --skill herdr -g
