@@ -6,11 +6,23 @@ setopt correct              # コマンドのスペルを自動修正
 setopt auto_cd              # ディレクトリ名だけでcd
 setopt interactive_comments # コマンドライン上のコメントを有効化
 
-# 環境変数の読み込み
-if [ -f "$HOME/.env" ]; then
+# 1Password: ~/.env の op:// 参照を現在のシェルに展開する
+openv() {
   set -a
-  source "$HOME/.env"
+  source <(op inject -i "$HOME/.env")
   set +a
+}
+
+# 環境変数の読み込み
+# op:// 参照を含む場合は 1Password から起動時に展開（op がない環境ではスキップ）
+if [ -f "$HOME/.env" ]; then
+  if grep -q "op://" "$HOME/.env"; then
+    command -v op >/dev/null 2>&1 && openv 2>/dev/null
+  else
+    set -a
+    source "$HOME/.env"
+    set +a
+  fi
 fi
 
 # alias
