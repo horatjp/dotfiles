@@ -187,6 +187,9 @@ npm install -g @github/copilot
 # Kimi Code CLI
 npm install -g @moonshot-ai/kimi-code
 
+# Grok CLI (Grok Build)
+npm install -g @xai-official/grok
+
 # Cloudflare Wrangler
 npm install -g wrangler
 
