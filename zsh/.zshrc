@@ -64,19 +64,25 @@ if (( $+commands[orbctl] )); then
 fi
 
 # ssh-agent
-SSH_ENV="${HOME}/.ssh/agent.env"
-
-agent_start() {
-    ssh-agent -s -t 1h > "${SSH_ENV}"
-    chmod 600 "${SSH_ENV}"
-    source "${SSH_ENV}" > /dev/null
-}
-
-# ssh-agentが起動しているか確認
-if [ -f "${SSH_ENV}" ]; then
-    source "${SSH_ENV}" > /dev/null
-    # プロセスが実際に動いているか確認
-    ps -p ${SSH_AGENT_PID} > /dev/null 2>&1 || agent_start
+# macOS: 1Password SSH エージェントがあれば優先（なければ従来の ssh-agent 運用）
+OP_SSH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+if [ -S "${OP_SSH_SOCK}" ]; then
+    export SSH_AUTH_SOCK="${OP_SSH_SOCK}"
 else
-    agent_start
+    SSH_ENV="${HOME}/.ssh/agent.env"
+
+    agent_start() {
+        ssh-agent -s -t 1h > "${SSH_ENV}"
+        chmod 600 "${SSH_ENV}"
+        source "${SSH_ENV}" > /dev/null
+    }
+
+    # ssh-agentが起動しているか確認
+    if [ -f "${SSH_ENV}" ]; then
+        source "${SSH_ENV}" > /dev/null
+        # プロセスが実際に動いているか確認
+        ps -p ${SSH_AGENT_PID} > /dev/null 2>&1 || agent_start
+    else
+        agent_start
+    fi
 fi
