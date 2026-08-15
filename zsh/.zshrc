@@ -6,18 +6,28 @@ setopt correct              # コマンドのスペルを自動修正
 setopt auto_cd              # ディレクトリ名だけでcd
 setopt interactive_comments # コマンドライン上のコメントを有効化
 
-# 1Password: ~/.env の op:// 参照を現在のシェルに展開する
+# 1Password: ~/.env の op:// 参照を展開して現在のシェルに読み込む
+# 展開結果は一時ディレクトリにキャッシュし、認証を再起動後の初回のみにする
+# （1Password CLI は新しいターミナルセッションごとに確認を出す仕様のため）
+OPENV_CACHE="${TMPDIR:-/tmp}/openv.env"
 openv() {
+  (umask 077; op inject -i "$HOME/.env" > "$OPENV_CACHE") || { rm -f "$OPENV_CACHE"; return 1; }
   set -a
-  source <(op inject -i "$HOME/.env")
+  source "$OPENV_CACHE"
   set +a
 }
 
 # 環境変数の読み込み
-# op:// 参照を含む場合は 1Password から起動時に展開（op がない環境ではスキップ）
+# op:// 参照を含む場合はキャッシュ→1Password の順で展開（op がない環境ではスキップ）
 if [ -f "$HOME/.env" ]; then
   if grep -q "op://" "$HOME/.env"; then
-    command -v op >/dev/null 2>&1 && openv 2>/dev/null
+    if [ -s "$OPENV_CACHE" ]; then
+      set -a
+      source "$OPENV_CACHE"
+      set +a
+    elif command -v op >/dev/null 2>&1; then
+      openv 2>/dev/null
+    fi
   else
     set -a
     source "$HOME/.env"
