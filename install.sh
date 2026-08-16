@@ -206,5 +206,8 @@ ln -sfn ~/.agents/skills/herdr ~/dotfiles/claude/skills/herdr
 curl -fsSL https://ax.yusuke.run/install | sh
 npx -y skills add yusukebe/ax -g
 
+# Context7 (ctx7 CLI + find-docs スキル + ~/.claude/rules/context7.md を生成 / 対話プロンプトあり)
+npx -y ctx7 setup
+
 # agmsg (agent messaging)
 bash <(curl -fsSL https://raw.githubusercontent.com/fujibee/agmsg/main/setup.sh)
