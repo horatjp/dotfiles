@@ -202,5 +202,9 @@ npx -y skills add herdrdev/herdr --skill herdr -g
 # skills CLI が張る相対リンクは ~/.claude/skills 経由だと壊れるため絶対パスで張り直す
 ln -sfn ~/.agents/skills/herdr ~/dotfiles/claude/skills/herdr
 
+# ax (Web取得CLI + スキル)
+curl -fsSL https://ax.yusuke.run/install | sh
+npx -y skills add yusukebe/ax -g
+
 # agmsg (agent messaging)
 bash <(curl -fsSL https://raw.githubusercontent.com/fujibee/agmsg/main/setup.sh)

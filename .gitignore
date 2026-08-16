@@ -46,6 +46,7 @@ __pycache__/
 # skills CLI (npx skills) で導入する外部配布スキルは追跡しない。
 # 再インストール: npx -y skills add cloudflare/skills -g --all (install.sh 参照)
 claude/skills/agents-sdk/
+claude/skills/ax/
 claude/skills/cloudflare/
 claude/skills/cloudflare-email-service/
 claude/skills/cloudflare-one/
