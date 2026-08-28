@@ -200,7 +200,7 @@ if ! grep -q '^extra_skill_dirs' ~/.kimi-code/config.toml 2>/dev/null; then
   fi
   chmod 600 ~/.kimi-code/config.toml
 fi
-# MCP サーバー定義（OAuth トークンは Kimi 側で保持するため秘密情報は含まない）
+# MCP サーバー定義（認証は ~/.env の RUNPOD_API_KEY を参照するため秘密情報は含まない）
 cp ~/dotfiles/kimi/mcp.json ~/.kimi-code/mcp.json
 
 # Grok CLI (Grok Build)

@@ -3,7 +3,7 @@
     "runpod": {
       "transport": "http",
       "url": "https://mcp.getrunpod.io/",
-      "auth": "oauth"
+      "bearerTokenEnvVar": "RUNPOD_API_KEY"
     }
   }
 }
