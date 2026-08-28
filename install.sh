@@ -105,6 +105,11 @@ chmod +x ~/dotfiles/scripts/*
 # zsh
 mkdir -p ~/.config/zsh
 ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
+# ~/.env は 1Password の op:// 参照を書く個人ファイル(git 管理外)。無ければテンプレから作る
+if [ ! -f ~/.env ]; then
+  (umask 077; cp ~/dotfiles/zsh/.env.example ~/.env)
+  echo "~/.env をテンプレから作成しました。op:// の <vault>/<item> を自分の 1Password に合わせて編集してください"
+fi
 ln -sf ~/dotfiles/zsh/.zshrc ~/.config/zsh/.zshrc
 ln -sf ~/dotfiles/zsh/.zshrc.alias ~/.config/zsh/.zshrc.alias
 ln -sf ~/dotfiles/zsh/.zshrc.history ~/.config/zsh/.zshrc.history
