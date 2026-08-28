@@ -44,7 +44,7 @@ __pycache__/
 
 # --- Third-party skills ---
 # skills CLI (npx skills) で導入する外部配布スキルは追跡しない。
-# 再インストール: npx -y skills add cloudflare/skills -g --all (install.sh 参照)
+# 再インストール: install.sh の npx skills add 行を参照(--all は使わない)
 claude/skills/agents-sdk/
 claude/skills/ax/
 claude/skills/find-docs/
@@ -53,7 +53,9 @@ claude/skills/cloudflare-email-service/
 claude/skills/cloudflare-one/
 claude/skills/cloudflare-one-migrations/
 claude/skills/durable-objects/
-claude/skills/sandbox-sdk/
+claude/skills/sandbox-stable/
+claude/skills/sandbox-next/
+claude/skills/sandbox-migrate-to-next/
 claude/skills/turnstile-spin/
 claude/skills/herdr
 claude/skills/web-perf/
@@ -65,7 +67,9 @@ codex/skills/cloudflare-email-service/
 codex/skills/cloudflare-one/
 codex/skills/cloudflare-one-migrations/
 codex/skills/durable-objects/
-codex/skills/sandbox-sdk/
+codex/skills/sandbox-stable/
+codex/skills/sandbox-next/
+codex/skills/sandbox-migrate-to-next/
 codex/skills/turnstile-spin/
 codex/skills/web-perf/
 codex/skills/workers-best-practices/

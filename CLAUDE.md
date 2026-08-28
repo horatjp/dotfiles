@@ -33,7 +33,7 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 - `claude/skills` → `~/.claude/skills`、`claude/agents` → `~/.claude/agents`
 - `zsh/`, `nvim/`, `tmux/`, `git/`, `starship/` なども同様
 
-**例外（コピー方式）**: `claude/mcp.json` → `~/.claude.json`、`codex/config.toml` → `~/.codex/config.toml` はリンクではなくコピーされる。これらを編集しても再コピーするまで環境には反映されない。Kimi の `config.toml` / `tui.toml` は CLI が所有・書き換えるため dotfiles では管理せず、install.sh が `extra_skill_dirs`（dotfiles のスキル参照用）のみ冪等に追加する。
+**例外（コピー方式）**: `claude/mcp.json` → `~/.claude.json`、`codex/config.toml` → `~/.codex/config.toml` はリンクではなくコピーされる。これらを編集しても再コピーするまで環境には反映されない。Kimi の `config.toml` / `tui.toml` は CLI が所有・書き換えるため dotfiles では管理せず、install.sh が `extra_skill_dirs`（`~/.agents/skills` と dotfiles のスキル参照用）のみ冪等に追加する。`kimi/mcp.json` → `~/.kimi-code/mcp.json` もコピー方式。
 
 ### ドットなし/ドット付きディレクトリの関係
 
@@ -45,7 +45,7 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 
 - `claude/AGENTS.md`、`codex/AGENTS.md`、`github/AGENTS.md`、`kimi/AGENTS.md` は内容を統一して維持する（日本語）。一方だけ変更しない
 - 汎用スキルは `claude/skills/` と `codex/skills/` の両方に置く。スキルを追加・更新したら両方への反映を検討する
-- skills CLI（`npx skills`）で導入する外部配布スキル（Cloudflare公式など）はgitで追跡せず `.gitignore` に列挙し、`install.sh` で再インストールする
+- skills CLI（`npx skills`）で導入する外部配布スキル（Cloudflare公式など）はgitで追跡せず `.gitignore` に列挙し、`install.sh` で再インストールする。`--all` は全エージェント（約50個の `~/.<agent>/`）へ配布する意味なので使わず、`-a claude-code -s '*' --copy` のように明示する。`skills remove -s '*'` はリンク先の `claude/skills` 内の追跡ファイルまで消すので使わない
 - スキルはコピーして他マシンでも使う前提。マシン固有の絶対パスを書かず `<skill-dir>` 等のプレースホルダを使う
 
 ### templates/

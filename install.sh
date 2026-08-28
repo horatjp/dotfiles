@@ -193,13 +193,15 @@ ln -sf ~/dotfiles/kimi/AGENTS.md ~/.kimi-code/AGENTS.md
 # （同名スキルは後勝ちなので claude/skills を最後に置いて優先させる）
 if ! grep -q '^extra_skill_dirs' ~/.kimi-code/config.toml 2>/dev/null; then
   if [ -f ~/.kimi-code/config.toml ]; then
-    printf 'extra_skill_dirs = [ "~/dotfiles/codex/skills", "~/dotfiles/claude/skills" ]\n\n' | cat - ~/.kimi-code/config.toml > ~/.kimi-code/config.toml.tmp
+    printf 'extra_skill_dirs = [ "~/.agents/skills", "~/dotfiles/codex/skills", "~/dotfiles/claude/skills" ]\n\n' | cat - ~/.kimi-code/config.toml > ~/.kimi-code/config.toml.tmp
     mv ~/.kimi-code/config.toml.tmp ~/.kimi-code/config.toml
   else
-    printf 'extra_skill_dirs = [ "~/dotfiles/codex/skills", "~/dotfiles/claude/skills" ]\n' > ~/.kimi-code/config.toml
+    printf 'extra_skill_dirs = [ "~/.agents/skills", "~/dotfiles/codex/skills", "~/dotfiles/claude/skills" ]\n' > ~/.kimi-code/config.toml
   fi
   chmod 600 ~/.kimi-code/config.toml
 fi
+# MCP サーバー定義（OAuth トークンは Kimi 側で保持するため秘密情報は含まない）
+cp ~/dotfiles/kimi/mcp.json ~/.kimi-code/mcp.json
 
 # Grok CLI (Grok Build)
 npm install -g @xai-official/grok
@@ -211,14 +213,17 @@ npm install -g wrangler
 npm install -g @devcontainers/cli
 
 # Third-party skills (gitでは追跡しない / .gitignore 参照)
-npx -y skills add cloudflare/skills -g --all
-npx -y skills add herdrdev/herdr --skill herdr -g
-# skills CLI が張る相対リンクは ~/.claude/skills 経由だと壊れるため絶対パスで張り直す
-ln -sfn ~/.agents/skills/herdr ~/dotfiles/claude/skills/herdr
+# --all は「全スキルを全エージェント(約50個の ~/.<agent>/ を生成)へ配布」なので使わない。
+# 相対リンクは ~/.claude/skills(symlink)経由だと壊れるため --copy で実体を置く。
+# Codex は ~/.agents/skills を直接読む(-a codex の実体もそこ)。Kimi も extra_skill_dirs で同じ場所を読む。
+npx -y skills add cloudflare/skills -g -a claude-code -a codex -s '*' --copy -y
+npx -y skills add herdrdev/herdr --skill herdr -g -a claude-code --copy -y
+# Runpod 公式スキル(Claude Code はプラグイン経由で持つため Codex / Kimi 用に ~/.agents/skills へ)
+npx -y skills add runpod/runpod-plugins-official -g -a codex -s '*' --copy -y
 
 # ax (Web取得CLI + スキル)
 curl -fsSL https://ax.yusuke.run/install | sh
-npx -y skills add yusukebe/ax -g
+npx -y skills add yusukebe/ax -g -a claude-code --copy -y
 
 # Context7 (ctx7 CLI + find-docs スキル + ~/.claude/rules/context7.md を生成 / 対話プロンプトあり)
 npx -y ctx7 setup
