@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## リポジトリ概要
 
-個人用dotfiles。macOS / Windows / WSL / devcontainer の環境構築スクリプトと、各種ツール設定（zsh, tmux, nvim, git, wezterm など）、および AIエージェント設定（Claude Code, Codex, GitHub Copilot）を管理する。ビルド・テスト・リンターは存在しない。
+個人用dotfiles。macOS / Windows / WSL / devcontainer の環境構築スクリプトと、各種ツール設定（zsh, tmux, nvim, git, wezterm など）、および AIエージェント設定（Claude Code, Codex, GitHub Copilot, Kimi Code）を管理する。ビルド・テスト・リンターは存在しない。
 
 ## コマンド
 
@@ -28,11 +28,12 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 `install.sh` がリポジトリ内ファイルを `~/` や `~/.config/` へ**シンボリックリンク**する。つまりこのリポジトリのファイルを編集すると、稼働中の環境設定が即座に変わる。例:
 
 - `claude/AGENTS.md` → `~/.claude/CLAUDE.md`（ユーザーのグローバル指示）
+- `kimi/AGENTS.md` → `~/.kimi-code/AGENTS.md`（ユーザーのグローバル指示）
 - `claude/settings.json` → `~/.claude/settings.json`
 - `claude/skills` → `~/.claude/skills`、`claude/agents` → `~/.claude/agents`
 - `zsh/`, `nvim/`, `tmux/`, `git/`, `starship/` なども同様
 
-**例外（コピー方式）**: `claude/mcp.json` → `~/.claude.json`、`codex/config.toml` → `~/.codex/config.toml` はリンクではなくコピーされる。これらを編集しても再コピーするまで環境には反映されない。
+**例外（コピー方式）**: `claude/mcp.json` → `~/.claude.json`、`codex/config.toml` → `~/.codex/config.toml` はリンクではなくコピーされる。これらを編集しても再コピーするまで環境には反映されない。Kimi の `config.toml` / `tui.toml` は CLI が所有・書き換えるため dotfiles では管理せず、install.sh が `extra_skill_dirs`（dotfiles のスキル参照用）のみ冪等に追加する。
 
 ### ドットなし/ドット付きディレクトリの関係
 
@@ -42,7 +43,7 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 
 ### AIエージェント設定の並行管理
 
-- `claude/AGENTS.md`、`codex/AGENTS.md`、`github/AGENTS.md` は内容を統一して維持する（日本語）。一方だけ変更しない
+- `claude/AGENTS.md`、`codex/AGENTS.md`、`github/AGENTS.md`、`kimi/AGENTS.md` は内容を統一して維持する（日本語）。一方だけ変更しない
 - 汎用スキルは `claude/skills/` と `codex/skills/` の両方に置く。スキルを追加・更新したら両方への反映を検討する
 - skills CLI（`npx skills`）で導入する外部配布スキル（Cloudflare公式など）はgitで追跡せず `.gitignore` に列挙し、`install.sh` で再インストールする
 - スキルはコピーして他マシンでも使う前提。マシン固有の絶対パスを書かず `<skill-dir>` 等のプレースホルダを使う
