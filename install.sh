@@ -208,6 +208,14 @@ fi
 # MCP サーバー定義（認証は ~/.env の RUNPOD_API_KEY を参照するため秘密情報は含まない）
 cp ~/dotfiles/kimi/mcp.json ~/.kimi-code/mcp.json
 
+# OpenCode
+# グローバル指示は ~/.config/opencode/AGENTS.md(~/.claude/CLAUDE.md より優先)。
+# スキルは ~/.claude/skills と ~/.agents/skills を標準で読むため追加設定なし。
+# opencode.json は MCP 等をツール側が書き込むため dotfiles では管理しない
+mkdir -p ~/.config/opencode
+ln -sf ~/dotfiles/opencode/AGENTS.md ~/.config/opencode/AGENTS.md
+npm install -g opencode-ai
+
 # Grok CLI (Grok Build)
 npm install -g @xai-official/grok
 
