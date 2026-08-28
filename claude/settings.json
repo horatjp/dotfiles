@@ -67,7 +67,17 @@
       }
     ]
   },
-  "enabledPlugins": {},
+  "enabledPlugins": {
+    "runpod@runpod": true
+  },
+  "extraKnownMarketplaces": {
+    "runpod": {
+      "source": {
+        "source": "github",
+        "repo": "runpod/runpod-plugins-official"
+      }
+    }
+  },
   "alwaysThinkingEnabled": true,
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true
