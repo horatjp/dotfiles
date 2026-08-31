@@ -81,10 +81,12 @@ claude/skills/character-studio/
 claude/skills/fanclub-video/
 claude/skills/video-production/
 claude/skills/minimax-h3-video/
+claude/skills/selfhost-video/
 codex/skills/character-studio/
 codex/skills/fanclub-video
 codex/skills/video-production/
 codex/skills/minimax-h3-video
+codex/skills/selfhost-video
 
 # --- Other ---
 # リポジトリ直下のみ無視する(先頭の / でアンカー)。
