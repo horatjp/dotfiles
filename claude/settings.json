@@ -80,5 +80,7 @@
   },
   "alwaysThinkingEnabled": true,
   "tui": "fullscreen",
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "inputNeededNotifEnabled": false,
+  "agentPushNotifEnabled": true
 }
