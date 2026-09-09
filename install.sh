@@ -10,7 +10,7 @@ if [ "$(uname)" != 'Darwin' ]; then
   # apt
   echo "# apt"
   sudo apt-get update
-  sudo apt install -y build-essential curl dnsutils file fonts-noto-cjk git locales nfs-client rsync tree wget whois zip zsh
+  sudo apt install -y build-essential curl dnsutils file fonts-noto-cjk git jq locales nfs-client rsync tree wget whois zip zsh
 
   ## apt GUI
   sudo apt-get install -y libgtk-3-0t64 libgtk-3-common libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 libgbm-dev wl-clipboard xauth xvfb feh
@@ -162,7 +162,22 @@ ln -sf ~/dotfiles/editorconfig/.editorconfig ~/.editorconfig
 # Claude
 mkdir -p ~/.claude
 ln -sf ~/dotfiles/claude/AGENTS.md ~/.claude/CLAUDE.md
-ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
+# settings.json はツール(herdr 連携や /config)が書き込む実ファイルとして各マシンに持ち、
+# 共有ベース(settings.base.json)を jq でマージして反映する。
+# スカラーはベース優先、配列は和集合(ローカル分を先に保ち重複は落とす)、ローカルだけのキーは残す。
+# マシン固有の絶対パスを含むフック等はベースに入れず、ローカル側に書く。
+[ -L ~/.claude/settings.json ] && rm ~/.claude/settings.json  # 旧 symlink 方式からの移行
+[ -f ~/.claude/settings.json ] || echo '{}' > ~/.claude/settings.json
+jq -s '
+  def merge($a; $b):
+    if ($a | type) == "object" and ($b | type) == "object" then
+      reduce (($a | keys) + ($b | keys) | unique | .[]) as $k ({}; .[$k] = merge($a[$k]; $b[$k]))
+    elif ($a | type) == "array" and ($b | type) == "array" then $a + ($b - $a)
+    elif $b == null then $a
+    else $b end;
+  merge(.[0]; .[1])
+' ~/.claude/settings.json ~/dotfiles/claude/settings.base.json > ~/.claude/settings.json.tmp
+mv ~/.claude/settings.json.tmp ~/.claude/settings.json
 ln -sf ~/dotfiles/claude/agents ~/.claude/agents
 ln -sf ~/dotfiles/claude/skills ~/.claude/skills
 cp ~/dotfiles/claude/mcp.json ~/.claude.json

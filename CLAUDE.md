@@ -30,10 +30,11 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 - `claude/AGENTS.md` → `~/.claude/CLAUDE.md`（ユーザーのグローバル指示）
 - `kimi/AGENTS.md` → `~/.kimi-code/AGENTS.md`（ユーザーのグローバル指示）
 - `opencode/AGENTS.md` → `~/.config/opencode/AGENTS.md`（ユーザーのグローバル指示。スキルは `~/.claude/skills` と `~/.agents/skills` を標準で読む）
-- `claude/settings.json` → `~/.claude/settings.json`
 - `claude/skills` → `~/.claude/skills`、`claude/agents` → `~/.claude/agents`
 - `zsh/`, `nvim/`, `tmux/`, `git/`, `starship/` なども同様
 - `~/.env` は git 管理外（API キーの `op://` 参照を書く）。`zsh/.env.example` がテンプレで、install.sh は `~/.env` が無い時だけコピーする
+
+**例外（マージ方式）**: `claude/settings.base.json` は共有ベースで、install.sh が jq で `~/.claude/settings.json`（実ファイル、git 管理外）へマージする。スカラーはベース優先、配列は和集合、ローカルだけのキーは残る。herdr 連携フックのようなマシン固有の絶対パスはベースに書かず、ローカル側に任せる。ベースを編集したら install.sh の Claude セクションを再実行して反映する。
 
 **例外（コピー方式）**: `claude/mcp.json` → `~/.claude.json`、`codex/config.toml` → `~/.codex/config.toml` はリンクではなくコピーされる。これらを編集しても再コピーするまで環境には反映されない。Kimi の `config.toml` / `tui.toml` は CLI が所有・書き換えるため dotfiles では管理せず、install.sh が `extra_skill_dirs`（`~/.agents/skills` と dotfiles のスキル参照用）のみ冪等に追加する。`kimi/mcp.json` → `~/.kimi-code/mcp.json` もコピー方式。
 
