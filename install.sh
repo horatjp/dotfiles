@@ -187,7 +187,15 @@ curl -fsSL https://claude.ai/install.sh | bash
 mkdir -p ~/.codex
 ln -sf ~/dotfiles/codex/AGENTS.md ~/.codex/AGENTS.md
 ln -sf ~/dotfiles/codex/skills ~/.codex/skills
-cp ~/dotfiles/codex/config.toml ~/.codex/config.toml
+# config.toml は Codex が projects.* / hooks.state 等を書き込むユーザー層(~/.codex/config.toml)には置かず、
+# 共有分を system 層(/etc/codex/config.toml、ユーザー層より低優先でキー単位に深くマージされる)へリンクする。
+# 配列キー(writable_roots 等)は層をまたいで置換されるため、共有側とローカル側の両方に書かない。
+sudo mkdir -p /etc/codex
+sudo ln -sfn ~/dotfiles/codex/config.toml /etc/codex/config.toml
+if [ -L ~/.codex/config.toml ]; then  # 旧 symlink 方式からの移行: Codex の書き込みがリポジトリへ混ざらないよう実ファイル化
+  target="$(readlink -f ~/.codex/config.toml)"
+  rm ~/.codex/config.toml && cp "$target" ~/.codex/config.toml
+fi
 npm install -g @openai/codex
 
 # Gemini

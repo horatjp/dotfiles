@@ -1,3 +1,15 @@
+# /etc/codex/config.toml へリンクされる共有設定(system 層)。
+# 両マシン共通で手管理する項目だけを書く。model / projects / hooks.state / tui / マシン固有の MCP は
+# Codex が書き込むユーザー層(~/.codex/config.toml、git 管理外)に任せる。
+# 配列キーはユーザー層に同じキーがあると丸ごと置換されるので、片方にだけ書くこと。
+
+[features]
+hooks = true
+
+# agmsg が sandbox 内から書き込む場所
+[sandbox_workspace_write]
+writable_roots = ["~/.agents/skills/agmsg/db", "~/.agents/skills/agmsg/teams", "~/.agents/skills/agmsg/run"]
+
 [mcp_servers.context7]
 command = "npx"
 args = [ "@upstash/context7-mcp@latest" ]

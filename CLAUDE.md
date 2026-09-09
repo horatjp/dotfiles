@@ -35,8 +35,9 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 - `~/.env` は git 管理外（API キーの `op://` 参照を書く）。`zsh/.env.example` がテンプレで、install.sh は `~/.env` が無い時だけコピーする
 
 **例外（マージ方式）**: `claude/settings.base.json` は共有ベースで、install.sh が jq で `~/.claude/settings.json`（実ファイル、git 管理外）へマージする。スカラーはベース優先、配列は和集合、ローカルだけのキーは残る。herdr 連携フックのようなマシン固有の絶対パスはベースに書かず、ローカル側に任せる。ベースを編集したら install.sh の Claude セクションを再実行して反映する。
+`codex/config.toml` は system 層 `/etc/codex/config.toml` へリンクされ、Codex が書き込むユーザー層 `~/.codex/config.toml`（実ファイル、git 管理外）とキー単位で深くマージされる。共有したい項目だけを書き、配列キーは両層に重ねない。
 
-**例外（コピー方式）**: `claude/mcp.json` → `~/.claude.json`、`codex/config.toml` → `~/.codex/config.toml` はリンクではなくコピーされる。これらを編集しても再コピーするまで環境には反映されない。Kimi の `config.toml` / `tui.toml` は CLI が所有・書き換えるため dotfiles では管理せず、install.sh が `extra_skill_dirs`（`~/.agents/skills` と dotfiles のスキル参照用）のみ冪等に追加する。`kimi/mcp.json` → `~/.kimi-code/mcp.json` もコピー方式。
+**例外（コピー方式）**: `claude/mcp.json` → `~/.claude.json` はリンクではなくコピーされる。編集しても再コピーするまで環境には反映されない。Kimi の `config.toml` / `tui.toml` は CLI が所有・書き換えるため dotfiles では管理せず、install.sh が `extra_skill_dirs`（`~/.agents/skills` と dotfiles のスキル参照用）のみ冪等に追加する。`kimi/mcp.json` → `~/.kimi-code/mcp.json` もコピー方式。
 
 ### ドットなし/ドット付きディレクトリの関係
 
