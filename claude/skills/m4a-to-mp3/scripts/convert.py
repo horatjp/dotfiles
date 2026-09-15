@@ -9,7 +9,7 @@
 3. タグ整理: アルバム名(TALB)・全ソートタグ(読みがな)・iTunes系TXXXを削除。
    曲名/アーティスト/ジャンル/トラック番号/年/アートワークは保持
 4. 出力ファイル名は「アーティスト名 - タイトル.mp3」(タグから生成)
-5. 歌詞埋め込み: txtディレクトリに歌詞ファイル(.txt/.lrc)が存在する場合のみUSLTタグとして埋め込む。
+5. 歌詞埋め込み: 歌詞ファイル(.txt/.lrc)が存在する場合のみUSLTタグとして埋め込む(m4aと同じフォルダ、またはtxtディレクトリ)。
    変換済みファイルに対しても、後から歌詞を置いて再実行すれば埋め込まれる(再エンコードなし)
 
 必要環境: ffmpeg (libmp3lame有効), Python3, mutagen
@@ -129,12 +129,13 @@ def read_lyrics(p: Path) -> str:
 
 
 def find_lyrics(src: Path, out_stem: str) -> str | None:
-    """txtディレクトリから歌詞ファイルを探して内容を返す。
+    """歌詞ファイルを探して内容を返す。
 
-    探す場所: <入力フォルダ>/txt/ と <入力フォルダの親>/txt/
+    探す場所: m4aと同じフォルダ → <入力フォルダ>/txt/ → <入力フォルダの親>/txt/
+      (同居を優先。txt/ は従来の運用との互換のため残している)
     探す名前: 元ファイル名 または 出力名「アーティスト - タイトル」 + .txt/.lrc
     """
-    dirs = [src.parent / "txt", src.parent.parent / "txt"]
+    dirs = [src.parent, src.parent / "txt", src.parent.parent / "txt"]
     names = [src.stem, out_stem]
     for d in dirs:
         if not d.is_dir():
