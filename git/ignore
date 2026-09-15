@@ -40,3 +40,5 @@ Desktop.ini
 .project-command-history
 
 **/.claude/settings.local.json
+
+**/.claude/.cc-writes/
