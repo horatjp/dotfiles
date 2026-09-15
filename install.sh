@@ -106,7 +106,9 @@ chmod +x ~/dotfiles/scripts/*
 mkdir -p ~/.config/zsh
 ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
 # ~/.env は 1Password の op:// 参照を書く個人ファイル(git 管理外)。無ければテンプレから作る
-if [ ! -f ~/.env ]; then
+# Mac では 1Password Environments がマウントした名前付きパイプの場合がある。-f だとパイプを「無い」と判定して
+# テンプレをパイプへ書き込んでしまうため、種類を問わず存在で判定する
+if [ ! -e ~/.env ]; then
   (umask 077; cp ~/dotfiles/zsh/.env.example ~/.env)
   echo "~/.env をテンプレから作成しました。op:// の <vault>/<item> を自分の 1Password に合わせて編集してください"
 fi

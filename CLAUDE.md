@@ -32,7 +32,7 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 - `opencode/AGENTS.md` → `~/.config/opencode/AGENTS.md`（ユーザーのグローバル指示。スキルは `~/.claude/skills` と `~/.agents/skills` を標準で読む）
 - `claude/skills` → `~/.claude/skills`、`claude/agents` → `~/.claude/agents`
 - `zsh/`, `nvim/`, `tmux/`, `git/`, `starship/` なども同様
-- `~/.env` は git 管理外（API キーの `op://` 参照を書く）。`zsh/.env.example` がテンプレで、install.sh は `~/.env` が無い時だけコピーする
+- `~/.env` は git 管理外（API キーの `op://` 参照を書く）。`zsh/.env.example` がテンプレで、install.sh は `~/.env` が無い時だけコピーする。Mac では 1Password Environments がマウントした名前付きパイプで、読むたびに 1Password が値を渡す（`.zshrc` は種類を見て読み方を切り替える）
 
 **例外（マージ方式）**: `claude/settings.base.json` は共有ベースで、install.sh が jq で `~/.claude/settings.json`（実ファイル、git 管理外）へマージする。スカラーはベース優先、配列は和集合、ローカルだけのキーは残る。herdr 連携フックのようなマシン固有の絶対パスはベースに書かず、ローカル側に任せる。ベースを編集したら install.sh の Claude セクションを再実行して反映する。
 `codex/config.toml` は system 層 `/etc/codex/config.toml` へリンクされ、Codex が書き込むユーザー層 `~/.codex/config.toml`（実ファイル、git 管理外）とキー単位で深くマージされる。共有したい項目だけを書き、配列キーは両層に重ねない。
