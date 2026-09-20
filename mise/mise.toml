@@ -14,6 +14,11 @@ python = "latest"
 # Go
 go = "latest"
 
+# Java
+# ベンダー未指定の既定は openjdk(参照実装)で、21 系は 21.0.2(2024-01)で更新が止まるため
+# 更新が続く temurin を明示する
+java = "temurin-21"
+
 [settings]
 # Enable experimental features
 experimental = true
