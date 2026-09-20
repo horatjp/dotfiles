@@ -407,6 +407,17 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/kot149/zmk-battery-center/
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# 設定の反映
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# defaults write した内容は、対象プロセスが起動中だと読み直されない。さらに終了時に
+# メモリ上の設定で書き戻されるため、ここでまとめて再起動させる(Dock のアプリ削除など)。
+# 停止中のプロセスへの killall は終了コード 1 を返すので set -e で止めない
+for app in Dock Finder SystemUIServer; do
+    killall "$app" 2>/dev/null || true
+done
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # END
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 echo -e "\nReboot the computer: sudo reboot"
