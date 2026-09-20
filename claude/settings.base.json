@@ -69,5 +69,7 @@
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "inputNeededNotifEnabled": false,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "syncClaudeAiSkills": false,
+  "syncClaudeAiPlugins": false
 }
