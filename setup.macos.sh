@@ -386,7 +386,11 @@ ln -sf ~/dotfiles/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Network Drive (SMB)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# 新規マシンには ~/Library/LaunchAgents が無いため先に作る
+mkdir -p ~/Library/LaunchAgents
 ln -sf ~/dotfiles/launchagents/com.user.mountsmb.plist ~/Library/LaunchAgents/com.user.mountsmb.plist
+# 読み込み済みだと load が失敗し set -e で以降が実行されないため、先に unload する
+launchctl unload ~/Library/LaunchAgents/com.user.mountsmb.plist 2>/dev/null || true
 launchctl load ~/Library/LaunchAgents/com.user.mountsmb.plist
 
 
