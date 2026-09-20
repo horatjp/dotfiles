@@ -105,12 +105,12 @@ chmod +x ~/dotfiles/scripts/*
 # zsh
 mkdir -p ~/.config/zsh
 ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
-# ~/.env は 1Password の op:// 参照を書く個人ファイル(git 管理外)。無ければテンプレから作る
-# Mac では 1Password Environments がマウントした名前付きパイプの場合がある。-f だとパイプを「無い」と判定して
-# テンプレをパイプへ書き込んでしまうため、種類を問わず存在で判定する
+# ~/.env(git 管理外)から API キーを読み込む。実体はマシンごとに自分で用意する
+#  - Mac: 1Password Environments を ~/.env にマウントする(名前付きパイプ。平文はディスクに残らない)
+#  - WSL 等: op:// 参照を書いた通常ファイルを置く(.zshrc が op inject で展開してキャッシュする)
+# パイプを -f で判定すると「無い」扱いになるため、種類を問わず存在で判定する
 if [ ! -e ~/.env ]; then
-  (umask 077; cp ~/dotfiles/zsh/.env.example ~/.env)
-  echo "~/.env をテンプレから作成しました。op:// の <vault>/<item> を自分の 1Password に合わせて編集してください"
+  echo "~/.env がありません。1Password Environments をマウントするか、op:// 参照を書いたファイルを作成してください"
 fi
 ln -sf ~/dotfiles/zsh/.zshrc ~/.config/zsh/.zshrc
 ln -sf ~/dotfiles/zsh/.zshrc.alias ~/.config/zsh/.zshrc.alias
