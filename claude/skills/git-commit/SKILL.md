@@ -67,13 +67,13 @@ git add <file1> <file2>
 
 ```bash
 # 1. 文脈行を減らした差分を一時ファイルに保存（近接した変更がハンク分離しやすくなる）
-git diff -U1 -- <file> > /tmp/split.patch
+git diff -U1 -- <file> > "${TMPDIR:-/tmp}/split.patch"
 
 # 2. パッチを編集し、先にコミットしたい変更のハンクだけ残す
 #    ハンクは @@ 行から次の @@ 行の手前まで。ハンク単位で丸ごと削除し、@@ 行の数値は書き換えない
 
 # 3. 編集したパッチをインデックスに適用し、内容を確認
-git apply --cached /tmp/split.patch
+git apply --cached "${TMPDIR:-/tmp}/split.patch"
 git diff --cached
 ```
 
