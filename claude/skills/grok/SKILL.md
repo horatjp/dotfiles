@@ -67,5 +67,5 @@ grok -p "ライブラリXの最新バージョンの破壊的変更を調べて�
 
 - 事前に `grok login` での認証が必要（未認証だとエラーになる）
 - 結果はセカンドオピニオンとして参考にし、最終判断はユーザーが行ってください
-- Grok は `~/.claude/settings.json` や CLAUDE.md も読み込むため、プロジェクト指示は概ね共有される
+- Grok は Claude 互換設定（`~/.grok/config.toml` の `[compat.claude]`、既定はすべて有効）により、CLAUDE.md・`~/.claude/` の指示ファイル・rules・skills と `~/.claude/settings.json` の hooks も読み込むため、プロジェクト指示は概ね共有される
 - 長時間かかる場合はバックグラウンド実行を検討する
