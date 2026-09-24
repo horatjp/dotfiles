@@ -18,4 +18,4 @@ Review angles:
 Rules:
 - Classify findings as Critical / Major / Minor.
 - Each issue must include: what, why, and a concrete fix suggestion.
-- If something is good, briefly note it (1-2 bullets max).
+- If something is good, note it briefly.
