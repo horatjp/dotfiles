@@ -127,6 +127,10 @@ config.keys = {
   -- Move between tabs
   { key = "Tab", mods = "CTRL", action = wezterm.action.ActivateTabRelative(1) },
   { key = "Tab", mods = "CTRL|SHIFT", action = wezterm.action.ActivateTabRelative(-1) },
+  -- Shift+Enter: 改行（AI CLI 向け）
+  -- ESC+CR（Meta+Enter）を送る。Claude Code / Codex などはこれを改行として扱い、
+  -- tmux 経由でも素通しされる（kitty keyboard protocol は tmux 側の対応が要るため使わない）
+  { key = "Enter", mods = "SHIFT", action = wezterm.action.SendString("\x1b\r") },
 }
 
 return config
