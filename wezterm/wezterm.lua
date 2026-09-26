@@ -122,6 +122,29 @@ config.keys = {
   { key = "w", mods = "CTRL|SHIFT", action = wezterm.action.CloseCurrentPane({ confirm = true }) },
   -- Copy mode
   { key = "c", mods = "CTRL|SHIFT", action = wezterm.action.ActivateCopyMode },
+  -- QuickSelect（画面上のURL・パス・ハッシュ等をラベル選択でコピー）
+  { key = "Enter", mods = "SUPER", action = wezterm.action.QuickSelect },
+  -- QuickSelect で URL だけを対象にし、選んだものを既定のブラウザで開く
+  {
+    key = "o", mods = "SUPER",
+    action = wezterm.action.QuickSelectArgs({
+      label = "open url",
+      patterns = { "https?://\\S+" },
+      action = wezterm.action_callback(function(window, pane)
+        local url = window:get_selection_text_for_pane(pane)
+        wezterm.open_with(url)
+      end),
+    }),
+  },
+  -- QuickSelect で「ファイル:行(:列)」だけを対象にしてコピー（例: src/foo.ts:42）
+  -- 英字の拡張子を必須にして時刻や host:port を除外。既定の QuickSelect には混ぜない
+  {
+    key = "l", mods = "SUPER",
+    action = wezterm.action.QuickSelectArgs({
+      label = "copy file:line",
+      patterns = { "[\\w./-]+\\.[A-Za-z]\\w*:\\d+(?::\\d+)?" },
+    }),
+  },
   -- Paste from clipboard
   { key = "v", mods = "CTRL", action = wezterm.action.PasteFrom("Clipboard") },
   -- Move between tabs
