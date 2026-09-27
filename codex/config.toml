@@ -8,7 +8,7 @@ hooks = true
 
 # agmsg が sandbox 内から書き込む場所
 [sandbox_workspace_write]
-writable_roots = ["~/.agents/skills/agmsg/db", "~/.agents/skills/agmsg/teams", "~/.agents/skills/agmsg/run"]
+writable_roots = ["~/.agents/skills/agmsg/ext-tools", "~/.agents/skills/agmsg/db", "~/.agents/skills/agmsg/teams", "~/.agents/skills/agmsg/run"]
 
 [mcp_servers.context7]
 command = "npx"
