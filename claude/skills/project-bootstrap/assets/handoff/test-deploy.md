@@ -50,7 +50,7 @@ describe("POST /api/reservations", () => {
 - ライブログ(`tail`)は `cf` 未対応。`npx wrangler tail <WORKER_NAME>` を使う
 - デプロイ前に必ずローカルで `cf dev` により Workers ランタイムで動作確認(Node開発サーバーで動いてもWorkersで動くとは限らない)
 - DB: D1(SQLite系)+ Drizzle が素直。外部Postgresなら Hyperdrive 経由。`cf` のリソース指定は名前でなく ID
-- シークレットは `cloudflare.config.ts` の `bindings.secret()` で宣言(デプロイ時に本番へ実在しないと失敗する)。値の投入は `cf workers secrets update <name>`(複数は `cf workers secrets bulk`。公式ドキュメントは「単一シークレット設定は未対応」と記載しており、動作は要確認)。ローカル用は `.dev.vars`(`cf dev` でそのまま使える。gitignore)。コマンド探索は `cf cli search "<やりたいこと>"`
+- シークレットは `cloudflare.config.ts` の `bindings.secret()` で宣言(デプロイ時に本番へ実在しないと失敗する)。値の投入は `cf deploy --secrets-file <.env or JSON>` か `cf workers secrets bulk --worker <名> --file <JSON>` を使う。単発の `cf workers secrets update <name> --worker <名> --type secret_text --text <値>` もあるが、値がコマンドライン引数になりシェル履歴やプロセス一覧に残る上、stdin 入力に対応しない(公式は「単一シークレット設定は未対応」と記載)ので避ける。ローカル用は `.dev.vars`(`cf dev` でそのまま使える。gitignore)。コマンド探索は `cf cli search "<やりたいこと>"`
 
 **VPS**
 - Docker Compose(app + db + Caddy)を標準形にする。Caddyは自動TLSでリバースプロキシ設定が数行で済む
