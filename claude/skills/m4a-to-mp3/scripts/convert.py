@@ -2,10 +2,12 @@
 """m4a → MP3 変換パイプライン (MusicBee + MP3Gain + タグ削除の再現)
 
 各ファイルに対して:
-1. ffmpeg の replaygain フィルタで音量解析 (ReplayGain, 基準89dB)
+1. 音量解析。既定は ffmpeg の ebur128 フィルタで統合ラウドネス(LUFS)を測定。
+   --target-db 指定時は旧方式の replaygain フィルタ (ReplayGain, 基準89dB)
 2. LAME (libmp3lame) で 320kbps CBR に変換。
-   目標音量 (デフォルト96dB) になるようゲインをエンコード時に適用
-   → MP3Gain と同じ基準の音量調整。再エンコード前に適用するので劣化なし
+   目標音量 (既定 -11.0 LUFS) になるようゲインをエンコード時に適用。
+   再エンコード前のPCMに適用するので mp3gain の1.5dB刻みと違い正確で、劣化もない
+   (2026-09-13 にNASライブラリを ReplayGain 96dB → -11.0 LUFS に移行したのに合わせた既定値)
 3. タグ整理: アルバム名(TALB)・全ソートタグ(読みがな)・iTunes系TXXXを削除。
    曲名/アーティスト/ジャンル/トラック番号/年/アートワークは保持
 4. 出力ファイル名は「アーティスト名 - タイトル.mp3」(タグから生成)
@@ -14,7 +16,7 @@
 
 必要環境: ffmpeg (libmp3lame有効), Python3, mutagen
 使い方:
-  python3 convert.py <入力dir|ファイル...> -o <出力dir> [--target-db 96] [--no-clip]
+  python3 convert.py <入力dir|ファイル...> -o <出力dir> [--target-lufs -11 | --target-db 96] [--no-clip]
 """
 import argparse
 import math
@@ -27,6 +29,7 @@ from mutagen.id3 import ID3, USLT
 from mutagen.mp3 import MP3
 
 REFERENCE_DB = 89.0  # ReplayGain / MP3Gain の基準音量
+DEFAULT_TARGET_LUFS = -11.0  # NASライブラリの音量基準 (EBU R128 統合ラウドネス)
 
 # 削除するID3フレーム: アルバム名 + 読みがな(ソート)タグ
 DELETE_FRAMES = [
@@ -58,6 +61,25 @@ def analyze_gain(src: Path) -> tuple[float, float]:
     if gain is None:
         raise RuntimeError(f"ReplayGain解析失敗: {src.name}\n{r.stderr[-500:]}")
     return gain, peak if peak is not None else 1.0
+
+
+def analyze_loudness(src: Path) -> tuple[float, float]:
+    """EBU R128 の統合ラウドネス(LUFS)とサンプルピーク(線形値)を返す"""
+    r = subprocess.run(
+        ["ffmpeg", "-hide_banner", "-nostats", "-i", str(src),
+         "-af", "ebur128=peak=sample", "-f", "null", "-"],
+        capture_output=True, text=True,
+    )
+    # ebur128 は途中経過も "I:" を出すので、末尾のサマリー部分だけを読む
+    summary = r.stderr.rsplit("Integrated loudness:", 1)
+    if len(summary) < 2:
+        raise RuntimeError(f"ラウドネス解析失敗: {src.name}\n{r.stderr[-500:]}")
+    m_i = re.search(r"I:\s+([-\d.]+) LUFS", summary[1])
+    m_p = re.search(r"Peak:\s+([-\d.]+|-inf) dBFS", summary[1])
+    if not m_i:
+        raise RuntimeError(f"ラウドネス解析失敗: {src.name}\n{r.stderr[-500:]}")
+    peak = 10 ** (float(m_p.group(1)) / 20) if m_p and m_p.group(1) != "-inf" else 1.0
+    return float(m_i.group(1)), peak
 
 
 def encode(src: Path, dst: Path, gain_db: float) -> None:
@@ -161,8 +183,8 @@ def maybe_add_lyrics(src: Path, dst: Path) -> bool:
     return True
 
 
-def convert_one(src: Path, out_dir: Path, target_db: float, no_clip: bool,
-                produced: set[str]) -> dict:
+def convert_one(src: Path, out_dir: Path, target_lufs: float | None, target_db: float | None,
+                no_clip: bool, produced: set[str]) -> dict:
     dst = out_dir / output_name(src)
     if dst.name in produced:
         # アルバム名を消す運用のため「同アーティスト・同タイトル」は現実に起こる。黙って捨てない
@@ -175,8 +197,12 @@ def convert_one(src: Path, out_dir: Path, target_db: float, no_clip: bool,
         produced.add(dst.name)
         return {"file": src.name, "skipped": True, "lyrics_added": added,
                 "output": str(dst)}
-    track_gain, peak = analyze_gain(src)
-    gain = track_gain + (target_db - REFERENCE_DB)
+    if target_db is not None:
+        track_gain, peak = analyze_gain(src)
+        gain = track_gain + (target_db - REFERENCE_DB)
+    else:
+        loudness, peak = analyze_loudness(src)
+        gain = target_lufs - loudness
     clipped = False
     if no_clip and peak > 0:
         headroom = -20 * math.log10(peak)  # ピークが0dBFSに達するまでの余裕
@@ -201,8 +227,11 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("inputs", nargs="+", help="m4aファイルまたはフォルダ")
     p.add_argument("-o", "--out", required=True, help="出力フォルダ")
-    p.add_argument("--target-db", type=float, default=96.0,
-                   help="目標音量dB (MP3Gain基準, デフォルト96)")
+    level = p.add_mutually_exclusive_group()
+    level.add_argument("--target-lufs", type=float, default=DEFAULT_TARGET_LUFS,
+                       help=f"目標ラウドネス LUFS (EBU R128, デフォルト{DEFAULT_TARGET_LUFS})")
+    level.add_argument("--target-db", type=float,
+                       help="旧方式: 目標音量dB (MP3Gain/ReplayGain基準, 例 96)。指定時はLUFSの代わりにこちらを使う")
     p.add_argument("--no-clip", action="store_true",
                    help="音割れする曲はゲインを自動で下げる (mp3gain -k 相当)")
     args = p.parse_args()
@@ -224,7 +253,7 @@ def main():
     produced: set[str] = set()
     for i, f in enumerate(files, 1):
         try:
-            r = convert_one(f, out_dir, args.target_db, args.no_clip, produced)
+            r = convert_one(f, out_dir, args.target_lufs, args.target_db, args.no_clip, produced)
             if r.get("skipped"):
                 note = " +歌詞埋め込み" if r.get("lyrics_added") else ""
                 print(f"[{i}/{len(files)}] スキップ(変換済み) {f.name}{note}")
