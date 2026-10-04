@@ -244,8 +244,8 @@ npm install -g opencode-ai
 # Grok CLI (Grok Build)
 npm install -g @xai-official/grok
 
-# Cloudflare Wrangler
-npm install -g wrangler
+# Cloudflare cf (Wrangler 後継の統合CLI。beta)
+npm install -g cf
 
 # Dev Container CLI
 npm install -g @devcontainers/cli
