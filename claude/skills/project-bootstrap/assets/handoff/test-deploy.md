@@ -45,9 +45,10 @@ describe("POST /api/reservations", () => {
 - ビルド時に `prisma generate` が走るよう postinstall に入れる
 
 **Cloudflare (Workers / Pages)**
-- デプロイ前に必ずローカルで `wrangler dev` により Workers ランタイムで動作確認(Node開発サーバーで動いてもWorkersで動くとは限らない)
+- CLI は `cf`(Wrangler 後継。設定は `cloudflare.config.ts`)。既存の `wrangler.jsonc` は `cf migrate` で移行
+- デプロイ前に必ずローカルで `cf dev` により Workers ランタイムで動作確認(Node開発サーバーで動いてもWorkersで動くとは限らない)
 - DB: D1(SQLite系)+ Drizzle が素直。外部Postgresなら Hyperdrive 経由
-- 環境変数は `wrangler secret put`。`.dev.vars` をローカル用に(gitignore)
+- シークレットは `cloudflare.config.ts` の `bindings.secret()` で宣言(デプロイ時に本番へ実在しないと失敗する)。値の投入方法は `cf cli search` で確認。ローカル用のシークレットファイルは gitignore
 
 **VPS**
 - Docker Compose(app + db + Caddy)を標準形にする。Caddyは自動TLSでリバースプロキシ設定が数行で済む
