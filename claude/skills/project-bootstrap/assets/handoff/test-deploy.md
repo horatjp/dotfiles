@@ -45,10 +45,12 @@ describe("POST /api/reservations", () => {
 - ビルド時に `prisma generate` が走るよう postinstall に入れる
 
 **Cloudflare (Workers / Pages)**
-- CLI は `cf`(Wrangler 後継。設定は `cloudflare.config.ts`)。既存の `wrangler.jsonc` は `cf migrate` で移行
+- CLI は `cf`(Wrangler 後継。設定は `cloudflare.config.ts`、ログインは `cf auth login`、環境切替は `--env` でなく `--mode`)。新規は `cf` を使う
+- 既存の `wrangler.jsonc` / `wrangler.toml` があるプロジェクトは、`cf migrate` するまで `wrangler dev` / `wrangler deploy` を使う(未移行で `cf dev` / `cf deploy` を実行するとエラーか不要な設定ファイルの自動生成になる)。移行前でも `cf d1 list` などのリソース操作は使える
+- ライブログ(`tail`)は `cf` 未対応。`npx wrangler tail <WORKER_NAME>` を使う
 - デプロイ前に必ずローカルで `cf dev` により Workers ランタイムで動作確認(Node開発サーバーで動いてもWorkersで動くとは限らない)
-- DB: D1(SQLite系)+ Drizzle が素直。外部Postgresなら Hyperdrive 経由
-- シークレットは `cloudflare.config.ts` の `bindings.secret()` で宣言(デプロイ時に本番へ実在しないと失敗する)。値の投入は `cf workers secrets update <name>`(複数は `cf workers secrets bulk`)。コマンド探索は `cf cli search "<やりたいこと>"`。ローカル用のシークレットファイルは gitignore
+- DB: D1(SQLite系)+ Drizzle が素直。外部Postgresなら Hyperdrive 経由。`cf` のリソース指定は名前でなく ID
+- シークレットは `cloudflare.config.ts` の `bindings.secret()` で宣言(デプロイ時に本番へ実在しないと失敗する)。値の投入は `cf workers secrets update <name>`(複数は `cf workers secrets bulk`。公式ドキュメントは「単一シークレット設定は未対応」と記載しており、動作は要確認)。ローカル用は `.dev.vars`(`cf dev` でそのまま使える。gitignore)。コマンド探索は `cf cli search "<やりたいこと>"`
 
 **VPS**
 - Docker Compose(app + db + Caddy)を標準形にする。Caddyは自動TLSでリバースプロキシ設定が数行で済む
