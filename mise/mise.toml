@@ -5,6 +5,9 @@
 # Node.js
 node = "lts"
 
+# pnpm（プロジェクト側で使う用。install.sh のグローバル CLI は npm のまま）
+pnpm = "latest"
+
 # Bun runtime
 bun = "latest"
 
