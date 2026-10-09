@@ -65,7 +65,7 @@ Sonnet が実装するときは、レビューを Codex に回す。xhigh は週
 
 ## 原本と更新
 
-原本は `~/projects/ai-watch/docs/knowledge/multi-agent-playbook.md`。このスキルはその写し。
+原本は `<ai-watch>/docs/knowledge/multi-agent-playbook.md`(`<ai-watch>` は ai-watch リポジトリを置いた場所。マシンごとに違う)。このスキルはその写し。
 
 ai-watch で原本を直すきっかけは次の3つ。
 - 新しいモデルを測り終えたとき
