@@ -255,7 +255,7 @@ npm install -g @devcontainers/cli
 # 相対リンクは ~/.claude/skills(symlink)経由だと壊れるため --copy で実体を置く。
 # Codex は ~/.agents/skills を直接読む(-a codex の実体もそこ)。Kimi も extra_skill_dirs で同じ場所を読む。
 npx -y skills add cloudflare/skills -g -a claude-code -a codex -s '*' --copy -y
-npx -y skills add herdrdev/herdr --skill herdr -g -a claude-code --copy -y
+npx -y skills add herdrdev/herdr --skill herdr -g -a claude-code -a codex --copy -y
 # Runpod 公式スキル(Claude Code はプラグイン経由で持つため Codex / Kimi 用に ~/.agents/skills へ)
 npx -y skills add runpod/runpod-plugins-official -g -a codex -s '*' --copy -y
 
