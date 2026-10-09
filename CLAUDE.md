@@ -55,7 +55,7 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 ### templates/
 
 新規プロジェクトの下地となるテンプレート（`company-ai-staff-template`）。このリポジトリの設定ではなく、他プロジェクトへ展開するための成果物。
-旧 `ai-workspace-template`・`dev-agent-template` は後継の [project-template](https://github.com/horatjp/project-template) リポジトリに統合され削除済み（後者は `templates/modules/multi-agent/`）。新規プロジェクトはそちらを使う。
+旧 `ai-workspace-template`・`dev-agent-template` は後継の [project-template](https://github.com/horatjp/project-template) リポジトリに統合され削除済み（後者の並列実行は project-template の `templates/modules/multi-agent/` に移したが、現在は使わない。マルチエージェントは `multi-agent-kickoff` スキルを使う）。新規プロジェクトはそちらを使う。
 
 ## コミット規約
 
