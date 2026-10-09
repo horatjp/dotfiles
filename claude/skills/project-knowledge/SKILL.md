@@ -93,7 +93,17 @@ decisions / knowledge へ書き、STATUS からは要点とファイル名の参
 
 読み書きをサイレントで行わない。書き込みは個別に報告し、読み込みはまとめて1行で報告する。
 
-## 本格導入
+## project-template への移行
 
-記録だけでなくプロジェクト基盤ごと整えたい場合(AGENTS.md・変更スペック・STATUS 等)は
-project-template の導入を提案する。
+記録だけでなくプロジェクト基盤ごと整えたい場合(AGENTS.md・変更スペック・hooks 等)は
+project-template の導入を提案する。記録の形式(frontmatter・置き場・STATUS の見出し)は
+project-template と同一なので、既存の `docs/` は変換せずそのまま使える。ユーザーの承認後:
+
+1. `gh repo clone horatjp/project-template <tmp> -- --depth 1` で取得し、`templates/repo/` から
+   **まだ存在しないファイルだけ**をコピーする(`changes/`・`scripts/`・`.claude/settings.json`・
+   `.codex/hooks.json`・`docs/PROJECT.md`・`docs/requirements.md`・`docs/rules/` など)。
+   既存の `docs/decisions/`・`docs/knowledge/`・`docs/learnings.md`・`docs/STATUS.md` は上書きしない
+2. 既存の `AGENTS.md` / `CLAUDE.md` は上書きしない。統合案を提示して承認を得てから統合する
+3. `docs/PROJECT.md` と `docs/requirements.md` を、既存の記録から埋める。推測で埋めず、
+   不足はユーザーに聞く
+4. 移行後は、このスキルではなくプロジェクトの `AGENTS.md` と `_template.md` に従う
