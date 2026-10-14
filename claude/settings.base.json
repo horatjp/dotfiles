@@ -32,8 +32,7 @@
       "Skill(issues)",
       "Skill(codex)",
       "Skill(grok)",
-      "mcp__chrome-devtools",
-      "mcp__pencil"
+      "mcp__chrome-devtools"
     ],
     "deny": [
       "Read(**/.env)",
