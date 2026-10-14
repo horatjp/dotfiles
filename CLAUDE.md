@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## リポジトリ概要
 
-個人用dotfiles。macOS / Windows / WSL / devcontainer の環境構築スクリプトと、各種ツール設定（zsh, tmux, nvim, git, wezterm など）、および AIエージェント設定（Claude Code, Codex, GitHub Copilot, Kimi Code, OpenCode）を管理する。ビルド・テスト・リンターは存在しない。
+個人用dotfiles。macOS / Windows / WSL / devcontainer の環境構築スクリプトと、各種ツール設定（zsh, tmux, nvim, git, wezterm など）、および AIエージェント設定（Claude Code, Codex, GitHub Copilot, OpenCode, Pi）を管理する。ビルド・テスト・リンターは存在しない。
 
 ## コマンド
 
@@ -28,7 +28,6 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 `install.sh` がリポジトリ内ファイルを `~/` や `~/.config/` へ**シンボリックリンク**する。つまりこのリポジトリのファイルを編集すると、稼働中の環境設定が即座に変わる。例:
 
 - `claude/AGENTS.md` → `~/.claude/CLAUDE.md`（ユーザーのグローバル指示）
-- `kimi/AGENTS.md` → `~/.kimi-code/AGENTS.md`（ユーザーのグローバル指示）
 - `opencode/AGENTS.md` → `~/.config/opencode/AGENTS.md`（ユーザーのグローバル指示。スキルは `~/.claude/skills` と `~/.agents/skills` を標準で読む）
 - `claude/skills` → `~/.claude/skills`、`claude/agents` → `~/.claude/agents`
 - `zsh/`, `nvim/`, `tmux/`, `git/`, `starship/` なども同様
@@ -37,7 +36,7 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 **例外（マージ方式）**: `claude/settings.base.json` は共有ベースで、install.sh が jq で `~/.claude/settings.json`（実ファイル、git 管理外）へマージする。スカラーはベース優先、配列は和集合、ローカルだけのキーは残る。herdr 連携フックのようなマシン固有の絶対パスはベースに書かず、ローカル側に任せる。ベースを編集したら install.sh の Claude セクションを再実行して反映する。
 `codex/config.toml` は system 層 `/etc/codex/config.toml` へリンクされ、Codex が書き込むユーザー層 `~/.codex/config.toml`（実ファイル、git 管理外）とキー単位で深くマージされる。共有したい項目だけを書き、配列キーは両層に重ねない。
 
-**例外（コピー方式）**: `claude/mcp.json` → `~/.claude.json` はリンクではなくコピーされる。編集しても再コピーするまで環境には反映されない。Kimi の `config.toml` / `tui.toml` は CLI が所有・書き換えるため dotfiles では管理せず、install.sh が `extra_skill_dirs`（`~/.agents/skills` と dotfiles のスキル参照用）のみ冪等に追加する。`kimi/mcp.json` → `~/.kimi-code/mcp.json` もコピー方式。
+**例外（コピー方式）**: `claude/mcp.json` → `~/.claude.json` はリンクではなくコピーされる。編集しても再コピーするまで環境には反映されない。Pi の `~/.pi/agent/settings.json` は Pi 自身も書き換えるため dotfiles では管理せず、install.sh が `skills` に `~/.claude/skills` のみ冪等に追加する。
 
 ### ドットなし/ドット付きディレクトリの関係
 
@@ -47,7 +46,7 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 
 ### AIエージェント設定の並行管理
 
-- `claude/AGENTS.md`、`codex/AGENTS.md`、`github/AGENTS.md`、`kimi/AGENTS.md`、`opencode/AGENTS.md` は内容を統一して維持する（日本語）。一方だけ変更しない
+- `claude/AGENTS.md`、`codex/AGENTS.md`、`github/AGENTS.md`、`opencode/AGENTS.md` は内容を統一して維持する（日本語）。一方だけ変更しない
 - 汎用スキルは `claude/skills/` と `codex/skills/` の両方に置く。スキルを追加・更新したら両方への反映を検討する
 - skills CLI（`npx skills`）で導入する外部配布スキル（Cloudflare公式など）はgitで追跡せず `.gitignore` に列挙し、`install.sh` で再インストールする。`--all` は全エージェント（約50個の `~/.<agent>/`）へ配布する意味なので使わず、`-a claude-code -s '*' --copy` のように明示する。`skills remove -s '*'` はリンク先の `claude/skills` 内の追跡ファイルまで消すので使わない
 - スキルはコピーして他マシンでも使う前提。マシン固有の絶対パスを書かず `<skill-dir>` 等のプレースホルダを使う
