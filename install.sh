@@ -140,6 +140,8 @@ fi
 # 設定ディレクトリにはログ・ソケットも作られるため config.toml のみリンクする
 mkdir -p ~/.config/herdr
 ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
+# 通知音(config.toml から相対参照)。リンク元基準で解決されても見つかるよう置く
+ln -sfn ~/dotfiles/herdr/sounds ~/.config/herdr/sounds
 herdr plugin install smarzban/herdr-file-viewer --yes
 
 # druk
