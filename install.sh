@@ -224,6 +224,15 @@ mkdir -p ~/.config/opencode
 ln -sf ~/dotfiles/opencode/AGENTS.md ~/.config/opencode/AGENTS.md
 npm install -g opencode-ai
 
+# Pi (earendil-works/pi)
+# スキルは ~/.agents/skills のみ標準で読むため、~/.claude/skills を skills に冪等に追加する。
+# settings.json は Pi も書き込むため dotfiles では管理しない(同名スキルは ~/.claude/skills 側が優先される)
+npm install -g @earendil-works/pi-coding-agent
+mkdir -p ~/.pi/agent
+[ -f ~/.pi/agent/settings.json ] || echo '{}' > ~/.pi/agent/settings.json
+jq '.skills = ((.skills // []) + ["~/.claude/skills"] | unique)' ~/.pi/agent/settings.json > ~/.pi/agent/settings.json.tmp
+mv ~/.pi/agent/settings.json.tmp ~/.pi/agent/settings.json
+
 # Grok CLI (Grok Build)
 npm install -g @xai-official/grok
 
@@ -236,10 +245,10 @@ npm install -g @devcontainers/cli
 # Third-party skills (gitでは追跡しない / .gitignore 参照)
 # --all は「全スキルを全エージェント(約50個の ~/.<agent>/ を生成)へ配布」なので使わない。
 # 相対リンクは ~/.claude/skills(symlink)経由だと壊れるため --copy で実体を置く。
-# Codex は ~/.agents/skills を直接読む(-a codex の実体もそこ)。Kimi も extra_skill_dirs で同じ場所を読む。
+# Codex は ~/.agents/skills を直接読む(-a codex の実体もそこ)。Pi も標準で同じ場所を読む。
 npx -y skills add cloudflare/skills -g -a claude-code -a codex -s '*' --copy -y
 npx -y skills add herdrdev/herdr --skill herdr -g -a claude-code -a codex --copy -y
-# Runpod 公式スキル(Claude Code はプラグイン経由で持つため Codex / Kimi 用に ~/.agents/skills へ)
+# Runpod 公式スキル(Claude Code はプラグイン経由で持つため Codex / Pi 用に ~/.agents/skills へ)
 npx -y skills add runpod/runpod-plugins-official -g -a codex -s '*' --copy -y
 
 # ax (Web取得CLI + スキル)
