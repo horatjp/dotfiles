@@ -1,5 +1,10 @@
 onboarding = false
 
+# 既定の通知音が大きいため、macOS 標準音(Tink / Glass)を -12dB した mp3 に差し替え
+[ui.sound]
+done_path = "sounds/done.mp3"       # 完了時
+request_path = "sounds/request.mp3" # 確認を求めるとき
+
 # herdr-file-viewer プラグイン (https://github.com/smarzban/herdr-file-viewer)
 [[keys.command]]
 key = "prefix+f"
