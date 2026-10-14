@@ -216,25 +216,6 @@ ln -sf ~/dotfiles/github/prompts ~/.github/prompts
 # Note: cp -rL ~/.github .github
 npm install -g @github/copilot
 
-# Kimi Code CLI
-npm install -g @moonshot-ai/kimi-code
-mkdir -p ~/.kimi-code
-ln -sf ~/dotfiles/kimi/AGENTS.md ~/.kimi-code/AGENTS.md
-# config.toml は CLI が所有・書き換えるため dotfiles では管理せず、
-# dotfiles のスキルを読むための extra_skill_dirs のみ冪等に追加する
-# （同名スキルは後勝ちなので claude/skills を最後に置いて優先させる）
-if ! grep -q '^extra_skill_dirs' ~/.kimi-code/config.toml 2>/dev/null; then
-  if [ -f ~/.kimi-code/config.toml ]; then
-    printf 'extra_skill_dirs = [ "~/.agents/skills", "~/dotfiles/codex/skills", "~/dotfiles/claude/skills" ]\n\n' | cat - ~/.kimi-code/config.toml > ~/.kimi-code/config.toml.tmp
-    mv ~/.kimi-code/config.toml.tmp ~/.kimi-code/config.toml
-  else
-    printf 'extra_skill_dirs = [ "~/.agents/skills", "~/dotfiles/codex/skills", "~/dotfiles/claude/skills" ]\n' > ~/.kimi-code/config.toml
-  fi
-  chmod 600 ~/.kimi-code/config.toml
-fi
-# MCP サーバー定義（認証は ~/.env の RUNPOD_API_KEY を参照するため秘密情報は含まない）
-cp ~/dotfiles/kimi/mcp.json ~/.kimi-code/mcp.json
-
 # OpenCode
 # グローバル指示は ~/.config/opencode/AGENTS.md(~/.claude/CLAUDE.md より優先)。
 # スキルは ~/.claude/skills と ~/.agents/skills を標準で読むため追加設定なし。
