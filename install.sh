@@ -232,6 +232,9 @@ mkdir -p ~/.pi/agent
 [ -f ~/.pi/agent/settings.json ] || echo '{}' > ~/.pi/agent/settings.json
 jq '.skills = ((.skills // []) + ["~/.claude/skills"] | unique)' ~/.pi/agent/settings.json > ~/.pi/agent/settings.json.tmp
 mv ~/.pi/agent/settings.json.tmp ~/.pi/agent/settings.json
+# 拡張(確認ダイアログ・保護パス)はディレクトリごとリンクする。実ディレクトリがあると ln が中にリンクを作るので退避する
+[ -d ~/.pi/agent/extensions ] && [ ! -L ~/.pi/agent/extensions ] && mv ~/.pi/agent/extensions ~/.pi/agent/extensions.bak.$(date +%Y%m%d%H%M%S)
+ln -sfn ~/dotfiles/pi/extensions ~/.pi/agent/extensions
 
 # Grok CLI (Grok Build)
 npm install -g @xai-official/grok
