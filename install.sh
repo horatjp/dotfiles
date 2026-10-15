@@ -52,7 +52,10 @@ if [ -n "$(which explorer.exe)" ]; then
     ln -sf /mnt/c/Users/$(/mnt/c/Windows/System32/cmd.exe /c "<nul set /p=%UserName%" 2>/dev/null)/.ssh ~/.ssh
   fi
 
-  echo -e "[automount]\noptions = \"metadata,umask=22,fmask=11\"" | sudo tee /etc/wsl.conf
+  # 既存の wsl.conf(systemd や既定ユーザーの設定)を消さないよう、[automount] が無いときだけ追記する
+  if ! grep -qs '^\[automount\]' /etc/wsl.conf; then
+    echo -e "[automount]\noptions = \"metadata,umask=22,fmask=11\"" | sudo tee -a /etc/wsl.conf
+  fi
 
   # DNS
   echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
@@ -98,12 +101,15 @@ fi
 mkdir -p ~/.config/vim
 ln -sf ~/dotfiles/vim/vimrc ~/.config/vim/vimrc
 
+# ディレクトリへのリンクは -n を付ける(無いと、再実行時に既存リンクの先=リポジトリ内へリンクを作ってしまう)
 # Neovim
-mkdir -p ~/.config/nvim
-ln -sf ~/dotfiles/nvim ~/.config/nvim
+mkdir -p ~/.config
+# 以前の install.sh は ~/.config/nvim を実ディレクトリで作っていた。そのままだとリンクが中に作られるので退避する
+[ -d ~/.config/nvim ] && [ ! -L ~/.config/nvim ] && mv ~/.config/nvim ~/.config/nvim.bak.$(date +%Y%m%d%H%M%S)
+ln -sfn ~/dotfiles/nvim ~/.config/nvim
 
 # scripts
-ln -sf ~/dotfiles/scripts ~/scripts
+ln -sfn ~/dotfiles/scripts ~/scripts
 chmod +x ~/dotfiles/scripts/*
 
 # zsh
@@ -133,7 +139,6 @@ ln -sf ~/dotfiles/starship/starship.toml ~/.config/starship.toml
 # tmux
 mkdir -p ~/.config/tmux
 ln -sf ~/dotfiles/tmux/tmux.conf ~/.config/tmux/tmux.conf
-ln -sf ~/dotfiles/tmux/scripts ~/.config/tmux/scripts
 # TPM (tmux plugin manager)
 if [ ! -d ~/.config/tmux/plugins/tpm ]; then
   mkdir -p ~/.config/tmux/plugins
@@ -146,7 +151,7 @@ mkdir -p ~/.config/herdr
 ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 # 通知音(config.toml から相対参照)。リンク元基準で解決されても見つかるよう置く
 ln -sfn ~/dotfiles/herdr/sounds ~/.config/herdr/sounds
-herdr plugin install smarzban/herdr-file-viewer --yes
+command -v herdr >/dev/null && herdr plugin install smarzban/herdr-file-viewer --yes
 
 # druk
 mkdir -p ~/.config/druk
@@ -156,12 +161,8 @@ ln -sf ~/dotfiles/druk/config.json ~/.config/druk/config.json
 mkdir -p ~/.config/mise
 ln -sf ~/dotfiles/mise/mise.toml ~/.config/mise/config.toml
 mise install
-
-# Change default shell
-sudo chsh -s "$(which zsh)" $USER
-
-# Relogin shell
-exec "$(which zsh)" -l
+# 以降の npm / npx は mise が入れた node を使う(非対話の bash では mise が有効になっていない)
+eval "$(mise activate bash --shims)"
 
 # EditorConfig
 ln -sf ~/dotfiles/editorconfig/.editorconfig ~/.editorconfig
@@ -186,15 +187,18 @@ jq -s '
   merge(.[0]; .[1])
 ' ~/.claude/settings.json ~/dotfiles/claude/settings.base.json > ~/.claude/settings.json.tmp
 mv ~/.claude/settings.json.tmp ~/.claude/settings.json
-ln -sf ~/dotfiles/claude/agents ~/.claude/agents
-ln -sf ~/dotfiles/claude/skills ~/.claude/skills
-cp ~/dotfiles/claude/mcp.json ~/.claude.json
+ln -sfn ~/dotfiles/claude/agents ~/.claude/agents
+ln -sfn ~/dotfiles/claude/skills ~/.claude/skills
+# ~/.claude.json はログイン情報やプロジェクトごとの状態も持つ実ファイルなので、mcpServers だけを差し替える
+[ -s ~/.claude.json ] || echo '{}' > ~/.claude.json
+jq -s '.[0] * {mcpServers: ((.[0].mcpServers // {}) + .[1].mcpServers)}' ~/.claude.json ~/dotfiles/claude/mcp.json > ~/.claude.json.tmp
+mv ~/.claude.json.tmp ~/.claude.json
 curl -fsSL https://claude.ai/install.sh | bash
 
 # Codex
 mkdir -p ~/.codex
 ln -sf ~/dotfiles/codex/AGENTS.md ~/.codex/AGENTS.md
-ln -sf ~/dotfiles/codex/skills ~/.codex/skills
+ln -sfn ~/dotfiles/codex/skills ~/.codex/skills
 # config.toml は Codex が projects.* / hooks.state 等を書き込むユーザー層(~/.codex/config.toml)には置かず、
 # 共有分を system 層(/etc/codex/config.toml、ユーザー層より低優先でキー単位に深くマージされる)へリンクする。
 # 配列キー(writable_roots 等)は層をまたいで置換されるため、共有側とローカル側の両方に書かない。
@@ -212,7 +216,7 @@ npm install -g @openai/codex
 npm install -g @earendil-works/pi-coding-agent
 mkdir -p ~/.pi/agent
 [ -f ~/.pi/agent/settings.json ] || echo '{}' > ~/.pi/agent/settings.json
-jq '.skills = ((.skills // []) + ["~/.claude/skills"] | unique)' ~/.pi/agent/settings.json > ~/.pi/agent/settings.json.tmp
+jq '.skills = ((.skills // []) | if index(["~/.claude/skills"]) then . else . + ["~/.claude/skills"] end)' ~/.pi/agent/settings.json > ~/.pi/agent/settings.json.tmp
 mv ~/.pi/agent/settings.json.tmp ~/.pi/agent/settings.json
 # 拡張(確認ダイアログ・保護パス)はディレクトリごとリンクする。実ディレクトリがあると ln が中にリンクを作るので退避する
 [ -d ~/.pi/agent/extensions ] && [ ! -L ~/.pi/agent/extensions ] && mv ~/.pi/agent/extensions ~/.pi/agent/extensions.bak.$(date +%Y%m%d%H%M%S)
@@ -254,3 +258,8 @@ npx -y ctx7 setup
 bash <(curl -fsSL https://raw.githubusercontent.com/fujibee/agmsg/main/setup.sh)
 # agmsg は Pi を種類として持たないため、Pi 用のプラグインとスキルを足す(受信は pi/extensions/agmsg.ts)
 bash ~/dotfiles/pi/agmsg/install.sh
+
+# Change default shell
+# 以前はここで exec zsh していたが、それより後ろが実行されなくなるため最後に置き、再ログインは案内だけにする
+[ "$(basename "$SHELL")" = zsh ] || sudo chsh -s "$(which zsh)" "$USER"
+echo "完了しました。新しいターミナルを開くか、exec zsh -l で再ログインしてください"
