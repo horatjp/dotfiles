@@ -87,9 +87,10 @@ fadd() {
 # かつていたことのあるディレクトリに移動する
 # https://qiita.com/kamykn/items/aa9920f07487559c0c7e
 fzf-z-search() {
-    local res=$(z | sort -rn | cut -c 12- | fzf)
+    # zoxide の履歴(よく使う順)から選ぶ
+    local res=$(zoxide query -l | fzf)
     if [ -n "$res" ]; then
-        BUFFER+="cd $res"
+        BUFFER+="cd ${(q)res}"
         zle accept-line
     else
         return 1
@@ -102,7 +103,8 @@ bindkey '^z' fzf-z-search
 # ref: https://yiskw713.hatenablog.com/entry/2022/01/12/200000
 fkill() {
   local pid
-  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+  # ps は procs への alias なので、列の並びが決まっている本物の ps を使う
+  pid=$(command ps -ef | sed 1d | fzf -m | awk '{print $2}')
 
   if [ "x$pid" != "x" ]
   then

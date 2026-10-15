@@ -1,5 +1,13 @@
 # Windows User Name and Path
-export WINUSERNAME=$(cmd.exe /c '<nul set /p=%UserName%' 2>/dev/null)
+# cmd.exe の起動は数百 ms かかるため、一度取れた名前をキャッシュする
+_winuser_cache="$HOME/.cache/winusername"
+if [ -s "$_winuser_cache" ]; then
+  export WINUSERNAME=$(<"$_winuser_cache")
+else
+  export WINUSERNAME=$(cmd.exe /c '<nul set /p=%UserName%' 2>/dev/null)
+  [ -n "$WINUSERNAME" ] && mkdir -p "${_winuser_cache:h}" && print -r -- "$WINUSERNAME" > "$_winuser_cache"
+fi
+unset _winuser_cache
 export WINUSERPATH="/mnt/c/Users/$WINUSERNAME"
 
 # chrome-devtools MCP (apt chromium has no "stable channel", needs explicit path)
@@ -11,6 +19,9 @@ alias pbpaste='powershell.exe -command "Get-Clipboard"' # 貼り付け
 alias open='explorer.exe'
 
 # WezTerm cwd reporting
-precmd() {
-  printf "\033]7;file://%s%s\033\\" "$HOSTNAME" "$PWD"  # cwd (WezTerm用)
+# precmd を直接定義すると他のフックを上書きするので add-zsh-hook で足す(zsh では $HOSTNAME でなく $HOST)
+_wezterm_osc7() {
+  printf "\033]7;file://%s%s\033\\" "$HOST" "$PWD"  # cwd (WezTerm用)
 }
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _wezterm_osc7

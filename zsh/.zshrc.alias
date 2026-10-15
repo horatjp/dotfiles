@@ -3,20 +3,24 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-# モダンツール置き換え
-alias ls='eza --icons'                             # アイコン付きリスト表示
-alias ll='eza --icons -l'                          # 詳細リスト表示
-alias la='eza --icons -la'                         # 隠しファイル含む詳細表示
-alias lt='eza --icons -l --sort=modified'          # 更新日時順表示
-alias tree='eza --tree --icons --git-ignore -L 4'  # ツリー表示
-alias cat='bat'                                    # シンタックスハイライト付きcat
-alias df='duf'                                     # カラフルなディスク使用量表示
-alias du='dust'                                    # ツリー形式のディレクトリサイズ表示
-alias top='btm'                                    # グラフィカルなプロセスモニター
-alias ps='procs'                                   # カラフルなプロセス表示
-alias vi='nvim'                                    # neovimへ移行
-alias vim='nvim'                                   # neovimへ移行
-alias view='nvim -R'                               # 読み取り専用モード
+# モダンツール置き換え(devcontainer など未導入の環境では元のコマンドのまま)
+if (( $+commands[eza] )); then
+  alias ls='eza --icons'                             # アイコン付きリスト表示
+  alias ll='eza --icons -l'                          # 詳細リスト表示
+  alias la='eza --icons -la'                         # 隠しファイル含む詳細表示
+  alias lt='eza --icons -l --sort=modified'          # 更新日時順表示
+  alias tree='eza --tree --icons --git-ignore -L 4'  # ツリー表示
+fi
+(( $+commands[bat] ))   && alias cat='bat'         # シンタックスハイライト付きcat
+(( $+commands[duf] ))   && alias df='duf'          # カラフルなディスク使用量表示
+(( $+commands[dust] ))  && alias du='dust'         # ツリー形式のディレクトリサイズ表示
+(( $+commands[btm] ))   && alias top='btm'         # グラフィカルなプロセスモニター
+(( $+commands[procs] )) && alias ps='procs'        # カラフルなプロセス表示
+if (( $+commands[nvim] )); then
+  alias vi='nvim'                                    # neovimへ移行
+  alias vim='nvim'                                   # neovimへ移行
+  alias view='nvim -R'                               # 読み取り専用モード
+fi
 
 # ユーティリティ
 alias relogin='exec $SHELL -l'             # シェル再起動

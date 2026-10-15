@@ -81,21 +81,27 @@ fi
 [ -f "$ZDOTDIR/.zshrc.znap" ] && source "$ZDOTDIR/.zshrc.znap"
 
 # starship
-eval "$(starship init zsh)"
+(( $+commands[starship] )) && eval "$(starship init zsh)"
 
 # zoxide
-eval "$(zoxide init zsh)"
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 
 # fzf
 (( $+commands[fzf] )) && eval "$(fzf --zsh)"
 [ -f "$ZDOTDIR/.zshrc.fzf" ] && source "$ZDOTDIR/.zshrc.fzf"
 
 # mise
-eval "$(mise activate zsh)"
-eval "$(mise completion zsh)"
+if (( $+commands[mise] )); then
+  eval "$(mise activate zsh)"
+  eval "$(mise completion zsh)"
+fi
 
-# docker completion (WSL: skip if daemon is not running)
-(( $+commands[docker] )) && docker info &>/dev/null && source <(docker completion zsh)
+# docker completion
+# WSL で Docker Desktop が止まっていると docker は案内文を出して失敗するので、出力が取れたときだけ読む。
+# 以前は docker info で判定していたが、デーモンへの問い合わせで起動が数秒止まることがあった
+if (( $+commands[docker] )); then
+  () { local c; c=$(docker completion zsh 2>/dev/null) && [[ $c == *compdef* ]] && source <(print -r -- "$c") }
+fi
 
 # OrbStack completion
 if (( $+commands[orbctl] )); then
