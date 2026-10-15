@@ -246,9 +246,6 @@ done
 npm install -g context-mode@1.0.169
 jq -e '.mcpServers["context-mode"]' ~/.pi/agent/mcp.json >/dev/null 2>&1 || pi mcp add context-mode -- context-mode
 
-# Grok CLI (Grok Build)
-npm install -g @xai-official/grok
-
 # Cloudflare cf (Wrangler 後継の統合CLI。beta)
 npm install -g cf
 

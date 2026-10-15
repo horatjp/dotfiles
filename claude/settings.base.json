@@ -25,13 +25,11 @@
       "Bash(cp:*)",
       "Bash(ls:*)",
       "Bash(codex:*)",
-      "Bash(grok:*)",
       "WebSearch",
       "WebFetch",
       "Skill(git-commit)",
       "Skill(issues)",
       "Skill(codex)",
-      "Skill(grok)",
       "mcp__chrome-devtools"
     ],
     "deny": [
