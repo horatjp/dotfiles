@@ -47,15 +47,18 @@ description: 複数のAIエージェント(監督・実装・レビューなど)
 
 [references/playbook.md](references/playbook.md) の「6. プロジェクトを始めるときの1プロンプト」をそのまま使う。`# 依頼` とチーム表の `<…>` だけを埋める。
 
-## 既定のチーム(2026-10-08時点)
+## 既定のチーム(2026-10-15時点)
 
 | 役割 | モデル | 系統 |
 |---|---|---|
 | 監督 | Claude Opus 5.5 medium | A |
 | 実装 | Codex GPT-6.1 Sol medium | B |
-| レビュー | Claude Sonnet 5.5 medium | A |
-| 重いレビュー(お金・結論・データの正しさ・セキュリティ) | Claude Fable 5.1 xhigh | A |
+| レビュー(Sol の作業) | Claude Sonnet 5.5 medium | A |
+| レビュー(Claude の作業) | Codex GPT-6 Astra medium | B |
+| 重いレビュー(お金・結論・データの正しさ・セキュリティ) | Sol の作業は Claude Fable 5.1 xhigh、Claude の作業は Codex Astra xhigh | A / B |
 | 見回り | Claude Haiku 5.5 | A |
+
+Opus は主のレビュー役にしない。Luna は使わない(根拠は playbook §2)。
 
 根拠は ai-watch の測定とレビュー記録。
 - 検索・集計の課題: Sol 6.1 が首位、Haiku 5.5 は Sonnet 5.5 より上。
@@ -64,6 +67,8 @@ description: 複数のAIエージェント(監督・実装・レビューなど)
 - ただし、レビュー役ごとに見た作業が違うので、件数でレビュー役の優劣は決められない(交絡)。同じ差分を2者に独立して見せる組を貯めて比べる(試行中。playbook §5)。
 
 Sonnet が実装するときは、レビューを Codex に回す。xhigh は週の利用枠を大きく使うので、必要なときだけ呼ぶ。
+
+Pi(OpenRouter 経由で他社のモデルを動かす)は、いまはチームの役に使わない(ユーザー決定 2026-10-15)。使うときは、モデルの固定・金額の上限・起動と連絡の違いを playbook §7 で確かめてから。
 
 ## 原本と更新
 
