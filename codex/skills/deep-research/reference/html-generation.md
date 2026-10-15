@@ -24,7 +24,7 @@ Extract 3-4 key quantitative findings for dashboard display at top.
 
 Use Python script:
 ```bash
-cd ~/.claude/skills/deep-research
+cd <skill-dir>  # this skill's directory (where SKILL.md lives)
 python scripts/md_to_html.py [markdown_report_path]
 ```
 

@@ -65,6 +65,7 @@ Mode Selection
 - HTML styling: [mckinsey_report_template.html](./templates/mckinsey_report_template.html)
 
 **Scripts:**
+Paths under `scripts/` are relative to this skill's directory (`<skill-dir>`, i.e. the folder containing this SKILL.md), not the current project. Run them as `python <skill-dir>/scripts/...`. Where the references say `~/.claude/...`, that is the upstream Claude Code layout; write research output into the project instead.
 - `python scripts/validate_report.py --report [path]`
 - `python scripts/verify_citations.py --report [path]`
 - `python scripts/md_to_html.py [markdown_path]`
