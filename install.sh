@@ -216,14 +216,6 @@ ln -sf ~/dotfiles/github/prompts ~/.github/prompts
 # Note: cp -rL ~/.github .github
 npm install -g @github/copilot
 
-# OpenCode
-# グローバル指示は ~/.config/opencode/AGENTS.md(~/.claude/CLAUDE.md より優先)。
-# スキルは ~/.claude/skills と ~/.agents/skills を標準で読むため追加設定なし。
-# opencode.json は MCP 等をツール側が書き込むため dotfiles では管理しない
-mkdir -p ~/.config/opencode
-ln -sf ~/dotfiles/opencode/AGENTS.md ~/.config/opencode/AGENTS.md
-npm install -g opencode-ai
-
 # Pi (earendil-works/pi)
 # スキルは ~/.agents/skills のみ標準で読むため、~/.claude/skills を skills に冪等に追加する。
 # settings.json は Pi も書き込むため dotfiles では管理しない(同名スキルは ~/.claude/skills 側が優先される)
