@@ -1,0 +1,19 @@
+{
+  "providers": {
+    "anthropic": {
+      "apiKey": "$PI_DISABLED_KEY"
+    },
+    "openai": {
+      "apiKey": "$PI_DISABLED_KEY"
+    },
+    "google": {
+      "apiKey": "$PI_DISABLED_KEY"
+    },
+    "xai": {
+      "apiKey": "$PI_DISABLED_KEY"
+    },
+    "kimi-coding": {
+      "apiKey": "$PI_DISABLED_KEY"
+    }
+  }
+}

@@ -221,6 +221,10 @@ mv ~/.pi/agent/settings.json.tmp ~/.pi/agent/settings.json
 # 拡張(確認ダイアログ・保護パス)はディレクトリごとリンクする。実ディレクトリがあると ln が中にリンクを作るので退避する
 [ -d ~/.pi/agent/extensions ] && [ ! -L ~/.pi/agent/extensions ] && mv ~/.pi/agent/extensions ~/.pi/agent/extensions.bak.$(date +%Y%m%d%H%M%S)
 ln -sfn ~/dotfiles/pi/extensions ~/.pi/agent/extensions
+# Pi は OpenRouter だけで使う。Pi にはプロバイダーを止める設定がなく、環境変数にキーがあるプロバイダーは
+# すべて使える扱いになる。models.json で他のプロバイダーのキーを、定義しない変数 $PI_DISABLED_KEY に向けて外す
+# (シェルの ANTHROPIC_API_KEY などは他のツール用にそのまま残る)。models.json は Pi が書き込まないのでリンクする
+ln -sf ~/dotfiles/pi/models.json ~/.pi/agent/models.json
 # Pi パッケージ(版を固定。入れた記録は settings.json の packages に残る)
 #   pi-web-access: Web 検索・取得 / pi-usage: OpenRouter 残高 / rpiv-ask-user-question: 選択式の質問
 #   cc-safety-net: 危険なコマンドと秘密ファイルの読み取りを止める / context-mode: ツール出力を会話に入れず索引に逃がす
