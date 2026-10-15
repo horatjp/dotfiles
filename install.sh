@@ -3,7 +3,11 @@
 set -e
 
 # sudo
-echo "$(whoami) ALL=(root) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$(whoami)
+# 途中で何度もパスワードを聞かれないよう、実行中だけパスワードなしの sudo を許す。
+# 終わったら(途中で失敗しても)消す。常に残すと、エージェントからも確認なしで root に届くため
+SUDOERS_FILE="/etc/sudoers.d/$(whoami)"
+echo "$(whoami) ALL=(root) NOPASSWD:ALL" | sudo tee "$SUDOERS_FILE" > /dev/null
+trap 'sudo rm -f "$SUDOERS_FILE"' EXIT
 
 # not macOS
 if [ "$(uname)" != 'Darwin' ]; then
