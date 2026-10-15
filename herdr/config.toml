@@ -1,6 +1,11 @@
 onboarding = false
 
-# 既定の通知音が大きいため、macOS 標準音(Tink / Glass)を -12dB した mp3 に差し替え
+# 既定の通知音が大きいため差し替え(herdr には音量設定がない)。
+# 公開リポジトリのため、どちらも ffmpeg の正弦波で自作した音(0.3 秒の指数減衰を1音とする)。
+#   done.mp3   : E5(659Hz) 1音
+#     ffmpeg -f lavfi -i "sine=f=659:d=0.3" -af "volume='exp(-14*t)':eval=frame,afade=t=in:d=0.005,volume=6dB" -ar 44100 -ac 1 -b:a 96k done.mp3
+#   request.mp3: B4(494Hz)→E5(659Hz) の上がる2音(2音目を 160ms 遅らせて重ねる)
+#     ffmpeg -f lavfi -i "sine=f=494:d=0.3" -f lavfi -i "sine=f=659:d=0.3" -filter_complex "[0]volume='exp(-14*t)':eval=frame,afade=t=in:d=0.005[a];[1]volume='exp(-14*t)':eval=frame,afade=t=in:d=0.005,adelay=160[b];[a][b]amix=inputs=2:normalize=0,volume=6dB" -ar 44100 -ac 1 -b:a 96k request.mp3
 [ui.sound]
 done_path = "sounds/done.mp3"       # 完了時
 request_path = "sounds/request.mp3" # 確認を求めるとき
