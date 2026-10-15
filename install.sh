@@ -235,6 +235,16 @@ mv ~/.pi/agent/settings.json.tmp ~/.pi/agent/settings.json
 # 拡張(確認ダイアログ・保護パス)はディレクトリごとリンクする。実ディレクトリがあると ln が中にリンクを作るので退避する
 [ -d ~/.pi/agent/extensions ] && [ ! -L ~/.pi/agent/extensions ] && mv ~/.pi/agent/extensions ~/.pi/agent/extensions.bak.$(date +%Y%m%d%H%M%S)
 ln -sfn ~/dotfiles/pi/extensions ~/.pi/agent/extensions
+# Pi パッケージ(版を固定。入れた記録は settings.json の packages に残る)
+#   pi-web-access: Web 検索・取得 / pi-usage: OpenRouter 残高 / rpiv-ask-user-question: 選択式の質問
+#   cc-safety-net: 危険なコマンドと秘密ファイルの読み取りを止める / context-mode: ツール出力を会話に入れず索引に逃がす
+for pkg in pi-web-access@0.41.0 @narumitw/pi-usage@0.66.0 @juicesharp/rpiv-ask-user-question@2.13.8 cc-safety-net@2.6.12 context-mode@1.0.169; do
+  pi install "npm:$pkg"
+done
+# context-mode は MCP サーバー本体を別に入れる。postinstall が ~/.claude/settings.json の enabledPlugins に
+# 勝手に true を書くため、settings.base.json で false(明示的な opt-out は書き換えない)を先に入れておく
+npm install -g context-mode@1.0.169
+jq -e '.mcpServers["context-mode"]' ~/.pi/agent/mcp.json >/dev/null 2>&1 || pi mcp add context-mode -- context-mode
 
 # Grok CLI (Grok Build)
 npm install -g @xai-official/grok
