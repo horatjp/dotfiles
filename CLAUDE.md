@@ -30,7 +30,8 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 - `claude/AGENTS.md` → `~/.claude/CLAUDE.md`（ユーザーのグローバル指示）
 - `opencode/AGENTS.md` → `~/.config/opencode/AGENTS.md`（ユーザーのグローバル指示。スキルは `~/.claude/skills` と `~/.agents/skills` を標準で読む）
 - `claude/skills` → `~/.claude/skills`、`claude/agents` → `~/.claude/agents`
-- `pi/extensions` → `~/.pi/agent/extensions`（Pi の拡張。確認ダイアログと保護パス。Pi 公式 examples からのコピー）
+- `pi/extensions` → `~/.pi/agent/extensions`（Pi の拡張。確認ダイアログと保護パスは Pi 公式 examples からのコピー。`agmsg.ts` は agmsg の受信）
+- `pi/agmsg/types/pi` → `~/.agents/skills/agmsg/plugins/types/pi`（agmsg の Pi 用プラグイン。`pi/agmsg/install.sh` がリンク・信頼し、Pi 用の SKILL.md を `~/.pi/agent/skills/agmsg` に合成する）
 - `zsh/`, `nvim/`, `tmux/`, `git/`, `starship/` なども同様
 - `~/.env` は git 管理外で、実体はマシンごとに用意する。Mac は 1Password Environments をマウントした名前付きパイプ（読むたびに 1Password が値を渡す）、WSL 等は `op://` 参照を書いた通常ファイル（`.zshrc` が `op inject` で展開してキャッシュ）。`.zshrc` は種類を見て読み方を切り替える。install.sh は無ければ警告するだけで、テンプレートは持たない
 

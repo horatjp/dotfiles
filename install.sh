@@ -263,3 +263,5 @@ npx -y ctx7 setup
 
 # agmsg (agent messaging)
 bash <(curl -fsSL https://raw.githubusercontent.com/fujibee/agmsg/main/setup.sh)
+# agmsg は Pi を種類として持たないため、Pi 用のプラグインとスキルを足す(受信は pi/extensions/agmsg.ts)
+bash ~/dotfiles/pi/agmsg/install.sh
