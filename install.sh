@@ -202,11 +202,6 @@ if [ -L ~/.codex/config.toml ]; then  # 旧 symlink 方式からの移行: Codex
 fi
 npm install -g @openai/codex
 
-# Gemini
-mkdir -p ~/.gemini
-npm install -g @google/gemini-cli
-gemini extensions install https://github.com/gemini-cli-extensions/nanobanana
-
 # Pi (earendil-works/pi)
 # スキルは ~/.agents/skills のみ標準で読むため、~/.claude/skills を skills に冪等に追加する。
 # settings.json は Pi も書き込むため dotfiles では管理しない(同名スキルは ~/.claude/skills 側が優先される)
