@@ -53,7 +53,8 @@
     ]
   },
   "enabledPlugins": {
-    "runpod@runpod": true
+    "runpod@runpod": true,
+    "context-mode@context-mode": false
   },
   "extraKnownMarketplaces": {
     "runpod": {
