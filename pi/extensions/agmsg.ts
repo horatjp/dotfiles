@@ -10,21 +10,41 @@
  */
 
 import { type ChildProcess, execFile, spawn } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
-import { createInterface } from "node:readline";
+import { dirname, join } from "node:path";
+import { createInterface, type Interface } from "node:readline";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 
 const SCRIPTS = join(homedir(), ".agents/skills/agmsg/scripts");
 // types/pi/type.conf の hooks_file と同じ
 const MARKER = ".pi/agmsg-delivery";
+// watch.sh のメッセージ行(<ts> | <team> | <from> → <to> | <body>)。
+// 同じ標準出力に「agmsg watch: ...」「ERROR: ...」の診断行も出るので、これに合う行だけを会話に入れる
+const MESSAGE_LINE = /^[^|]+ \| [^|]+ \| [^|]+ → [^|]+ \| /;
+// 起動からこれより早く終わったら異常終了とみなし、再起動を遅らせる(診断行で終わる起動と再起動の繰り返しを防ぐ)
+const QUICK_EXIT_MS = 10_000;
+const MAX_BACKOFF_MS = 30 * 60_000;
 
 export default function (pi: ExtensionAPI) {
 	let watcher: ChildProcess | undefined;
+	let reader: Interface | undefined;
 	let watchedSession: string | undefined;
 	// whoami.sh が返すプロジェクトの場所。未参加なら undefined で、ターンの終わりごとに問い直す
 	let project: string | undefined;
+	let quickExits = 0;
+	let retryAt = 0;
+	let syncing: Promise<void> | undefined;
+	let closed = false;
+
+	const notify = (ctx: ExtensionContext, text: string, level: "info" | "warning") => {
+		if (closed || !ctx.hasUI) return;
+		try {
+			ctx.ui.notify(text, level);
+		} catch {
+			// セッションの終了と行き違うと ctx は使えなくなる
+		}
+	};
 
 	const whoami = (cwd: string) =>
 		new Promise<string | undefined>((resolve) => {
@@ -33,6 +53,14 @@ export default function (pi: ExtensionAPI) {
 				resolve(stdout.match(/ project=(.+)$/m)?.[1]);
 			});
 		});
+
+	// 目印ファイルを cwd から上へ探す。無ければ monitor の対象外なので、whoami.sh(bash と sqlite の起動)を省く
+	const hasMarkerAbove = (cwd: string) => {
+		for (let dir = cwd; ; dir = dirname(dir)) {
+			if (existsSync(join(dir, MARKER))) return true;
+			if (dirname(dir) === dir) return false;
+		}
+	};
 
 	const monitorEnabled = (dir: string) => {
 		try {
@@ -43,52 +71,99 @@ export default function (pi: ExtensionAPI) {
 	};
 
 	const stop = () => {
+		// 止めた後の watch.sh が出す行を、終わったセッションへ送らないようリスナーごと外す
+		reader?.close();
+		reader = undefined;
+		watcher?.stdout?.destroy();
 		watcher?.kill("SIGTERM");
 		watcher = undefined;
 		watchedSession = undefined;
 	};
 
 	const start = (dir: string, sessionId: string, ctx: ExtensionContext) => {
+		const startedAt = Date.now();
+		let lastDiag = "";
 		const child = spawn("bash", [join(SCRIPTS, "watch.sh"), sessionId, dir, "pi"], {
-			stdio: ["ignore", "pipe", "ignore"],
+			stdio: ["ignore", "pipe", "pipe"],
 		});
+		const rl = createInterface({ input: child.stdout! });
 		watcher = child;
+		reader = rl;
 		watchedSession = sessionId;
-		child.on("exit", () => {
+		child.stderr!.on("data", (chunk: Buffer) => {
+			lastDiag = chunk.toString().trim().split("\n").pop() ?? lastDiag;
+		});
+		child.on("error", (err) => {
 			if (watcher === child) stop();
+			notify(ctx, `agmsg: watch.sh を起動できません: ${err.message}`, "warning");
 		});
-		// watch.sh は1行1メッセージ(<ts> | <team> | <from> → <to> | <body>)で出し、出した時点で既読になる
-		createInterface({ input: child.stdout! }).on("line", (line) => {
-			if (!line.trim()) return;
-			pi.sendMessage(
-				{
-					customType: "agmsg",
-					content: `agmsg message received (already marked read):\n${line}\n\nHandle it per the agmsg skill; reply with send.sh if a reply is needed.`,
-					display: true,
-				},
-				{ triggerTurn: true, deliverAs: "followUp" },
-			);
+		child.on("exit", (code) => {
+			if (watcher !== child) return; // こちらから止めた
+			stop();
+			if (Date.now() - startedAt < QUICK_EXIT_MS) {
+				quickExits++;
+				retryAt = Date.now() + Math.min(60_000 * 2 ** (quickExits - 1), MAX_BACKOFF_MS);
+			} else {
+				quickExits = 0;
+			}
+			notify(ctx, `agmsg: 受信が止まりました (exit ${code})${lastDiag ? `: ${lastDiag}` : ""}`, "warning");
 		});
-		if (ctx.hasUI) ctx.ui.notify("agmsg: 受信を開始しました", "info");
+		// watch.sh は出した時点でメッセージを既読にする
+		rl.on("line", (line) => {
+			if (!line.trim() || reader !== rl) return;
+			if (!MESSAGE_LINE.test(line)) {
+				lastDiag = line;
+				notify(ctx, line, "warning");
+				return;
+			}
+			try {
+				pi.sendMessage(
+					{
+						customType: "agmsg",
+						content: `agmsg message received (already marked read):\n${line}\n\nHandle it per the agmsg skill; reply with send.sh if a reply is needed.`,
+						display: true,
+					},
+					{ triggerTurn: true, deliverAs: "followUp" },
+				);
+			} catch {
+				// セッションの終了と行き違った。既読にはなっているので、受信箱(inbox.sh)からは見える
+			}
+		});
+		notify(ctx, "agmsg: 受信を開始しました", "info");
 	};
 
-	const sync = async (ctx: ExtensionContext) => {
-		project ??= await whoami(ctx.cwd);
+	const syncOnce = async (ctx: ExtensionContext) => {
+		if (project === undefined && hasMarkerAbove(ctx.cwd)) project = await whoami(ctx.cwd);
+		if (closed) return;
 		const sessionId = ctx.sessionManager.getSessionId();
 		const want = project !== undefined && monitorEnabled(project);
 		// /new や /resume でセッションが替わったら、新しいセッション ID で張り直す
 		if (watcher && (!want || watchedSession !== sessionId)) stop();
-		if (want && !watcher) start(project!, sessionId, ctx);
+		if (!want) quickExits = 0;
+		if (want && !watcher && Date.now() >= retryAt) start(project!, sessionId, ctx);
+	};
+
+	// session_start と agent_end が重なっても、whoami を待つ間に start が二重に走らないよう1本にまとめる
+	const sync = (ctx: ExtensionContext) => {
+		syncing ??= syncOnce(ctx).finally(() => {
+			syncing = undefined;
+		});
+		return syncing;
 	};
 
 	pi.on("session_start", async (_event, ctx) => {
+		closed = false;
 		project = undefined;
+		quickExits = 0;
+		retryAt = 0;
+		await syncing;
 		await sync(ctx);
 	});
 	pi.on("agent_end", async (_event, ctx) => {
 		await sync(ctx);
 	});
 	pi.on("session_shutdown", async () => {
+		closed = true;
 		stop();
 	});
 }

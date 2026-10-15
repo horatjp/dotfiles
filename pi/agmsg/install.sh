@@ -23,10 +23,14 @@ ln -sfn "$HERE/types/pi" "$AGMSG_DIR/plugins/types/pi"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 # agmsg の setup.sh は main を入れるため、VERSION のタグが無ければ main で合成する
-ref="v$(cat "$AGMSG_DIR/VERSION")"
-git clone -q --depth 1 -b "$ref" https://github.com/fujibee/agmsg "$tmp/agmsg" 2>/dev/null ||
+ref="v$(cat "$AGMSG_DIR/VERSION" 2>/dev/null || true)"
+if ! git clone -q --depth 1 -b "$ref" https://github.com/fujibee/agmsg "$tmp/agmsg"; then
+  echo "agmsg の $ref が取得できないため main で合成する" >&2
   git clone -q --depth 1 https://github.com/fujibee/agmsg "$tmp/agmsg"
-# 一時ソースでは組み込みの種類として置けば信頼の手続きが要らない
+fi
+# 一時ソースでは組み込みの種類として置けば信頼の手続きが要らない。
+# 本家に pi が加わっていても、cp -R が中へ入れ子にコピーしないよう先に消す
+rm -rf "$tmp/agmsg/scripts/drivers/types/pi"
 cp -R "$HERE/types/pi" "$tmp/agmsg/scripts/drivers/types/pi"
 
 mkdir -p "$HOME/.pi/agent/skills/agmsg"
