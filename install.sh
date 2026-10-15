@@ -207,15 +207,6 @@ mkdir -p ~/.gemini
 npm install -g @google/gemini-cli
 gemini extensions install https://github.com/gemini-cli-extensions/nanobanana
 
-# GitHub Copilot
-mkdir -p ~/.github
-ln -sf ~/dotfiles/github/AGENTS.md ~/.github/copilot-instructions.md
-ln -sf ~/dotfiles/github/copilot-commit-message-instructions.md ~/.github/copilot-commit-message-instructions.md
-ln -sf ~/dotfiles/github/instructions ~/.github/instructions
-ln -sf ~/dotfiles/github/prompts ~/.github/prompts
-# Note: cp -rL ~/.github .github
-npm install -g @github/copilot
-
 # Pi (earendil-works/pi)
 # スキルは ~/.agents/skills のみ標準で読むため、~/.claude/skills を skills に冪等に追加する。
 # settings.json は Pi も書き込むため dotfiles では管理しない(同名スキルは ~/.claude/skills 側が優先される)
