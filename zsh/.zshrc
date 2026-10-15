@@ -10,7 +10,8 @@ setopt interactive_comments # コマンドライン上のコメントを有効�
 # - 名前付きパイプ(Mac): 1Password Environments のマウント。読むたびにアプリが中身を渡し、平文はディスクに残らない
 # - 通常ファイル(WSL 等): op:// 参照を op inject で展開し、結果を一時ディレクトリにキャッシュする
 #   （1Password CLI は新しいターミナルセッションごとに確認を出す仕様のため、認証を再起動後の初回のみにする）
-OPENV_CACHE="${TMPDIR:-/tmp}/openv.env"
+#   置き場所は再起動で消えるユーザー専用の場所。名前を .env.* にしてエージェントの読み取り禁止(Read(**/.env.*))に掛ける
+OPENV_CACHE="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/.env.openv"
 openv() {
   (umask 077; op inject -i "$HOME/.env" > "$OPENV_CACHE") || { rm -f "$OPENV_CACHE"; return 1; }
   set -a
@@ -50,7 +51,8 @@ if [ -p "$HOME/.env" ]; then
   openv_pipe 2>/dev/null
 elif [ -f "$HOME/.env" ]; then
   if grep -q "op://" "$HOME/.env"; then
-    if [ -s "$OPENV_CACHE" ]; then
+    # 他のユーザーが先に置いたファイルを source しないよう、自分の物か確かめる
+    if [ -s "$OPENV_CACHE" ] && [ -O "$OPENV_CACHE" ]; then
       set -a
       source "$OPENV_CACHE"
       set +a
