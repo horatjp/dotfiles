@@ -7,7 +7,6 @@
       "Read(./**/*)",
       "Edit(./**/*)",
       "Write(./**/*)",
-      "Update(./**/*)",
       "Bash(npm:*)",
       "Bash(pnpm:*)",
       "Bash(yarn:*)",
@@ -16,9 +15,6 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git log:*)",
-      "Bash(docker:*)",
-      "Bash(python:*)",
-      "Bash(node:*)",
       "Bash(touch:*)",
       "Bash(mkdir:*)",
       "Bash(mv:*)",
@@ -47,7 +43,11 @@
       "Bash(wget:*)"
     ],
     "ask": [
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(docker:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(node:*)"
     ]
   },
   "enabledPlugins": {
