@@ -145,8 +145,6 @@ config.keys = {
       patterns = { "[\\w./-]+\\.[A-Za-z]\\w*:\\d+(?::\\d+)?" },
     }),
   },
-  -- Paste from clipboard
-  { key = "v", mods = "CTRL", action = wezterm.action.PasteFrom("Clipboard") },
   -- Move between tabs
   { key = "Tab", mods = "CTRL", action = wezterm.action.ActivateTabRelative(1) },
   { key = "Tab", mods = "CTRL|SHIFT", action = wezterm.action.ActivateTabRelative(-1) },
@@ -155,5 +153,10 @@ config.keys = {
   -- tmux 経由でも素通しされる（kitty keyboard protocol は tmux 側の対応が要るため使わない）
   { key = "Enter", mods = "SHIFT", action = wezterm.action.SendString("\x1b\r") },
 }
+
+-- Paste from clipboard(Windows のみ。macOS は Cmd+V があり、Ctrl+V は nvim / tmux の矩形選択に残す)
+if is_windows then
+  table.insert(config.keys, { key = "v", mods = "CTRL", action = wezterm.action.PasteFrom("Clipboard") })
+end
 
 return config
