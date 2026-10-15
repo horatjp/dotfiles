@@ -31,8 +31,10 @@ Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.
 
 #### Other
 
+install.sh は ~/dotfiles にあるファイルをリンクするため、先にクローンする。
+
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/horatjp/dotfiles/main/install.sh)"
+git clone https://github.com/horatjp/dotfiles ~/dotfiles && bash ~/dotfiles/install.sh
 ```
 
 
@@ -50,7 +52,7 @@ Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.
 ### macOS
 
 * macOS settings
-* Kitty
+* WezTerm
 * Orbstack
 * Visual Studio Code
 * Font HackGen
@@ -63,7 +65,7 @@ Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.
 * Znap!
 * FZF
 * Starship
-* asdf
+* mise
 * Tmux
 * Herdr
 * Neovim (LazyVim)

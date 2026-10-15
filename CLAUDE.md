@@ -12,7 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 bash install.sh              # WSL / macOS 共通のシェル環境セットアップ
-bash setup.macos.sh          # macOS 初期セットアップ（install.sh を含む前段）
+bash setup.macos.sh          # macOS 初期セットアップ（install.sh の前に実行する。install.sh は呼ばない）
 bash install.devcontainer.sh # devcontainer 用の軽量セットアップ
 # setup.windows.ps1          # Windows (PowerShell)
 ```
@@ -42,7 +42,7 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 ### ドットなし/ドット付きディレクトリの関係
 
 - ソースは**ドットなし**ディレクトリ: `claude/`、`codex/`
-- リポジトリ直下の `/.github/` と `/.claude/` は gitignore されたローカルコピー（先頭 `/` でアンカーされており、`templates/` 配下のテンプレートが同梱する `.github/` `.claude/` は追跡対象）
+- リポジトリ直下の `/.github/` と `/.claude/` は gitignore されたローカルコピー（先頭 `/` でアンカーしているので、`templates/` 配下に同名のディレクトリを置いても追跡される）
 
 ### AIエージェント設定の並行管理
 
