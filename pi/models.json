@@ -14,6 +14,22 @@
     },
     "kimi-coding": {
       "apiKey": "$PI_DISABLED_KEY"
+    },
+    "openrouter": {
+      "modelOverrides": {
+        "openrouter/auto": {
+          "contextWindow": 128000
+        },
+        "openrouter/auto-beta": {
+          "contextWindow": 128000
+        },
+        "openrouter/pareto-code": {
+          "contextWindow": 128000
+        },
+        "openrouter/fusion": {
+          "contextWindow": 128000
+        }
+      }
     }
   }
 }
