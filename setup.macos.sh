@@ -217,10 +217,13 @@ sudo pmset -a displaysleep 30
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Homebrew
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-export NONINTERACTIVE=1
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# 再実行しても入れ直さず、.zprofile にも重ねて書かない
+if [ ! -x /opt/homebrew/bin/brew ]; then
+  export NONINTERACTIVE=1
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
 mkdir -p ~/.config/zsh
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.config/zsh/.zprofile
+grep -qs 'brew shellenv' ~/.config/zsh/.zprofile || echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.config/zsh/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)" > /dev/null
 
 
@@ -321,14 +324,15 @@ brew install --cask doll
 # Mac App Store
 brew install mas
 
+# App Store に未サインインだと失敗するので、止めずに続ける(後から mas install <id> で入れ直す)
 # LINE
-mas install 539883307
+mas install 539883307 || echo "mas: LINE を入れられませんでした(App Store にサインインが必要)"
 
 # Amazon Kindle
-mas install 302584613
+mas install 302584613 || echo "mas: Kindle を入れられませんでした(App Store にサインインが必要)"
 
 # NewFile - Quick File Creation
-mas install 1629057582
+mas install 1629057582 || echo "mas: NewFile を入れられませんでした(App Store にサインインが必要)"
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -361,7 +365,8 @@ if [[ -f $vscodeExtensionsPath ]]; then
     done
 fi
 
-# locale
+# locale(VS Code を一度も起動していないと ~/.vscode が無い)
+mkdir -p ~/.vscode
 echo '{"locale": "ja"}' > ~/.vscode/argv.json
 
 
