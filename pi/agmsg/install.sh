@@ -23,8 +23,10 @@ ln -sfn "$HERE/types/pi" "$AGMSG_DIR/plugins/types/pi"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 # agmsg の setup.sh は main を入れるため、VERSION のタグが無ければ main で合成する
-ref="v$(cat "$AGMSG_DIR/VERSION" 2>/dev/null || true)"
-if ! git clone -q --depth 1 -b "$ref" https://github.com/fujibee/agmsg "$tmp/agmsg"; then
+# VERSION は v 付き(例: v1.5.3)なので、二重にならないよう先頭の v を外してから付ける
+ver="$(cat "$AGMSG_DIR/VERSION" 2>/dev/null || true)"
+ref="v${ver#v}"
+if ! git -c advice.detachedHead=false clone -q --depth 1 -b "$ref" https://github.com/fujibee/agmsg "$tmp/agmsg"; then
   echo "agmsg の $ref が取得できないため main で合成する" >&2
   git clone -q --depth 1 https://github.com/fujibee/agmsg "$tmp/agmsg"
 fi
