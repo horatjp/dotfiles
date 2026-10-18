@@ -32,7 +32,9 @@ openv_pipe() {
   for i in 1 2 3; do
     out=$(
       cat "$HOME/.env" & p=$!
-      ( sleep 60; kill $p ) >/dev/null 2>&1 & w=$!
+      # 見張りを止めたときに sleep も一緒に止める。残すとシェルの前面に 60 秒居座り、
+      # herdr がペインを「空いたシェルではない」と見てエージェントを起動できない
+      ( trap 'kill $t 2>/dev/null; exit' TERM; sleep 60 & t=$!; wait $t; kill $p ) >/dev/null 2>&1 & w=$!
       wait $p; s=$?; kill $w 2>/dev/null; exit $s
     ) || break
     [ -n "$out" ] && break
