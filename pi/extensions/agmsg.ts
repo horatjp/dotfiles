@@ -54,11 +54,12 @@ export default function (pi: ExtensionAPI) {
 			});
 		});
 
-	// 目印ファイルを cwd から上へ探す。無ければ monitor の対象外なので、whoami.sh(bash と sqlite の起動)を省く
-	const hasMarkerAbove = (cwd: string) => {
+	// 目印ファイルを cwd から上へ探し、いちばん近い目印のあるディレクトリを返す。
+	// 無ければ monitor の対象外なので、whoami.sh(bash と sqlite の起動)を省く
+	const markerDirAbove = (cwd: string) => {
 		for (let dir = cwd; ; dir = dirname(dir)) {
-			if (existsSync(join(dir, MARKER))) return true;
-			if (dirname(dir) === dir) return false;
+			if (existsSync(join(dir, MARKER))) return dir;
+			if (dirname(dir) === dir) return undefined;
 		}
 	};
 
@@ -133,7 +134,10 @@ export default function (pi: ExtensionAPI) {
 	};
 
 	const syncOnce = async (ctx: ExtensionContext) => {
-		if (project === undefined && hasMarkerAbove(ctx.cwd)) project = await whoami(ctx.cwd);
+		// 親ディレクトリに古い目印が残っていると、起動時にそちらを掴む。その後 cwd で join・monitor 設定をすると
+		// 近い目印ができて食い違うので、そのときだけ問い直す(一致している間は whoami.sh を省く)
+		const markerDir = markerDirAbove(ctx.cwd);
+		if (markerDir !== undefined && project !== markerDir) project = await whoami(ctx.cwd);
 		if (closed) return;
 		const sessionId = ctx.sessionManager.getSessionId();
 		const want = project !== undefined && monitorEnabled(project);
