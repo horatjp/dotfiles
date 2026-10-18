@@ -25,13 +25,17 @@ const MESSAGE_LINE = /^[^|]+ \| [^|]+ \| [^|]+ → [^|]+ \| /;
 // 起動からこれより早く終わったら異常終了とみなし、再起動を遅らせる(診断行で終わる起動と再起動の繰り返しを防ぐ)
 const QUICK_EXIT_MS = 10_000;
 const MAX_BACKOFF_MS = 30 * 60_000;
+// 古い目印の場所で後から join する場合も拾いつつ、bash と sqlite を毎ターン起動しないための間隔
+const PROJECT_RECHECK_MS = 60_000;
 
 export default function (pi: ExtensionAPI) {
 	let watcher: ChildProcess | undefined;
 	let reader: Interface | undefined;
 	let watchedSession: string | undefined;
+	let watchedProject: string | undefined;
 	// whoami.sh が返すプロジェクトの場所。未参加なら undefined で、ターンの終わりごとに問い直す
 	let project: string | undefined;
+	let projectRecheckAt = 0;
 	let quickExits = 0;
 	let retryAt = 0;
 	let syncing: Promise<void> | undefined;
@@ -79,6 +83,7 @@ export default function (pi: ExtensionAPI) {
 		watcher?.kill("SIGTERM");
 		watcher = undefined;
 		watchedSession = undefined;
+		watchedProject = undefined;
 	};
 
 	const start = (dir: string, sessionId: string, ctx: ExtensionContext) => {
@@ -91,6 +96,7 @@ export default function (pi: ExtensionAPI) {
 		watcher = child;
 		reader = rl;
 		watchedSession = sessionId;
+		watchedProject = dir;
 		child.stderr!.on("data", (chunk: Buffer) => {
 			lastDiag = chunk.toString().trim().split("\n").pop() ?? lastDiag;
 		});
@@ -134,15 +140,18 @@ export default function (pi: ExtensionAPI) {
 	};
 
 	const syncOnce = async (ctx: ExtensionContext) => {
-		// 親ディレクトリに古い目印が残っていると、起動時にそちらを掴む。その後 cwd で join・monitor 設定をすると
-		// 近い目印ができて食い違うので、そのときだけ問い直す(一致している間は whoami.sh を省く)
+		// 目印と登録先が食い違う間は、同じ場所での join も拾えるよう間隔をあけて問い直す。
+		// 未参加・照会失敗なら次のターンで再試行し、一致していれば whoami.sh を省く
 		const markerDir = markerDirAbove(ctx.cwd);
-		if (markerDir !== undefined && project !== markerDir) project = await whoami(ctx.cwd);
+		if (markerDir !== undefined && (project === undefined || (project !== markerDir && Date.now() >= projectRecheckAt))) {
+			project = await whoami(ctx.cwd);
+			projectRecheckAt = Date.now() + PROJECT_RECHECK_MS;
+		}
 		if (closed) return;
 		const sessionId = ctx.sessionManager.getSessionId();
 		const want = project !== undefined && monitorEnabled(project);
-		// /new や /resume でセッションが替わったら、新しいセッション ID で張り直す
-		if (watcher && (!want || watchedSession !== sessionId)) stop();
+		// watch.sh の購読先は起動時に決まるので、セッションや登録先が替わったら張り直す
+		if (watcher && (!want || watchedSession !== sessionId || watchedProject !== project)) stop();
 		if (!want) quickExits = 0;
 		if (want && !watcher && Date.now() >= retryAt) start(project!, sessionId, ctx);
 	};
@@ -158,6 +167,7 @@ export default function (pi: ExtensionAPI) {
 	pi.on("session_start", async (_event, ctx) => {
 		closed = false;
 		project = undefined;
+		projectRecheckAt = 0;
 		quickExits = 0;
 		retryAt = 0;
 		await syncing;
