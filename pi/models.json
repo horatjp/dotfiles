@@ -28,6 +28,14 @@
         },
         "openrouter/fusion": {
           "contextWindow": 128000
+        },
+        "deepseek/deepseek-v4-pro-0813": {
+          "compat": {
+            "openRouterRouting": {
+              "only": ["alibaba"],
+              "allow_fallbacks": false
+            }
+          }
         }
       }
     }
