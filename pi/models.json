@@ -16,6 +16,28 @@
       "apiKey": "$PI_DISABLED_KEY"
     },
     "openrouter": {
+      "models": [
+        {
+          "id": "deepseek/deepseek-v4.1-flash-1017",
+          "name": "DeepSeek V4.1 Flash 1017",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 262144,
+          "maxTokens": 131072,
+          "cost": {
+            "input": 0.08,
+            "output": 0.50,
+            "cacheRead": 0.008,
+            "cacheWrite": 0.08
+          },
+          "compat": {
+            "openRouterRouting": {
+              "only": ["inference-net/fp8"],
+              "allow_fallbacks": false
+            }
+          }
+        }
+      ],
       "modelOverrides": {
         "openrouter/auto": {
           "contextWindow": 128000
