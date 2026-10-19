@@ -54,7 +54,7 @@
         "deepseek/deepseek-v4-pro-0813": {
           "compat": {
             "openRouterRouting": {
-              "only": ["alibaba"],
+              "order": ["alibaba", "deepinfra/fp8"],
               "allow_fallbacks": false
             }
           }
