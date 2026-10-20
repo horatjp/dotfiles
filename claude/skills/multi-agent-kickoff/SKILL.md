@@ -62,14 +62,14 @@ description: 複数のAIエージェント(監督・実装・レビューなど)
 
 Opus は主のレビュー役にしない。Luna は使わない(根拠は playbook §2)。
 
-Claude と Codex が使えないときの予備環境は、Pi で OpenRouter を使う(playbook §7)。予備環境では監督も Pi にしてよい。ペインの用意と起動は人が行う。
+Claude と Codex が使えないときの予備環境は、Pi で OpenRouter を使う(playbook §7)。予備環境では監督も Pi にしてよい。ペインの用意と起動は人が行う。予備環境では、完了の前に境目の入力を作り、期待する結果を先に書いて実行・照合させる(playbook §7、2026-10-20)。
 
 | 役割 | モデル(提供元の固定) | 系統 |
 |---|---|---|
 | 監督(依頼とまとめだけ) | DeepSeek V4 Pro 0813(alibaba、2番目に deepinfra/fp8) | DeepSeek |
 | 実装 | DeepSeek V4.1 Flash 1017(inference-net/fp8) | DeepSeek |
-| レビュー | GLM 5.3 | Z.ai |
-| 重いレビュー(候補・未確認) | Muse Spark 1.3(meta。次点 Kimi K3 morph/fp8) | Meta |
+| レビュー(暫定、2026-10-20) | Muse Spark 1.3(meta。contributor の付かない ID。予備に GLM 5.3) | Meta |
+| 重いレビュー(候補・未確認) | Kimi K3(morph/fp8) | Moonshot |
 
 根拠は ai-watch の測定とレビュー記録。
 - 検索・集計の課題: Sol 6.1 が首位、Haiku 5.5 は Sonnet 5.5 より上。
