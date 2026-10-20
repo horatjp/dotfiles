@@ -6,8 +6,6 @@
     "allow": [
       "Read(./**/*)",
       "Edit(./**/*)",
-      "Write(./**/*)",
-      "Update(./**/*)",
       "Bash(npm:*)",
       "Bash(pnpm:*)",
       "Bash(yarn:*)",
