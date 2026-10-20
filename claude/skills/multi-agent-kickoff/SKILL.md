@@ -5,7 +5,7 @@ description: 複数のAIエージェント(監督・実装・レビューなど)
 
 # マルチエージェントの起動と監督
 
-監督(このセッション)は自分では実装しない。作業を分け、役割ごとのエージェントを herdr のペインで起動し、agmsg で依頼・報告をやり取りする。レビューを通ったものだけを監督がコミットする。
+監督(このセッション)は原則として自分では実装しない(自分で直してよいのは設定値・記録・文書の小変更だけで、それも別会社の1者に見せてから入れる。playbook §1)。作業を分け、役割ごとのエージェントを herdr のペインで起動し、agmsg で依頼・報告をやり取りする。レビューを通ったものだけを監督がコミットする。
 
 道具は既存のスキルを使う。
 - ペインの操作: `herdr` スキル
@@ -57,7 +57,7 @@ description: 複数のAIエージェント(監督・実装・レビューなど)
 | 実装 | Codex GPT-6.1 Sol medium | B |
 | レビュー(Sol の作業) | Claude Sonnet 5.5 medium | A |
 | レビュー(Claude の作業) | Codex GPT-6 Astra medium | B |
-| 重いレビュー(お金・結論・データの正しさ・セキュリティ) | Sol の作業は Claude Fable 5.1 xhigh、Claude の作業は Codex Astra xhigh | A / B |
+| 重いレビュー(お金・停止条件・測定の結論・保存データ・セキュリティ) | Sol の作業は Claude Fable 5.1 xhigh、Claude の作業は Codex Astra xhigh、さらにもう1者(少なくとも1者は作業した側と別会社) | A / B |
 | 見回り | Claude Haiku 5.5 | A |
 
 Opus は主のレビュー役にしない。Luna は使わない(根拠は playbook §2)。
@@ -66,16 +66,16 @@ Claude と Codex が使えないときの予備環境は、Pi で OpenRouter を
 
 | 役割 | モデル(提供元の固定) | 系統 |
 |---|---|---|
-| 監督(依頼とまとめだけ) | DeepSeek V4 Pro 0813(alibaba) | DeepSeek |
+| 監督(依頼とまとめだけ) | DeepSeek V4 Pro 0813(alibaba、2番目に deepinfra/fp8) | DeepSeek |
 | 実装 | DeepSeek V4.1 Flash 1017(inference-net/fp8) | DeepSeek |
 | レビュー | GLM 5.3 | Z.ai |
-| 重いレビュー(候補・未確認) | Kimi K3(morph/fp8) | Moonshot |
+| 重いレビュー(候補・未確認) | Muse Spark 1.3(meta。次点 Kimi K3 morph/fp8) | Meta |
 
 根拠は ai-watch の測定とレビュー記録。
 - 検索・集計の課題: Sol 6.1 が首位、Haiku 5.5 は Sonnet 5.5 より上。
 - Sonnet のレビュー: Sol の作業から P1 を1件、P2 を9件見つけた。
 - Fable のレビュー: Sol の作業から P1 を2件見つけた。
-- ただし、レビュー役ごとに見た作業が違うので、件数でレビュー役の優劣は決められない(交絡)。同じ差分を2者に独立して見せる組を貯めて比べる(試行中。playbook §5)。
+- ただし、レビュー役ごとに見た作業が違うので、件数でレビュー役の優劣は決められない(交絡)。いまの配置は能力の順位を証明したものではない。同じ差分・同じ依頼文を2者に独立して見せた有効な初回の組が20組たまったら見直す(playbook §5)。
 
 Sonnet が実装するときは、レビューを Codex に回す。xhigh は週の利用枠を大きく使うので、必要なときだけ呼ぶ。
 
