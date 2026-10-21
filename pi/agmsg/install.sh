@@ -23,11 +23,17 @@ ln -sfn "$HERE/types/pi" "$AGMSG_DIR/plugins/types/pi"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 # agmsg の setup.sh は main を入れるため、VERSION のタグが無ければ main で合成する
-# VERSION は v 付き(例: v1.5.3)なので、二重にならないよう先頭の v を外してから付ける
+# VERSION はタグ(例: v1.5.3)のこともコミットハッシュ(例: 93ba547)のこともある。
+# ハッシュはブランチ名として clone できないので、タグの形のときだけ取りに行く。
+# タグは v 付きなので、二重にならないよう先頭の v を外してから付ける
 ver="$(cat "$AGMSG_DIR/VERSION" 2>/dev/null || true)"
-ref="v${ver#v}"
-if ! git -c advice.detachedHead=false clone -q --depth 1 -b "$ref" https://github.com/fujibee/agmsg "$tmp/agmsg"; then
-  echo "agmsg の $ref が取得できないため main で合成する" >&2
+if [[ "$ver" =~ ^v?[0-9]+\.[0-9]+ ]]; then
+  ref="v${ver#v}"
+  if ! git -c advice.detachedHead=false clone -q --depth 1 -b "$ref" https://github.com/fujibee/agmsg "$tmp/agmsg"; then
+    echo "agmsg の $ref が取得できないため main で合成する" >&2
+    git clone -q --depth 1 https://github.com/fujibee/agmsg "$tmp/agmsg"
+  fi
+else
   git clone -q --depth 1 https://github.com/fujibee/agmsg "$tmp/agmsg"
 fi
 # 一時ソースでは組み込みの種類として置けば信頼の手続きが要らない。
