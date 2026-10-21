@@ -41,11 +41,7 @@
       "Bash(rm -rf:*)",
       "Bash(git reset:*)",
       "Bash(git rebase:*)",
-      "Bash(curl:*)",
       "Bash(wget:*)"
-    ],
-    "ask": [
-      "Bash(git push:*)"
     ]
   },
   "enabledPlugins": {
