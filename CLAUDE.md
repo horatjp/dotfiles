@@ -28,7 +28,7 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 `install.sh` がリポジトリ内ファイルを `~/` や `~/.config/` へ**シンボリックリンク**する。つまりこのリポジトリのファイルを編集すると、稼働中の環境設定が即座に変わる。例:
 
 - `claude/AGENTS.md` → `~/.claude/CLAUDE.md`（ユーザーのグローバル指示）
-- `claude/skills` → `~/.claude/skills`、`claude/agents` → `~/.claude/agents`
+- `agents/skills` → `~/.claude/skills` と `~/.codex/skills`（共有スキルの実体）、`claude/agents` → `~/.claude/agents`
 - `pi/extensions` → `~/.pi/agent/extensions`（Pi の拡張。確認ダイアログと保護パスは Pi 公式 examples からのコピー。`agmsg.ts` は agmsg の受信）
 - `pi/models.json` → `~/.pi/agent/models.json`（Pi を OpenRouter だけで使うため、他のプロバイダーのキーを未定義の `$PI_DISABLED_KEY` に向けて外す。OpenRouter の振り分けモデルは文脈の上限を 128K に下げ、自動圧縮を早めにかける）
 - `pi/agmsg/types/pi` → `~/.agents/skills/agmsg/plugins/types/pi`（agmsg の Pi 用プラグイン。`pi/agmsg/install.sh` がリンク・信頼し、Pi 用の SKILL.md を `~/.pi/agent/skills/agmsg` に合成する）
@@ -38,18 +38,18 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 **例外（マージ方式）**: `claude/settings.base.json` は共有ベースで、install.sh が jq で `~/.claude/settings.json`（実ファイル、git 管理外）へマージする。スカラーはベース優先、配列は和集合、ローカルだけのキーは残る。herdr 連携フックのようなマシン固有の絶対パスはベースに書かず、ローカル側に任せる。ベースを編集したら install.sh の Claude セクションを再実行して反映する。
 `codex/config.toml` は system 層 `/etc/codex/config.toml` へリンクされ、Codex が書き込むユーザー層 `~/.codex/config.toml`（実ファイル、git 管理外）とキー単位で深くマージされる。共有したい項目だけを書き、配列キーは両層に重ねない。
 
-**例外（コピー方式）**: `claude/mcp.json` → `~/.claude.json` はリンクではなくコピーされる。編集しても再コピーするまで環境には反映されない。Pi の `~/.pi/agent/settings.json` は Pi 自身も書き換えるため dotfiles では管理せず、install.sh が `skills` に `~/.claude/skills` のみ冪等に追加する。
+**例外（コピー方式）**: `claude/mcp.json` → `~/.claude.json` はリンクではなくコピーされる。編集しても再コピーするまで環境には反映されない。Pi の `~/.pi/agent/settings.json` は Pi 自身も書き換えるため dotfiles では管理せず、install.sh が `skills` に `~/.claude/skills`（共有スキルを読む）と `-~/.agents/skills/agmsg`（標準の agmsg を除外）を冪等に追加する（agmsg は Pi 用に合成した版を使う）。
 
 ### ドットなし/ドット付きディレクトリの関係
 
-- ソースは**ドットなし**ディレクトリ: `claude/`、`codex/`
+- ソースは**ドットなし**ディレクトリ: `claude/`、`codex/`、`agents/`
 - リポジトリ直下の `/.github/` と `/.claude/` は gitignore されたローカルコピー（先頭 `/` でアンカーしているので、`templates/` 配下に同名のディレクトリを置いても追跡される）
 
 ### AIエージェント設定の並行管理
 
 - `claude/AGENTS.md` と `codex/AGENTS.md` は内容を統一して維持する（日本語）。一方だけ変更しない
-- 汎用スキルは `claude/skills/` と `codex/skills/` の両方に置く。スキルを追加・更新したら両方への反映を検討する
-- skills CLI（`npx skills`）で導入する外部配布スキル（Cloudflare公式など）はgitで追跡せず `.gitignore` に列挙し、`install.sh` で再インストールする。`--all` は全エージェント（約50個の `~/.<agent>/`）へ配布する意味なので使わず、`-a claude-code -s '*' --copy` のように明示する。`skills remove -s '*'` はリンク先の `claude/skills` 内の追跡ファイルまで消すので使わない
+- 共有スキルの実体は `agents/skills/` の1か所に置き、Claude Code と Codex はディレクトリごとのリンクで同じ中身を読む。Codex が置く `.system/` は git で無視する。外部ツールが使う `~/.agents/skills/` は dotfiles 管理外として残す
+- skills CLI（`npx skills`）で導入する外部配布スキル（Cloudflare公式など）はgitで追跡せず `.gitignore` に列挙し、`install.sh` で再インストールする。`--all` は全エージェント（約50個の `~/.<agent>/`）へ配布する意味なので使わず、`-a claude-code -s '*' --copy` のように明示する。`skills remove -s '*'` はリンク先の `agents/skills` 内の追跡ファイルまで消すので使わない
 - スキルはコピーして他マシンでも使う前提。マシン固有の絶対パスを書かず `<skill-dir>` 等のプレースホルダを使う
 
 ### templates/
@@ -59,4 +59,4 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 
 ## コミット規約
 
-Gitmoji + Conventional Commits、日本語の subject（例: `✨ feat(skills): ○○スキルを追加`）。詳細な規約とGitmojiマッピングは `claude/skills/git-commit/`（`SKILL.md` と `gitmoji-reference.md`）を参照。関心ごとにアトミックにコミットする。
+Gitmoji + Conventional Commits、日本語の subject（例: `✨ feat(skills): ○○スキルを追加`）。詳細な規約とGitmojiマッピングは `agents/skills/git-commit/`（`SKILL.md` と `gitmoji-reference.md`）を参照。関心ごとにアトミックにコミットする。
