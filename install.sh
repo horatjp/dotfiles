@@ -188,7 +188,9 @@ jq -s '
 ' ~/.claude/settings.json ~/dotfiles/claude/settings.base.json > ~/.claude/settings.json.tmp
 mv ~/.claude/settings.json.tmp ~/.claude/settings.json
 ln -sfn ~/dotfiles/claude/agents ~/.claude/agents
-ln -sfn ~/dotfiles/claude/skills ~/.claude/skills
+# 実ディレクトリがあると ln が中にリンクを作るため、既存スキルを退避する
+[ -d ~/.claude/skills ] && [ ! -L ~/.claude/skills ] && mv ~/.claude/skills ~/.claude/skills.bak.$(date +%Y%m%d%H%M%S)
+ln -sfn ~/dotfiles/agents/skills ~/.claude/skills
 # ~/.claude.json はログイン情報やプロジェクトごとの状態も持つ実ファイルなので、mcpServers だけを差し替える
 [ -s ~/.claude.json ] || echo '{}' > ~/.claude.json
 jq -s '.[0] * {mcpServers: ((.[0].mcpServers // {}) + .[1].mcpServers)}' ~/.claude.json ~/dotfiles/claude/mcp.json > ~/.claude.json.tmp
@@ -198,7 +200,9 @@ curl -fsSL https://claude.ai/install.sh | bash
 # Codex
 mkdir -p ~/.codex
 ln -sf ~/dotfiles/codex/AGENTS.md ~/.codex/AGENTS.md
-ln -sfn ~/dotfiles/codex/skills ~/.codex/skills
+# 実ディレクトリがあると ln が中にリンクを作るため、既存スキルを退避する
+[ -d ~/.codex/skills ] && [ ! -L ~/.codex/skills ] && mv ~/.codex/skills ~/.codex/skills.bak.$(date +%Y%m%d%H%M%S)
+ln -sfn ~/dotfiles/agents/skills ~/.codex/skills
 # config.toml は Codex が projects.* / hooks.state 等を書き込むユーザー層(~/.codex/config.toml)には置かず、
 # 共有分を system 層(/etc/codex/config.toml、ユーザー層より低優先でキー単位に深くマージされる)へリンクする。
 # 配列キー(writable_roots 等)は層をまたいで置換されるため、共有側とローカル側の両方に書かない。
@@ -211,12 +215,14 @@ fi
 npm install -g @openai/codex
 
 # Pi (earendil-works/pi)
-# スキルは ~/.agents/skills のみ標準で読むため、~/.claude/skills を skills に冪等に追加する。
-# settings.json は Pi も書き込むため dotfiles では管理しない(同名スキルは ~/.claude/skills 側が優先される)
+# 共有スキルは ~/.claude/skills 経由で読み、agmsg は Pi 用に合成した版を使うため標準の場所から除外する。
+# settings.json は Pi も書き込むため dotfiles では管理せず、skills の2項目だけを冪等に追加する。
 npm install -g @earendil-works/pi-coding-agent
 mkdir -p ~/.pi/agent
 [ -f ~/.pi/agent/settings.json ] || echo '{}' > ~/.pi/agent/settings.json
 jq '.skills = ((.skills // []) | if index(["~/.claude/skills"]) then . else . + ["~/.claude/skills"] end)' ~/.pi/agent/settings.json > ~/.pi/agent/settings.json.tmp
+mv ~/.pi/agent/settings.json.tmp ~/.pi/agent/settings.json
+jq '.skills = ((.skills // []) | if index(["-~/.agents/skills/agmsg"]) then . else . + ["-~/.agents/skills/agmsg"] end)' ~/.pi/agent/settings.json > ~/.pi/agent/settings.json.tmp
 mv ~/.pi/agent/settings.json.tmp ~/.pi/agent/settings.json
 # 拡張(確認ダイアログ・保護パス)はディレクトリごとリンクする。実ディレクトリがあると ln が中にリンクを作るので退避する
 [ -d ~/.pi/agent/extensions ] && [ ! -L ~/.pi/agent/extensions ] && mv ~/.pi/agent/extensions ~/.pi/agent/extensions.bak.$(date +%Y%m%d%H%M%S)
@@ -248,9 +254,10 @@ npm install -g @devcontainers/cli
 # Third-party skills (gitでは追跡しない / .gitignore 参照)
 # --all は「全スキルを全エージェント(約50個の ~/.<agent>/ を生成)へ配布」なので使わない。
 # 相対リンクは ~/.claude/skills(symlink)経由だと壊れるため --copy で実体を置く。
-# Codex は ~/.agents/skills を直接読む(-a codex の実体もそこ)。Pi も標準で同じ場所を読む。
-npx -y skills add cloudflare/skills -g -a claude-code -a codex -s '*' --copy -y
-npx -y skills add herdrdev/herdr --skill herdr -g -a claude-code -a codex --copy -y
+# Claude Code と Codex の skills は同じ agents/skills を指すため、Claude Code 向けのコピーだけを置く。
+# Pi も ~/.claude/skills 経由でこの共有先を読む。
+npx -y skills add cloudflare/skills -g -a claude-code -s '*' --copy -y
+npx -y skills add herdrdev/herdr --skill herdr -g -a claude-code --copy -y
 # Runpod 公式スキル(Claude Code はプラグイン経由で持つため Codex / Pi 用に ~/.agents/skills へ)
 npx -y skills add runpod/runpod-plugins-official -g -a codex -s '*' --copy -y
 
