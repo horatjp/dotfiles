@@ -234,6 +234,7 @@ reports/review-<date>/BRIEF.md を読み、その手順どおりにプロジェ�
 - 受け取り: あなたは agmsg の watch を Monitor で張って、届いた知らせに反応する。30分で切れたら張り直す。
 - 様子を見る: `herdr agent read <id>` で画面を読む。確認画面を自動で承認する場合は、有料・本番・コミット・削除・kill の操作では止まるようにしておく。
 - 片付け: `herdr pane close <id>` でペインを閉じ、見張りと自動承認を止める。
+- agmsg の `spawn.sh`・`despawn.sh` を使うときは、`spawn.sh` に `--no-wait`、`despawn.sh` には最初から `--force` を付ける。agmsg 1.6.0 の agmsgd 配信では、起動完了の待ちと終了の合図が watch.sh 頼みのままで、付けないと spawn はタイムアウトし、despawn は閉じない(dotfiles-cc の報告、2026-10-23。本家で直るまでの対処)。
 - 注意: herdrのソケットやDockerは、サンドボックスの中から見えないことがある。その操作だけサンドボックスの外で行う。
 
 # あなた(監督)の仕事
