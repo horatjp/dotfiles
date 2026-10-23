@@ -235,9 +235,9 @@ ln -sfn ~/dotfiles/pi/extensions ~/.pi/agent/extensions
 # models.json は Pi が書き込まないのでリンクする
 ln -sf ~/dotfiles/pi/models.json ~/.pi/agent/models.json
 # Pi パッケージ(版を固定。入れた記録は settings.json の packages に残る)
-#   pi-web-access: Web 検索・取得 / pi-usage: OpenRouter 残高 / rpiv-ask-user-question: 選択式の質問
+#   pi-web-access: Web 検索・取得 / rpiv-ask-user-question: 選択式の質問
 #   cc-safety-net: 危険なコマンドと秘密ファイルの読み取りを止める / context-mode: ツール出力を会話に入れず索引に逃がす
-for pkg in pi-web-access@0.41.0 @narumitw/pi-usage@0.66.0 @juicesharp/rpiv-ask-user-question@2.13.8 cc-safety-net@2.6.12 context-mode@1.0.169; do
+for pkg in pi-web-access@0.41.0 @juicesharp/rpiv-ask-user-question@2.13.8 cc-safety-net@2.6.12 context-mode@1.0.169; do
   pi install "npm:$pkg"
 done
 # context-mode は MCP サーバー本体を別に入れる。postinstall が ~/.claude/settings.json の enabledPlugins に
