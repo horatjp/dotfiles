@@ -29,7 +29,7 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 
 - `claude/AGENTS.md` → `~/.claude/CLAUDE.md`（ユーザーのグローバル指示）
 - `agents/skills` → `~/.claude/skills` と `~/.codex/skills`（共有スキルの実体）、`claude/agents` → `~/.claude/agents`
-- `pi/extensions` → `~/.pi/agent/extensions`（Pi の拡張。確認ダイアログと保護パスは Pi 公式 examples からのコピー。`agmsg.ts` は agmsg の受信）
+- `pi/extensions` → `~/.pi/agent/extensions`（Pi の拡張。確認ダイアログと保護パスは Pi 公式 examples からのコピー。`agmsg.ts` は agmsg の受信。`openrouter-credits.ts` は OpenRouter の残高を表示し、管理用のキーを `~/.env` の `OPENROUTER_MANAGEMENT_KEY` から環境変数経由で読む）
 - `pi/models.json` → `~/.pi/agent/models.json`（Pi を OpenRouter だけで使うため、他のプロバイダーのキーを未定義の `$PI_DISABLED_KEY` に向けて外す。OpenRouter の振り分けモデルは文脈の上限を 128K に下げ、自動圧縮を早めにかける）
 - `pi/agmsg/types/pi` → `~/.agents/skills/agmsg/plugins/types/pi`（agmsg の Pi 用プラグイン。`pi/agmsg/install.sh` がリンク・信頼し、Pi 用の SKILL.md を `~/.pi/agent/skills/agmsg` に合成する）
 - `zsh/`, `nvim/`, `tmux/`, `git/`, `starship/` なども同様
