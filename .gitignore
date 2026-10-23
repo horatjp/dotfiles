@@ -95,4 +95,6 @@ codex/skills/music-production/
 # templates/ 配下のテンプレートが同梱する .github/ .claude/ は追跡対象。
 /.github/
 /.claude/
+# agmsg が Pi の届け方の目印として置くマシンごとのファイル
+/.pi/agmsg-delivery
 .project-command-history/
