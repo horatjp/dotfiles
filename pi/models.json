@@ -36,6 +36,27 @@
               "allow_fallbacks": false
             }
           }
+        },
+        {
+          "id": "minimax/minimax-m3.1-flash",
+          "name": "MiniMax M3.1 Flash",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 1000000,
+          "maxTokens": 524288,
+          "cost": {
+            "input": 0.15,
+            "output": 0.6,
+            "cacheRead": 0.015,
+            "cacheWrite": 0.15
+          },
+          "compat": {
+            "thinkingFormat": "openrouter",
+            "openRouterRouting": {
+              "only": ["novita/fp16"],
+              "allow_fallbacks": false
+            }
+          }
         }
       ],
       "modelOverrides": {
