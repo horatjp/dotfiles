@@ -69,8 +69,7 @@ Claude と Codex が使えないときの予備環境は、Pi で OpenRouter を
 |---|---|---|
 | 監督(依頼とまとめだけ) | DeepSeek V4 Pro 0813(alibaba、2番目に deepinfra/fp8) | DeepSeek |
 | 実装 | DeepSeek V4.1 Flash 1017(inference-net/fp8) | DeepSeek |
-| レビュー(暫定、2026-10-20。10/24 の GLM 5.3 との2者比較でも Muse のまま) | Muse Spark 1.3(meta。contributor の付かない ID。予備に GLM 5.3) | Meta |
-| 実装の候補(未確認、2026-10-24) | MiniMax M3.1 Flash(novita/fp16・max) | MiniMax |
+| レビュー(2026-10-28 に Muse から替えた。チームでの起動は未確認) | MiniMax M3.1 Flash(novita/fp16・medium。models.json に直接書いたモデル。重さと説明は監督が付け直す。予備に Muse Spark 1.3) | MiniMax |
 | 重いレビュー(候補・未確認) | Kimi K3(morph/fp8) | Moonshot |
 
 根拠は ai-watch の測定とレビュー記録。
