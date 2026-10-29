@@ -1,10 +1,10 @@
 ---
 name: project-knowledge
 description: >
-  プロジェクトの意思決定・技術調査・バグ解決・参照資料・学び・作業状態の記録・参照・更新に使用。
+  プロジェクトの意思決定・技術調査・バグ解決・参照資料・学び・作業状態・出来事の時系列(journal)の記録・参照・更新に使用。
   「意思決定を残して」「決定記録(ADR・PDR)に追加して」「PDRに残して」「調査結果を残して」「学びを残して」
-  「このURLを保存して」「棚卸しして」「ナレッジ管理を始めて」「引き継ぎを残して」などのフレーズや、
-  docs/decisions/・docs/knowledge/・docs/learnings.md・docs/STATUS.md を扱う時。ユーザーの依頼が無くても、
+  「このURLを保存して」「棚卸しして」「ナレッジ管理を始めて」「引き継ぎを残して」「日誌に書いて」「今日の出来事を記録して」
+  「議事録を残して」などのフレーズや、docs/decisions/・docs/knowledge/・docs/learnings.md・docs/STATUS.md・docs/journal/ を扱う時。ユーザーの依頼が無くても、
   方針や技術選定を決めた直後・調査を終えた直後・バグの原因を特定した直後・
   作業が途中のままセッションを終える時にも使う。
   ただし project-template 導入済みプロジェクト(docs/decisions/_template.md がある)では
@@ -31,15 +31,44 @@ description: >
 | 技術を調査した / バグを解決した / 一次資料・URLを参照した | `docs/knowledge/topic-subtopic.md` | 1件1ファイル。調査の結論は書くが、**採用の決定は decisions へ分け、両者を相互にリンクする** |
 | AI自身の作業のしかたで失敗した | `docs/learnings.md` | 下記ゲートを通過したもののみ |
 | 作業が途中のままセッションを終える / 次回への引き継ぎがある | `docs/STATUS.md` | **上書き型の1枚**。常に最新の現在地だけを保つ |
+| 出来事・やり取り・打ち合わせ・経過があった(コミットにならない出来事) | `docs/journal/YYYY-MM-DD.md` | **追記専用**の時系列ログ。下記「journal」 |
 
 learnings のゲート(3条件すべて「はい」のときのみ追記):
 ①根本原因を特定できた ②同じパターンが再発し得る ③次回の行動を「する/しない」で明記できる
+
+## journal(出来事の時系列)
+
+「いつ何が起きたか」を残す。コードが中心でコミット履歴(git log)で時系列が足りるプロジェクトでは作らない。
+生活・家族・事業・運営のように、コミットにならない出来事が多いプロジェクトで使う(`docs/journal/` が無ければ、
+必要になった時に作る)。書き方は project-template のワークスペース層の journal と同じ:
+
+- 1日1ファイル `docs/journal/YYYY-MM-DD.md`。その場で書く。**追記専用**(過去のエントリはリンク補完・明白な誤字のみ直してよい)
+- 書くのは**起きた事実**(誰が・何を・どうなった)。推測・評価は事実と分けて書く
+- 後の作業が前提にする判断は、その場で `docs/decisions/` に決定記録を起こし、journal には1行とリンクだけ残す。
+  宿題・open な事項は `docs/STATUS.md` へ(journal にも記録として残す)。調べたことは `docs/knowledge/` へ
+- 受け取った資料は `docs/knowledge/files/` に置き、journal からリンクする
+- 読むときは直近の1〜2件だけでよい(全部は読まない)
+
+```markdown
+# YYYY-MM-DD
+
+## 出来事
+
+- (箇条書き)
+
+## 打ち合わせ・やり取り: <件名>
+
+- 日時・相手:
+- 内容:
+- 決まったこと: (前提になるものは decisions へ記録してリンク)
+- 宿題: (STATUS にも転記)
+```
 
 仕様書・アーキテクチャ概要・セットアップ手順・Runbook など「現在の姿」を書く生きた
 ドキュメントは**このスキルの対象外**。通常のドキュメントとして docs/ 配下に置き、
 基盤ごと整えたい場合は後述の project-template 導入を提案する。
 
-## frontmatter(decisions / knowledge のみ。learnings・STATUS には付けない)
+## frontmatter(decisions / knowledge のみ。learnings・STATUS・journal には付けない)
 
 ```yaml
 ---
@@ -102,7 +131,8 @@ project-template と同一なので、既存の `docs/` は変換せずそのま
 1. `gh repo clone horatjp/project-template <tmp> -- --depth 1` で取得し、`templates/repo/` から
    **まだ存在しないファイルだけ**をコピーする(`changes/`・`scripts/`・`.claude/settings.json`・
    `.codex/hooks.json`・`docs/PROJECT.md`・`docs/requirements.md`・`docs/rules/` など)。
-   既存の `docs/decisions/`・`docs/knowledge/`・`docs/learnings.md`・`docs/STATUS.md` は上書きしない
+   既存の `docs/decisions/`・`docs/knowledge/`・`docs/learnings.md`・`docs/STATUS.md`・`docs/journal/` は上書きしない
+   (`docs/journal/` は project-template のリポジトリ層には無い。移行後もそのまま使い続けてよい)
 2. 既存の `AGENTS.md` / `CLAUDE.md` は上書きしない。統合案を提示して承認を得てから統合する
 3. `docs/PROJECT.md` と `docs/requirements.md` を、既存の記録から埋める。推測で埋めず、
    不足はユーザーに聞く
