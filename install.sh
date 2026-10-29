@@ -188,6 +188,10 @@ jq -s '
 ' ~/.claude/settings.json ~/dotfiles/claude/settings.base.json > ~/.claude/settings.json.tmp
 mv ~/.claude/settings.json.tmp ~/.claude/settings.json
 ln -sfn ~/dotfiles/claude/agents ~/.claude/agents
+# hooks のスクリプト(settings.json の hooks から呼ばれる)。~/.claude はバックアップ対象外なので実体は dotfiles に置く。
+# 既存の実ディレクトリがあると ln が中にリンクを作るため退避する
+[ -d ~/.claude/hooks ] && [ ! -L ~/.claude/hooks ] && mv ~/.claude/hooks ~/.claude/hooks.bak.$(date +%Y%m%d%H%M%S)
+ln -sfn ~/dotfiles/claude/hooks ~/.claude/hooks
 # 実ディレクトリがあると ln が中にリンクを作るため、既存スキルを退避する
 [ -d ~/.claude/skills ] && [ ! -L ~/.claude/skills ] && mv ~/.claude/skills ~/.claude/skills.bak.$(date +%Y%m%d%H%M%S)
 ln -sfn ~/dotfiles/agents/skills ~/.claude/skills
