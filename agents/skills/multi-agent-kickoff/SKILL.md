@@ -57,7 +57,7 @@ description: 複数のAIエージェント(監督・実装・レビューなど)
 | 監督 | Claude Opus 5.5 medium | A |
 | 実装 | Codex GPT-6.1 Sol medium | B |
 | レビュー(Sol の作業) | Claude Sonnet 5.5 medium | A |
-| レビュー(Claude の作業) | Codex GPT-6 Astra medium | B |
+| レビュー(Claude の作業) | Codex GPT-6.1 Terra medium(混雑で動かないときは Astra medium) | B |
 | 重いレビュー(お金・停止条件・測定の結論・保存データ・セキュリティ) | Sol の作業は Claude Fable 5.1 xhigh、Claude の作業は Codex Astra xhigh、さらにもう1者(少なくとも1者は作業した側と別会社) | A / B |
 | 見回り | Claude Haiku 5.5 | A |
 
