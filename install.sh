@@ -287,6 +287,15 @@ bash ~/dotfiles/pi/agmsg/install.sh
 # 以前はここで exec zsh していたが、それより後ろが実行されなくなるため最後に置き、再ログインは案内だけにする
 [ "$(basename "$SHELL")" = zsh ] || sudo chsh -s "$(which zsh)" "$USER"
 
+# herdr のエージェント連携(状態の報告。herdr-agent-usage がペインとセッションを結び付けるのにも使う)。
+# claude・pi は dotfiles へのリンク先(claude/hooks・pi/extensions)に書くので、それらのリンクを張った後に置く。
+# 中身が同じなら差分は出ない。設定ファイル(~/.claude/settings.json・~/.codex/hooks.json)はマシンごとのものに書く
+if command -v herdr >/dev/null; then
+  for agent in claude codex pi; do
+    herdr integration install "$agent"
+  done
+fi
+
 # herdr-agent-usage(サイドバーに文脈・利用上限の残りを出す。config.toml の [ui.sidebar.agents] が前提)
 # 第三者のコードが herdr の起動・ペインの切り替えのたびに動くため、中身を確かめたコミット(v0.5.23)に固定し、
 # 自分で clone・ビルドしてから herdr plugin link で登録する。herdr plugin install はビルドに失敗すると
