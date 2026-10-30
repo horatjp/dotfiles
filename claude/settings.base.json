@@ -58,6 +58,10 @@
   },
   "alwaysThinkingEnabled": true,
   "tui": "fullscreen",
+  "statusLine": {
+    "type": "command",
+    "command": "sh ~/.claude/hooks/usagebar-statusline.sh"
+  },
   "skipDangerousModePermissionPrompt": true,
   "inputNeededNotifEnabled": false,
   "agentPushNotifEnabled": true,
