@@ -152,6 +152,12 @@ ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 # 通知音(config.toml から相対参照)。リンク元基準で解決されても見つかるよう置く
 ln -sfn ~/dotfiles/herdr/sounds ~/.config/herdr/sounds
 command -v herdr >/dev/null && herdr plugin install smarzban/herdr-file-viewer --yes
+# herdr-agent-usage の設定(プラグイン本体は go が使えるようになる末尾で入れる)。
+# 実ファイルがあればアカウント別の設定などを失わないよう退避してからリンクする
+usagebar_conf=~/.config/herdr/plugins/config/usagebar/config.toml
+mkdir -p "$(dirname "$usagebar_conf")"
+[ -f "$usagebar_conf" ] && [ ! -L "$usagebar_conf" ] && mv "$usagebar_conf" "$usagebar_conf.bak.$(date +%Y%m%d%H%M%S)"
+ln -sf ~/dotfiles/herdr/plugins/usagebar.toml "$usagebar_conf"
 
 # druk
 mkdir -p ~/.config/druk
@@ -280,4 +286,41 @@ bash ~/dotfiles/pi/agmsg/install.sh
 # Change default shell
 # 以前はここで exec zsh していたが、それより後ろが実行されなくなるため最後に置き、再ログインは案内だけにする
 [ "$(basename "$SHELL")" = zsh ] || sudo chsh -s "$(which zsh)" "$USER"
+
+# herdr-agent-usage(サイドバーに文脈・利用上限の残りを出す。config.toml の [ui.sidebar.agents] が前提)
+# 第三者のコードが herdr の起動・ペインの切り替えのたびに動くため、中身を確かめたコミット(v0.5.23)に固定し、
+# 自分で clone・ビルドしてから herdr plugin link で登録する。herdr plugin install はビルドに失敗すると
+# 確かめていないビルド済みバイナリを落として使うので使わない(link 時のビルドフックは bin/usagebar があれば何もしない)。
+# link は herdr サーバーが動いていなくても登録できる。失敗したら set -e でここで止める(go は mise の shims を有効にした後にある)。
+# 置き場所はコミットごとに分け、一時ディレクトリで clone・ビルドを終えてから移す。登録中の版を途中で書き換えず、
+# 失敗しても今の登録はそのまま残る。上げるときは差分を読んでから usagebar_ref を書き換える(herdr plugin update では上げない)
+usagebar_ref=511622e976a6c666a429809dd0db7a7b8e6e59d5
+usagebar_src=~/.local/share/herdr-agent-usage/$usagebar_ref
+if command -v herdr >/dev/null && command -v go >/dev/null; then
+  if [ ! -d "$usagebar_src" ]; then
+    mkdir -p "$(dirname "$usagebar_src")"
+    usagebar_tmp=$(mktemp -d "$usagebar_src.tmp.XXXXXX")
+    git clone -q https://github.com/senna-lang/herdr-agent-usage.git "$usagebar_tmp"
+    git -C "$usagebar_tmp" checkout -q --detach "$usagebar_ref"
+    mv "$usagebar_tmp" "$usagebar_src"
+  fi
+  # 既にあった場合も含め、固定したコミットのまま手が入っていないことを確かめる。
+  # git が失敗したら代入で set -e が止める(条件式の中の $(...) だと失敗が「変更なし」に見える)
+  usagebar_head=$(git -C "$usagebar_src" rev-parse HEAD)
+  usagebar_status=$(git -C "$usagebar_src" status --porcelain --untracked-files=all)
+  if [ "$usagebar_head" != "$usagebar_ref" ] || [ -n "$usagebar_status" ]; then
+    echo "$usagebar_src が固定したコミットと違うか手が入っているため herdr-agent-usage を登録しません" >&2
+    exit 1
+  fi
+  # バイナリは git の管理外で、確かめたソースから作られたとは限らないため、毎回ビルドし直して置き換える
+  (cd "$usagebar_src" && go build -o bin/usagebar.new ./cmd/usagebar && mv bin/usagebar.new bin/usagebar)
+  herdr plugin link "$usagebar_src" --enabled >/dev/null
+else
+  echo "herdr か go が無いため herdr-agent-usage を入れませんでした"
+fi
+
 echo "完了しました。新しいターミナルを開くか、exec zsh -l で再ログインしてください"
+# .zshrc の環境変数(USAGEBAR_DISABLE_BROWSER_COOKIES など)は、動いている herdr サーバーには再起動するまで届かない
+if command -v herdr >/dev/null; then
+  echo "herdr サーバーが動いていたら、新しいシェルから herdr server stop して起動し直してください(.zshrc の環境変数を届けるため)"
+fi

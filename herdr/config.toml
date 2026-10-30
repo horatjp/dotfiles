@@ -20,3 +20,35 @@ command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewe
 key = "prefix+shift+f"
 type = "shell"
 command = "herdr plugin action invoke open-file-viewer-tab --plugin herdr-file-viewer"
+
+# herdr-agent-usage プラグイン (https://github.com/senna-lang/herdr-agent-usage)
+# サイドバーに文脈の使用率($context)と利用上限の残り($limit)を出す。
+# 行は `usagebar setup` の推奨に、複数ワークスペースを見分けるため workspace を足したもの。
+# 推奨にあるプロンプトキャッシュの行($cache_*)は、契約プランでは見て変えることがないので外した
+[ui.sidebar.agents]
+row_gap = 0
+rows = [
+  ["state_icon", "workspace", "$title"],
+  ["$provider", "$limit"],
+  ["$context"],
+]
+
+# 利用上限が近づいた通知に必要(既定は off)。他の herdr 通知も画面内に出るようになる
+[ui.toast]
+delivery = "herdr"
+
+[ui.toast.herdr]
+position = "bottom-left"
+
+# 推奨の ctrl+shift+u は WezTerm の文字選択と衝突するため prefix 側に置く
+[[keys.command]]
+key = "prefix+u"
+type = "plugin_action"
+command = "usagebar.open-limits"
+description = "Agent Usage: open limits pane"
+
+[[keys.command]]
+key = "prefix+shift+u"
+type = "plugin_action"
+command = "usagebar.refresh"
+description = "Agent Usage: refresh sidebar meters"

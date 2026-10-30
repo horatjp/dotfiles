@@ -1,6 +1,9 @@
 export LANG=ja_JP.UTF-8     # 文字コード
 export LC_ALL=ja_JP.UTF-8   # ロケール
 export EDITOR=nvim          # エディタ
+# herdr-agent-usage がブラウザの Cookie とキーチェーンを読まないようにする(OpenCode Go 用で、使っていない)。
+# herdr サーバーはシェルから起動されるので、ここで渡せばプラグインにも届く(動いているサーバーには再起動するまで届かない)
+export USAGEBAR_DISABLE_BROWSER_COOKIES=1
 setopt no_beep              # ビープ音を鳴らさない
 setopt correct              # コマンドのスペルを自動修正
 setopt auto_cd              # ディレクトリ名だけでcd
