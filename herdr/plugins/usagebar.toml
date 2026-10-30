@@ -4,8 +4,8 @@
 
 [notify]
 enabled = true
-# 残りがこの % を切ったら通知する(時間枠ごとに1回ずつ)
-remaining_thresholds = [50, 20, 10, 5]
+# 残りがこの % を切ったら通知する(時間枠ごとに1回ずつ)。既定の 50 はまだ余裕があり通知が多いので外した
+remaining_thresholds = [20, 10, 5]
 
 [ui]
 limit_percent = "remaining"
