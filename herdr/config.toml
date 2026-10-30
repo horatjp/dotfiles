@@ -23,15 +23,20 @@ command = "herdr plugin action invoke open-file-viewer-tab --plugin herdr-file-v
 
 # herdr-agent-usage プラグイン (https://github.com/senna-lang/herdr-agent-usage)
 # サイドバーに文脈の使用率($context)と利用上限の残り($limit)を出す。
-# 行は `usagebar setup` の推奨から、プロンプトキャッシュの行($cache_*)を外したもの(契約プランでは見て変えることがない)。
-# workspace は足さない。agent_panel_sort の既定(grouped)でワークスペースごとにまとまり、$title もタブ名が既定なら
-# ワークスペース名を出すため、同じ名前が並ぶ
+# `usagebar setup` の推奨から変えた点:
+# - プロンプトキャッシュの行($cache_*)を外した(契約プランでは見て変えることがない)
+# - 1行目は $title でなく workspace(ワークスペース名)と agent(エージェントの種類)にした。$title は「ワークスペース名・ペイン名」をつなぎ、
+#   agmsg がペイン名を「<チーム>:<名前>」にするため「dotfiles・dotfiles:dotfiles-cc」と長くなる。
+#   pane(ペイン名)だと名前の無いペインが状態アイコンだけになる。workspace と agent(claude・codex など)は必ず値がある
 [ui.sidebar.agents]
 row_gap = 0
+# 上限($limit)はアカウントごとの値で、エージェントごとに1行使うと同じ数字が並ぶため、文脈の行に寄せる。
+# 既定の幅(26列)で「⛁ 24% (242k) · 5h 88%」がほぼ収まる。文脈が長い表記になると $limit の末尾が切れうる。
+# $provider(claude・codex などの枠の名前)は幅に収まらないため外した。どの枠の上限かは1行目の agent で分かる
+# 色: ワークスペース名とエージェントは少し灰色がかった白、文脈はくすんだ暗めの緑、上限はくすんだ暗めの黄
 rows = [
-  ["state_icon", "$title"],
-  ["$provider", "$limit"],
-  ["$context"],
+  ["state_icon", { token = "workspace", fg = "#c8ccd4", bold = true }, { token = "agent", fg = "#c8ccd4" }],
+  [{ token = "$context", fg = "#6b8360" }, { token = "$limit", fg = "#a89d76" }],
 ]
 
 # 利用上限が近づいた通知に必要(既定は off)。他の herdr 通知も画面内に出るようになる
