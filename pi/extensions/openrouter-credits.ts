@@ -16,8 +16,17 @@ const STATUS = "openrouter-credits";
 const INTERVAL_MS = 5 * 60_000;
 const MIN_REFRESH_MS = 60_000;
 const TIMEOUT_MS = 10_000;
+// 残高の色分け(ドル)。普段は控えめに暗く出し、減ってきたら黄、入金が要るほど減ったら赤にする。
+const WARN_BELOW = 10;
+const ERROR_BELOW = 3;
 
-export function formatCredits(response: unknown): string {
+export function balanceColor(balance: number): "dim" | "warning" | "error" {
+	if (balance < ERROR_BELOW) return "error";
+	if (balance < WARN_BELOW) return "warning";
+	return "dim";
+}
+
+export function readBalance(response: unknown): number {
 	const data = (response as { data?: { total_credits?: unknown; total_usage?: unknown } } | null)?.data;
 	const credits = data?.total_credits;
 	const usage = data?.total_usage;
@@ -25,7 +34,10 @@ export function formatCredits(response: unknown): string {
 		typeof usage !== "number" || !Number.isFinite(usage) || !Number.isFinite(credits - usage)) {
 		throw new Error("残高の応答形式が不正");
 	}
-	const balance = credits - usage;
+	return credits - usage;
+}
+
+export function formatCredits(balance: number): string {
 	const amount = Math.abs(balance).toFixed(2);
 	return `openrouter 残高 ${balance < 0 && Number(amount) !== 0 ? "-" : ""}$${amount}`;
 }
@@ -49,7 +61,7 @@ export default function (pi: ExtensionAPI) {
 		let reason = "通信エラー";
 		let timeout: ReturnType<typeof setTimeout> | undefined;
 		try {
-			const status = await Promise.race([
+			const balance = await Promise.race([
 				(async () => {
 					const response = await fetch("https://openrouter.ai/api/v1/credits", {
 						headers: { Authorization: `Bearer ${managementKey}` },
@@ -63,7 +75,7 @@ export default function (pi: ExtensionAPI) {
 					reason = "応答本文の読み取り失敗";
 					const body = await response.json();
 					reason = "残高の応答形式が不正";
-					return formatCredits(body);
+					return readBalance(body);
 				})(),
 				new Promise<never>((_, reject) => {
 					timeout = setTimeout(() => {
@@ -73,11 +85,13 @@ export default function (pi: ExtensionAPI) {
 					}, TIMEOUT_MS);
 				}),
 			]);
-			if (!closed && generation === currentGeneration && ctx.hasUI) ctx.ui.setStatus(STATUS, status);
+			if (!closed && generation === currentGeneration && ctx.hasUI) {
+				ctx.ui.setStatus(STATUS, ctx.ui.theme.fg(balanceColor(balance), formatCredits(balance)));
+			}
 		} catch {
 			if (closed || generation !== currentGeneration || !ctx.hasUI) return;
 			try {
-				ctx.ui.setStatus(STATUS, "openrouter 残高: 取得失敗");
+				ctx.ui.setStatus(STATUS, ctx.ui.theme.fg("warning", "openrouter 残高: 取得失敗"));
 				if (!notified) {
 					notified = true;
 					ctx.ui.notify(`openrouter 残高: 取得失敗 (${reason})`, "warning");
