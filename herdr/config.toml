@@ -25,17 +25,20 @@ command = "herdr plugin action invoke open-file-viewer-tab --plugin herdr-file-v
 # サイドバーに文脈の使用率($context)と利用上限の残り($limit)を出す。
 # `usagebar setup` の推奨から変えた点:
 # - プロンプトキャッシュの行($cache_*)を外した(契約プランでは見て変えることがない)
-# - 1行目は $title でなく workspace(ワークスペース名)と agent(エージェントの種類)にした。$title は「ワークスペース名・ペイン名」をつなぎ、
+# - 1行目は $title でなく workspace(ワークスペース名)とエージェントの種類にした。$title は「ワークスペース名・ペイン名」をつなぎ、
 #   agmsg がペイン名を「<チーム>:<名前>」にするため「dotfiles・dotfiles:dotfiles-cc」と長くなる。
-#   pane(ペイン名)だと名前の無いペインが状態アイコンだけになる。workspace と agent(claude・codex など)は必ず値がある
+#   pane(ペイン名)だと名前の無いペインが状態アイコンだけになる。
+# - エージェントの種類は agent でなく $provider(claude・codex など)で出す。agent は herdr の agent 名を優先して表示し、
+#   agmsg は参加したペインに内部キー(a + SHA-256 の先頭24桁)を agent 名として付けるため、16進の文字列が見えてしまう。
+#   $provider はプラグインが報告する値で、従量課金のペインでは課金先(openrouter など)になる
 [ui.sidebar.agents]
 row_gap = 0
 # 上限($limit)はアカウントごとの値で、エージェントごとに1行使うと同じ数字が並ぶため、文脈の行に寄せる。
 # 既定の幅(26列)で「⛁ 24% (242k) · 5h 88%」がほぼ収まる。文脈が長い表記になると $limit の末尾が切れうる。
-# $provider(claude・codex などの枠の名前)は幅に収まらないため外した。どの枠の上限かは1行目の agent で分かる
+# $provider(claude・codex などの枠の名前)はこの行だと幅に収まらないため1行目に置く。どの枠の上限かは1行目で分かる
 # 色: ワークスペース名とエージェントは少し灰色がかった白、文脈はくすんだ暗めの緑、上限はくすんだ暗めの黄
 rows = [
-  ["state_icon", { token = "workspace", fg = "#c8ccd4", bold = true }, { token = "agent", fg = "#c8ccd4" }],
+  ["state_icon", { token = "workspace", fg = "#c8ccd4", bold = true }, { token = "$provider", fg = "#c8ccd4" }],
   [{ token = "$context", fg = "#6b8360" }, { token = "$limit", fg = "#a89d76" }],
 ]
 
