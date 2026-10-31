@@ -1,5 +1,12 @@
 onboarding = false
 
+[ui]
+# 状態を色だけでなく形(× ◐ ✓ ○ ·)でも見分ける(既定は dots)
+status_indicators = "symbols"
+# ペインの間の余白と外枠をなくし、右に何体も並べたときに文字の入る幅を増やす(内側の区切り線は既定の auto で残る)
+pane_gaps = false
+pane_outer_borders = false
+
 # 既定の通知音が大きいため差し替え(herdr には音量設定がない)。
 # 公開リポジトリのため、どちらも ffmpeg の正弦波で自作した音(0.3 秒の指数減衰を1音とする)。
 #   done.mp3   : E5(659Hz) 1音
@@ -36,11 +43,16 @@ row_gap = 0
 # 上限($limit)はアカウントごとの値で、エージェントごとに1行使うと同じ数字が並ぶため、文脈の行に寄せる。
 # 既定の幅(26列)で「⛁ 24% (242k) · 5h 88%」がほぼ収まる。文脈が長い表記になると $limit の末尾が切れうる。
 # $provider(claude・codex などの枠の名前)はこの行だと幅に収まらないため1行目に置く。どの枠の上限かは1行目で分かる
-# 色: ワークスペース名とエージェントは少し灰色がかった白、文脈はくすんだ暗めの緑、上限はくすんだ暗めの黄
+# 色: ワークスペース名とエージェントは少し灰色がかった白、文脈と上限は目立たせないよう、さらに暗くしたくすんだ緑と黄
 rows = [
   ["state_icon", { token = "workspace", fg = "#c8ccd4", bold = true }, { token = "$provider", fg = "#c8ccd4" }],
-  [{ token = "$context", fg = "#6b8360" }, { token = "$limit", fg = "#a89d76" }],
+  [{ token = "$context", fg = "#4b5c44" }, { token = "$limit", fg = "#766f53" }],
 ]
+
+# ワークスペース一覧を1件1行にする(既定は2行目にブランチと Git の状態)。15 前後あるので縦の長さを優先する
+[ui.sidebar.spaces]
+# 空行を入れると間延びするので、名前を太字にして区切りを見やすくする(色は agents の1行目と同じ)
+rows = [["state_icon", { token = "workspace", fg = "#c8ccd4", bold = true }]]
 
 # 利用上限が近づいた通知に必要(既定は off)。他の herdr 通知も画面内に出るようになる
 [ui.toast]
