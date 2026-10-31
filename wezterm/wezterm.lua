@@ -38,9 +38,28 @@ config.colors = {
     "#56b6c2",  -- 14: bright cyan
     "#ffffff",  -- 15: bright white
   },
+  -- タイトルバーと一体化したタブバーの色(青みを抜いた灰色にして、OneHalfDark の本体 #282c34 と分ける)。
+  -- タブの背景はバーと同じにして1枚の帯に見せ、今のタブかどうかは文字の明るさで見分ける
+  tab_bar = {
+    inactive_tab_edge = "#2e3035",
+    active_tab = { bg_color = "#2e3035", fg_color = "#b4b8bf" },
+    inactive_tab = { bg_color = "#2e3035", fg_color = "#757a84" },
+    inactive_tab_hover = { bg_color = "#2e3035", fg_color = "#b4b8bf" },
+  },
 }
 config.window_background_opacity = 0.9
-config.window_decorations = "TITLE | RESIZE"
+-- OS 標準のタイトルバーは色を変えられないため消し、閉じる・最小化・最大化のボタンをタブバーに入れる
+-- (macOS は標準の信号ボタンをそのまま移す。Windows は WezTerm が Windows 風に描く)
+config.window_decorations = "INTEGRATED_BUTTONS | RESIZE"
+config.window_frame = {
+  font = wezterm.font({ family = "HackGen Console NF", weight = "Bold" }),
+  font_size = is_windows and 11.0 or 15.0, -- 端末の本体と同じ大きさ。バーの高さも文字に合わせて高くなる(文字の高さの 1.75 倍)
+  -- バーは不透明にする。WezTerm 20240203 はこの色を「バー全体」と「左側のボタンとタブをまとめた部分」に
+  -- 重ねて塗るため、半透明にすると左側だけ二重になって暗くなる。
+  -- 昔風のタブバー(use_fancy_tab_bar = false)ならむらなく透かせるが、高さが端末の1行ぶんしかなく窮屈になる
+  active_titlebar_bg = "#2e3035",
+  inactive_titlebar_bg = "#2e3035",
+}
 config.initial_cols = 100
 config.initial_rows = 30
 
@@ -48,9 +67,10 @@ config.initial_rows = 30
 config.use_ime = true
 
 -- Tab bar
-config.use_fancy_tab_bar = false
-config.tab_bar_at_bottom = true
-config.hide_tab_bar_if_only_one_tab = true
+-- タイトルバーを兼ねるため、上端に常に出す(隠すとボタンとウィンドウを掴む場所が無くなる)
+config.use_fancy_tab_bar = true
+config.tab_bar_at_bottom = false
+config.hide_tab_bar_if_only_one_tab = false
 config.show_new_tab_button_in_tab_bar = false
 
 -- Live config reload
@@ -80,7 +100,8 @@ end
 
 wezterm.on("format-tab-title", function(tab, _, _, _, _, max_width)
   local title = get_title(tab.active_pane)
-  return " " .. wezterm.truncate_right(title, max_width - 4) .. " "
+  -- 先頭にフォルダのアイコン(Nerd Font)を付ける
+  return "  " .. wezterm.nerdfonts.md_folder .. " " .. wezterm.truncate_right(title, max_width - 6) .. "  "
 end)
 
 wezterm.on("format-window-title", function(tab)
