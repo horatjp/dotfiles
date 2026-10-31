@@ -2,9 +2,16 @@
 # 両マシン共通で手管理する項目だけを書く。model / projects / hooks.state / tui / マシン固有の MCP は
 # Codex が書き込むユーザー層(~/.codex/config.toml、git 管理外)に任せる。
 # 配列キーはユーザー層に同じキーがあると丸ごと置換されるので、片方にだけ書くこと。
+# 例外として tui.status_line だけはここに書く(両マシンで同じ表示にしたい。Codex の /statusline で選び直すとユーザー層に書かれ、こちらは隠れるとみられる。保存先は未確認)。
 
 [features]
 hooks = true
+
+# ペインの下の行に、取れた利用上限の残りを出す(既定は model-with-reasoning・current-dir・thread-name で、上限は出ない)。
+# その枠が無い・情報が取れないときは出ない(2026-10-31 は weekly だけが出て、5時間の枠は出なかった)。
+# Claude Code の statusLine と違い外のスクリプトを呼べないので、残りの量での色分けはできない
+[tui]
+status_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit", "current-dir", "thread-name"]
 
 # agmsg が sandbox 内から書き込む場所
 [sandbox_workspace_write]
