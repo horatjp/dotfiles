@@ -2,7 +2,7 @@
 # Claude Code の statusLine にモデル名と文脈の残りを出し、herdr-agent-usage プラグインの statusline を呼ぶ。
 # statusLine の入力(model.display_name / context_window.used_percentage / rate_limits)からモデル名と文脈の残りを取り出し、
 # 同じ入力をプラグインに渡すと、利用上限の残りが続き、herdr のサイドバーにも Claude の利用上限の残りが出る。
-# モデル名と文脈は Codex に合わせた色で出し、ある部品の間だけ灰色の中黒で区切る。
+# モデル名と文脈は Codex と同じ色合いを、上限の色(暗めの緑・黄)と同じくらいの明るさに落として出し、ある部品の間だけ灰色の中黒で区切る。
 # プラグインの置き場所は固定したコミットごとに変わる(install.sh が ~/.local/share/herdr-agent-usage/<コミット> を link する)ため、
 # 固定パスや更新日時で探さず、herdr が有効にしているものを毎回 herdr に聞く(約 10ms)。
 # モデル名・文脈の使用率・herdr・プラグインが無い場合は、その部品だけを省く。
@@ -27,17 +27,17 @@ status=0
 if [ -n "$root" ] && [ -f "$root/bin/run-statusline.sh" ]; then
   out=$(printf '%s' "$input" | bash "$root/bin/run-statusline.sh"); status=$?
 fi
-# ある部品だけを「 · 」で区切る。モデル名は薄い黄、文脈は薄い橙にし、最後の部品の後だけ改行する。
+# ある部品だけを「 · 」で区切る。モデル名は暗めのクリーム、文脈は暗めの橙(Codex の #f6e2b7・#f2b590 を約7割の明るさにした色)にし、最後の部品の後だけ改行する。
 separator=''
-divider=$(printf ' \033[38;2;148;151;157m·\033[0m ')
-color='246;226;183'
+divider=$(printf ' \033[38;2;107;111;120m·\033[0m ')
+color='167;154;124'
 for part in "$model" "$context"; do
   if [ -n "$part" ]; then
     printf '%s\033[38;2;%sm%s\033[0m' "$separator" "$color" "$part"
     separator=$divider
   fi
   # モデル名を省いた場合も、次の部品(文脈)の色へ進める。
-  color='242;181;144'
+  color='165;123;98'
 done
 if [ -n "$out" ]; then
   printf '%s' "$separator"
