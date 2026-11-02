@@ -35,8 +35,8 @@ type = "shell"
 command = "herdr plugin action invoke open-file-viewer-tab --plugin herdr-file-viewer"
 
 # herdr-agent-usage プラグイン (https://github.com/senna-lang/herdr-agent-usage)
-# サイドバーに文脈の使用率($context)を出す。利用上限の残り($limit)は各ペインの下の行(Claude は statusLine、Codex は tui.status_line)に
-# 出すようにしたため、サイドバーからは外した(上限の通知はプラグインが出すので、サイドバーの表示とは関係なく届く)。
+# サイドバーには $provider(エージェントの種類)だけを使う。文脈の使用率($context)と利用上限の残り($limit)は、各ペインの下の行に文脈の残りと上限の残りとして出す
+# (Claude は statusLine、Codex は tui.status_line)ようにしたため外した(上限の通知はプラグインが出すので、サイドバーの表示とは関係なく届く)。
 # `usagebar setup` の推奨から変えた点:
 # - プロンプトキャッシュの行($cache_*)を外した(契約プランでは見て変えることがない)
 # - 1行目は $title でなく workspace(ワークスペース名)とエージェントの種類にした。$title は「ワークスペース名・ペイン名」をつなぎ、
@@ -47,14 +47,13 @@ command = "herdr plugin action invoke open-file-viewer-tab --plugin herdr-file-v
 #   $provider はプラグインが報告する値で、従量課金のペインでは課金先(openrouter など)になる
 [ui.sidebar.agents]
 row_gap = 0
-# 1行目は状態・ワークスペース名・エージェントの種類、2行目は作業名(terminal_title_stripped。Claude が付ける会話の題名など)、3行目は文脈の使用率。
-# 作業名を1行まるごと使って長く読めるようにした(既定の幅 26 列で日本語12文字ほど)。代わりにエージェント1体につき3行になる。
-# 文脈を作業名と同じ行に置くと6文字ほどで切れ、1行目に置くと長いワークスペース名(debian-guide など)で末尾が切れていた
-# 色: ワークスペース名は少し灰色がかった白、エージェントの種類は目立たないよう暗い灰色、作業名と文脈は暗くしたくすんだ黄と緑
+# 1行目は状態・ワークスペース名・エージェントの種類、2行目は作業名(terminal_title_stripped。Claude が付ける会話の題名など)。
+# 文脈は各ペインの下の行に残りとして出す(Claude は statusLine の Context N% left、Codex は tui.status_line の context-remaining)ため、$context は外した。
+# 作業名は1行まるごと使えるので、既定の幅(26列)で日本語12文字ほど入る
+# 色: ワークスペース名は少し灰色がかった白、エージェントの種類は目立たないよう暗い灰色、作業名は暗くしたくすんだ黄
 rows = [
   ["state_icon", { token = "workspace", fg = "#c8ccd4", bold = true }, { token = "$provider", fg = "#6b6f78" }],
   [{ token = "terminal_title_stripped", fg = "#766f53" }],
-  [{ token = "$context", fg = "#4b5c44" }],
 ]
 
 # ワークスペース一覧を1件1行にする(既定は2行目にブランチと Git の状態)。15 前後あるので縦の長さを優先する
