@@ -285,14 +285,20 @@ reports/review-<date>/BRIEF.md を読み、その手順どおりにプロジェ�
 
 ## 7. Pi を使うとき(2026-10-15 追記)
 
-dotfiles で管理している Pi(2026-10-15 時点は 1.2.0、10/24 以降の試しは 1.4.0)とその設定・拡張(この構成では OpenRouter だけを使う)を、チームの3つ目のエージェントにするときの決まり。
+dotfiles で管理している Pi(2026-10-15 時点は 1.2.0、10/24 以降の試しは 1.4.0)とその設定・拡張を、チームの3つ目のエージェントにするときの決まり。下の 1〜4 の手順は OpenRouter で書いたもの(2026-11-02 からはまず Go。Go での起動と費用の見方は次の段落)。
 根拠は dotfiles 側で Pi を3体動かした試し(sandbox、2026-10-15)。
+
+**接続先(ユーザー決定 2026-11-02)**: Claude と Codex 以外のモデルは、**まず OpenCode Go を Pi で使う**(定額。測定は runner の `endpoint: opencode-go` と中継 `runner/adapters/go_relay.py` で、1回ごとの枠の消費を記録する)。**OpenRouter に残すもの**: Go に無いモデル、プログラムから直接呼ぶもの(名前を伏せた比較の挑戦者。Go は Pi などの道具を通して使う決まり)、検索の課題(Go の入口が未対応)、提供元を固定して過去と比べたい測定。Go は提供元を選べないので、Go の結果は OpenRouter の提供元固定の結果と別の系列にする。Go の枠は5時間で月の2割。11/2 の MiniMax M3.1 Flash の1試行(28回の呼び出し)では、枠の消費が定価の約3倍だった(他のモデル・時間帯は未確認)。月の枠が小さいモデル($15 の GLM 5.3・Kimi K3.1 Pro など)の重い課題は、5時間の枠に当たりうる。詳しくは docs/knowledge/opencode-go.md。
+- **Go での起動(チームのペイン)**: Pi は Go のキーを `OPENCODE_API_KEY` で読む。`OPENCODE_API_KEY="$OPENCODE_GO_API_KEY" pi --provider opencode-go --model <Go の ID>`(~/.env は 1Password のパイプなので zsh のペインで読む)。モデルが一覧に無ければ `pi update --models`。
+- **Go での費用の見方**: Pi の画面の金額は Pi が単価から計算した額で、Go の枠の消費ではない。チームで使うときは、上限を「枠の割合」で決め、Go の管理画面(Usage の 5時間・週・月の割合)を区切りごとに見る。測定(runner)は中継の記録 go-usage.jsonl で1回ごとの消費が分かる。下の「有料の実行として扱う」の OpenRouter のクレジット・402・`--provider openrouter` は、OpenRouter で動かすときだけの話。
 
 **いまの運用(ユーザー決定 2026-10-15)**: チームの役にはまだ使わない。使うときは役割と金額をその都度ユーザーに決めてもらう。監督は Claude Code のまま(Pi には Monitor が無く、受信の見張りと確認画面への即応ができない)。Pi に監督をさせる運用はやめる。
 
 **予備環境(2026-10-18。表は固定せず、測定のたびに見直す)**: Pi だけのチームは、Claude と ChatGPT を使わない予備環境にする(ユーザー「PiはClaudeとChatGPTを使わないパターンを考えています。予備環境的な感じです。」)。予備環境では監督も Pi にしてよい(ユーザー「予備環境では、Pi に監督をさせてよい。」)。Claude Code が使える通常のチームでは、上の「Pi に監督をさせない」のまま。
 
-| 役 | モデル(提供元の固定) | 系統 |
+2026-11-02 から、下の表のモデルはまず OpenCode Go で動かす(Go の ID: deepseek-v4-pro・deepseek-v4.1-flash・minimax-m3.1-flash・kimi-k3。DeepSeek は Go の地域を Global にしてから。Go に無い版・提供元の固定が要るときは表の OpenRouter の提供元)。Go でチームとして起動したことはまだ無い(未確認)。
+
+| 役 | モデル(OpenRouter のときの提供元の固定) | 系統 |
 |---|---|---|
 | 監督(依頼とまとめだけ。ペインには触らない) | DeepSeek V4 Pro 0813(alibaba、2番目に deepinfra/fp8) | DeepSeek |
 | 実装 | DeepSeek V4.1 Flash 1017(inference-net/fp8) | DeepSeek |
