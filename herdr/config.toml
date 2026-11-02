@@ -47,13 +47,14 @@ command = "herdr plugin action invoke open-file-viewer-tab --plugin herdr-file-v
 #   $provider はプラグインが報告する値で、従量課金のペインでは課金先(openrouter など)になる
 [ui.sidebar.agents]
 row_gap = 0
-# 2行目は文脈の使用率と作業名(terminal_title_stripped。Claude が付ける会話の題名など)。行数を増やさないため同じ行に置く。
-# 既定の幅(26列)では作業名は日本語で6文字ほどで切れるが、どのペインが何をしているかの見分けには足りる。
-# $provider(claude・codex などの枠の名前)はこの行だと幅に収まらないため1行目に置く
-# 色: ワークスペース名とエージェントは少し灰色がかった白、文脈と作業名は目立たせないよう、さらに暗くしたくすんだ緑と黄
+# 1行目は状態・ワークスペース名・エージェントの種類、2行目は作業名(terminal_title_stripped。Claude が付ける会話の題名など)、3行目は文脈の使用率。
+# 作業名を1行まるごと使って長く読めるようにした(既定の幅 26 列で日本語12文字ほど)。代わりにエージェント1体につき3行になる。
+# 文脈を作業名と同じ行に置くと6文字ほどで切れ、1行目に置くと長いワークスペース名(debian-guide など)で末尾が切れていた
+# 色: ワークスペース名は少し灰色がかった白、エージェントの種類は目立たないよう暗い灰色、作業名と文脈は暗くしたくすんだ黄と緑
 rows = [
-  ["state_icon", { token = "workspace", fg = "#c8ccd4", bold = true }, { token = "$provider", fg = "#c8ccd4" }],
-  [{ token = "$context", fg = "#4b5c44" }, { token = "terminal_title_stripped", fg = "#766f53" }],
+  ["state_icon", { token = "workspace", fg = "#c8ccd4", bold = true }, { token = "$provider", fg = "#6b6f78" }],
+  [{ token = "terminal_title_stripped", fg = "#766f53" }],
+  [{ token = "$context", fg = "#4b5c44" }],
 ]
 
 # ワークスペース一覧を1件1行にする(既定は2行目にブランチと Git の状態)。15 前後あるので縦の長さを優先する
