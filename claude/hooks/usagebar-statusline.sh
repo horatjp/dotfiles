@@ -19,11 +19,12 @@ context=''
 context_color=''
 if [ -n "$remaining" ]; then
   context="Context $remaining% left"
-  # 表示と同じ整数から、残り100→50→20%で明るさを0.45→0.55→1.00へ直線で変える。
+  # 表示と同じ整数から、残り50%超は明るさ0.35、50→20%は0.50→1.00へ直線で変える。
+  # 50%以下は区切りを考え始める目安として、一段明るくする。
   # 20%以下は区切りをつける合図として、Codex の橙(#f2b590)をいちばん明るく出す。
   context_color=$(jq -nr --argjson n "$remaining" '
-    (if $n >= 50 then 0.45 + (100 - $n) * 0.10 / 50
-     elif $n > 20 then 0.55 + (50 - $n) * 0.45 / 30
+    (if $n > 50 then 0.35
+     elif $n > 20 then 0.50 + (50 - $n) * 0.50 / 30
      else 1 end) as $f
     | [242, 181, 144] | map(. * $f + 0.5 | floor) | join(";")' 2>/dev/null)
 fi
