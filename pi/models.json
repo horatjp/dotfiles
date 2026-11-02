@@ -15,6 +15,12 @@
     "kimi-coding": {
       "apiKey": "$PI_DISABLED_KEY"
     },
+    "opencode": {
+      "apiKey": "$PI_DISABLED_KEY"
+    },
+    "opencode-go": {
+      "apiKey": "$OPENCODE_GO_API_KEY"
+    },
     "openrouter": {
       "models": [
         {

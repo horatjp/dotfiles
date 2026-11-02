@@ -237,8 +237,8 @@ mv ~/.pi/agent/settings.json.tmp ~/.pi/agent/settings.json
 # 拡張(確認ダイアログ・保護パス)はディレクトリごとリンクする。実ディレクトリがあると ln が中にリンクを作るので退避する
 [ -d ~/.pi/agent/extensions ] && [ ! -L ~/.pi/agent/extensions ] && mv ~/.pi/agent/extensions ~/.pi/agent/extensions.bak.$(date +%Y%m%d%H%M%S)
 ln -sfn ~/dotfiles/pi/extensions ~/.pi/agent/extensions
-# Pi は OpenRouter だけで使う。Pi にはプロバイダーを止める設定がなく、環境変数にキーがあるプロバイダーは
-# すべて使える扱いになる。models.json で他のプロバイダーのキーを、定義しない変数 $PI_DISABLED_KEY に向けて外す
+# Pi は OpenCode Go(キーは $OPENCODE_GO_API_KEY)と OpenRouter だけで使う。Pi にはプロバイダーを止める設定がなく、環境変数にキーがあるプロバイダーは
+# すべて使える扱いになる。models.json で ~/.env にキーがある他のプロバイダー(と従量課金の OpenCode Zen)のキーを、定義しない変数 $PI_DISABLED_KEY に向けて外す
 # (シェルの ANTHROPIC_API_KEY などは他のツール用にそのまま残る)。
 # また OpenRouter の振り分けモデル(auto など)は文脈の上限が 2M と大きく、自動圧縮がほぼ掛からない。
 # 長い会話で OpenRouter の利用中の残高の枠(in_flight_budget_exhausted、402)を超えるため、上限を 128K に下げて早めに圧縮させる。
