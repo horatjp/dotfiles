@@ -1,14 +1,20 @@
 #!/bin/sh
-# Claude Code の statusLine の先頭にモデル名を出し、herdr-agent-usage プラグインの statusline を呼ぶ。
-# statusLine の入力(model.display_name / rate_limits)からモデル名を取り出し、同じ入力をプラグインに渡すと、
-# モデル名と利用上限の残りが出て、herdr のサイドバーにも Claude の利用上限の残りが出る。
+# Claude Code の statusLine にモデル名と文脈の残りを出し、herdr-agent-usage プラグインの statusline を呼ぶ。
+# statusLine の入力(model.display_name / context_window.used_percentage / rate_limits)からモデル名と文脈の残りを取り出し、
+# 同じ入力をプラグインに渡すと、利用上限の残りが続き、herdr のサイドバーにも Claude の利用上限の残りが出る。
 # プラグインの置き場所は固定したコミットごとに変わる(install.sh が ~/.local/share/herdr-agent-usage/<コミット> を link する)ため、
 # 固定パスや更新日時で探さず、herdr が有効にしているものを毎回 herdr に聞く(約 10ms)。
-# herdr・プラグインが無いマシンではモデル名だけ出し、モデル名が取れない場合は上限表示だけ出す。
+# モデル名・文脈の使用率・herdr・プラグインが無い場合は、その部品だけを省く。
 # jq が無いマシンでは、入力を読み捨てて何も出さずに終わる。
 input=$(cat)
 command -v jq >/dev/null 2>&1 || exit 0
 model=$(printf '%s' "$input" | jq -r '.model.display_name // empty' 2>/dev/null)
+# 残りを計算してから四捨五入する(使用率16.5なら残り83.5を84にする)。数値以外は出さない。
+context=$(printf '%s' "$input" | jq -r '
+  .context_window.used_percentage | if type == "number" then
+    100 - . | if . < 0 then 0 elif . > 100 then 100 else (. + 0.5 | floor) end
+    | "Context \(.)% left"
+  else empty end' 2>/dev/null)
 root=$(herdr plugin list --json 2>/dev/null |
   jq -r '.result.plugins[] | select(.plugin_id == "usagebar" and .enabled) | .plugin_root' 2>/dev/null)
 # プラグインの出力(例: 5h:92% 7d:58%)の「枠:数字%」ごとに、残りの量で色を付ける。
@@ -20,10 +26,18 @@ status=0
 if [ -n "$root" ] && [ -f "$root/bin/run-statusline.sh" ]; then
   out=$(printf '%s' "$input" | bash "$root/bin/run-statusline.sh"); status=$?
 fi
-# 両方あるときだけ空白2つで区切り、片方だけなら余計な空白を付けない。
-if [ -n "$model" ]; then
-  printf '%s' "$model"
-  if [ -n "$out" ]; then printf '  '; else printf '\n'; fi
+# ある部品だけを空白2つで区切る。文脈には色を付けず、最後の部品の後だけ改行する。
+separator=''
+for part in "$model" "$context"; do
+  if [ -n "$part" ]; then
+    printf '%s%s' "$separator" "$part"
+    separator='  '
+  fi
+done
+if [ -n "$out" ]; then
+  printf '%s' "$separator"
+elif [ -n "$separator" ]; then
+  printf '\n'
 fi
 [ -n "$out" ] && printf '%s\n' "$out" | awk '{
   out = ""; s = $0
