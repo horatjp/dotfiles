@@ -75,7 +75,7 @@ learnings のゲート(3条件すべて「はい」のときのみ追記):
 type: decision          # decisions/ は decision。knowledge/ は research(調査・バグ解決) | reference(一次資料・URL・外部仕様)
 title: <一言>
 description: <一行要約。ファイルを開かずに関連判断できる粒度で>
-status: stable          # draft(承認待ち) | stable(現行) | deprecated(無効)
+status: draft           # draft(承認待ち) | stable(現行) | deprecated(無効)
 superseded_by:          # deprecated のとき必須。置き換えたファイル名
 stale_after:            # 任意(YYYY-MM-DD)。reference は特に推奨(外部情報は腐る)
 tags: []
@@ -86,7 +86,9 @@ verified: []            # 空=未検証。書式: [{by: agent:<tool>@reviewer | 
 ---
 ```
 
-本文の目安 — decision: 背景 / 決定と理由 / 検討した代替案 / 影響範囲 / 再検討の条件。
+本文の目安 — decision: 背景(一般論でなく実際に起きている問題。前提事実の出所。本文だけで分かる要点)/
+決定と理由(適用範囲。必要なら決めないことと委譲先)/ 検討した代替案 / 影響範囲 /
+再検討の条件(例外・暫定措置は有効期限か解除条件も)。進捗・タスク・決定の理由に関係しない実装詳細は書かない。
 research: 調査背景 / 比較・評価 / 結論。バグ解決: 症状 / 原因 / 修正 / 再発防止のシグナル。
 reference: URL / なぜ保存したか / 要点の抜き書き。
 learnings: `## YYYY-MM-DD: <一言>` + **Signal**(起きそうな状況)/ **Root Cause** / **Prevention**。
@@ -99,7 +101,8 @@ decisions / knowledge へ書き、STATUS からは要点とファイル名の参
 
 ## 運用ルール
 
-- **承認フロー**: 重要な決定はまず `status: draft` で起こし、ユーザーの承認を得て `stable` にする
+- **承認フロー**: 重要な決定はまず `status: draft` で起こし、ユーザーの承認を得て `stable` にする。
+  決める内容に未決事項が残る間は draft のまま。暫定採用は採る内容・適用条件・再検討の条件を明記して承認を得る
 - **既存の決定の編集は、開始前にユーザーへ「更新か上書きか」を確認する**:
   誤字・てにをは・補足説明(決定は不変)→ 上書き(そのまま編集)/
   決定内容・status の変更 → 更新(新しい決定記録を起こし、旧を `status: deprecated` + `superseded_by` に)
