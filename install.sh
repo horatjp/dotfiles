@@ -236,6 +236,8 @@ ln -sf ~/dotfiles/claude/AGENTS.md ~/.claude/CLAUDE.md
 # 共有ベース(settings.base.json)を jq でマージして反映する。
 # スカラーはベース優先、配列は和集合(ローカル分を先に保ち重複は落とす)、ローカルだけのキーは残す。
 # マシン固有の絶対パスを含むフック等はベースに入れず、ローカル側に書く。
+# ベースの permissions.defaultMode = bypassPermissions で、ただの `claude` 起動も確認なし(--dangerously-skip-permissions と同じ)になる。
+# マージはキーを足すだけなので、ベースから消しても各マシンの ~/.claude/settings.json の値は残る。解除は各マシンでも消す。
 [ -L ~/.claude/settings.json ] && rm ~/.claude/settings.json  # 旧 symlink 方式からの移行
 [ -f ~/.claude/settings.json ] || echo '{}' > ~/.claude/settings.json
 jq -s '
