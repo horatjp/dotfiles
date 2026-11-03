@@ -4,6 +4,16 @@
 # 配列キーはユーザー層に同じキーがあると丸ごと置換されるので、片方にだけ書くこと。
 # 例外として tui.status_line だけはここに書く(両マシンで同じ表示にしたい。Codex の /statusline で選び直すとユーザー層に書かれ、こちらは隠れるとみられる。保存先は未確認)。
 
+# 確認を出さず、サンドボックスも外す(上の層で上書きされなければ、承認とサンドボックスについて
+# codex --dangerously-bypass-approvals-and-sandbox を毎回付けるのと同じ。2026-11-03 に /status で「YOLO mode」を確認)。
+# Claude Code の permissions.defaultMode = bypassPermissions に合わせた(両マシン)。
+# ここは system 層なので、ユーザー層・プロファイル・信頼済みプロジェクト・起動時の指定(-s・-c)が勝つ。
+# codex exec -s read-only で動かすと、モデルが実行するシェルのコマンドは読むだけになるが、承認は never のまま、
+# MCP などシェル以外の経路は -s では制限されない(読むだけのレビューで MCP を使わせないなら依頼文で禁じる)。
+# この2行を消すと、上の層か Codex の既定の動きに戻る。
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+
 [features]
 hooks = true
 
