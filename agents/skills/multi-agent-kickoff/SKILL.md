@@ -11,6 +11,15 @@ description: 複数のAIエージェント(監督・実装・レビューなど)
 - ペインの操作: `herdr` スキル
 - エージェント間の連絡: `agmsg` スキル
 
+### herdr-app の中で使うとき(2026-11-03 追記。原本 playbook には未反映)
+
+この文書と playbook のペインの手順は TUI の herdr 用。herdr-app(Herdr.app + herdr-core)の中にいるかどうかは `herdr-app` スキルの「どちらを使うか」で判定する。herdr-app と判定したら:
+- ペインの操作は、すべて `herdr-app` スキルの手順に置き換える。開く・並べる(pane.split)、チームへの参加の頼み方、声かけ(`herdr agent prompt`・agmsg の poke の代わりに `hc send`)、画面を読む(peek・`herdr agent read` の代わりに `hc read`)、見張る(ループの代わりに `hc wait`)、片付け(despawn の代わりに pane.close と `hc kill`/`hc rm`)。agmsg の spawn・arrange・peek・poke・despawn は使わない。
+- 確認画面(`hc wait` の `blocked`)は `herdr-app` スキルどおり、画面を読んでユーザーに上げる。下の手順4、playbook §4 の Codex の確認画面の自動承認、playbook §5 の「読み取りだけ監督が許可する」は TUI での運用で、herdr-app では使わない。
+- 起動プロンプト(playbook §3・§6)は「そのまま使う」のでなく、herdr のコマンド・agmsg の Monitor の張り方・確認画面の自動承認の指示を、`herdr-app` スキルの手順に置き換えて渡す。依頼文に「ペインの操作と確認画面の扱いは herdr-app スキルを優先する」と書き添える。
+- 依頼・報告・レビューの集計は agmsg のまま(履歴を残す)。門番(手順5)の決まりも変わらない。
+- 有料の実行(手順6)と、費用を自動で見張って上限の前に止める予備環境の運用(playbook §7)は、herdr-app での見張りと停止の手順をまだ確かめていない。確かめるまでは herdr-app では行わず、TUI の herdr で行う。
+
 ## 手順
 
 1. **チーム表を決める。** 下の「始めるときの1プロンプト」の表を埋める。モデルを替えるときは、この表だけを直す。
