@@ -159,6 +159,61 @@ mkdir -p "$(dirname "$usagebar_conf")"
 [ -f "$usagebar_conf" ] && [ ! -L "$usagebar_conf" ] && mv "$usagebar_conf" "$usagebar_conf.bak.$(date +%Y%m%d%H%M%S)"
 ln -sf ~/dotfiles/herdr/plugins/usagebar.toml "$usagebar_conf"
 
+# herdr-app(Herdr のデスクトップアプリ。試用中)。入っているマシンだけ設定をリンクする。
+# ~/.config/herdr-app には Herdr が書く状態のファイル(view.json・shared.json・data/ など)や生成物(AGENTS.md・*.d.ts)もあるため、
+# 自分で変えた settings.json と自作のレイアウト(layouts/mine.json。main の写しに terminal_opacity などを足したもの)をリンクする。
+# TUI の herdr と同じ通知音を使うため、sounds も ~/dotfiles/herdr/sounds へリンクする。
+# Herdr は settings.json をリンク先へそのまま書き込む(2026-11-03 に拡大・縮小で確かめた。リンクは外れない)。
+# CLI(herdr-app)が PATH に無くても、アプリ本体か設定フォルダがあれば入っているとみなす
+if command -v herdr-app >/dev/null || [ -d ~/Applications/Herdr.app ] || [ -d /Applications/Herdr.app ] || [ -d ~/.config/herdr-app ]; then
+  # 作成や退避・リンクが失敗しても、set -e でインストール全体を止めずに警告する
+  if mkdir -p ~/.config/herdr-app/layouts; then
+    for f in settings.json layouts/mine.json; do
+      dst=~/.config/herdr-app/$f
+      # 通常ファイルでもリンクでもないもの(フォルダなど)は、中にリンクを作らないよう触らずに飛ばす
+      if [ -e "$dst" ] && [ ! -f "$dst" ] && [ ! -L "$dst" ]; then
+        echo "warning: $dst is not a file; skipped" >&2
+        continue
+      fi
+      # 実ファイルだけ退避する
+      if [ -f "$dst" ] && [ ! -L "$dst" ]; then
+        if ! backup_stamp=$(date +%Y%m%d%H%M%S); then
+          echo "warning: could not name backup for $dst; skipped" >&2
+          continue
+        fi
+        backup="$dst.bak.$backup_stamp.$$"
+        # 退避先がフォルダやリンクだと mv が中へ移すことがあるため、存在すれば触らずに飛ばす
+        if [ -e "$backup" ] || [ -L "$backup" ]; then
+          echo "warning: backup already exists: $backup; skipped" >&2
+          continue
+        fi
+        # -n の競合回避による成功扱いもあるので、終了状態と元ファイルが残っていないことの両方を見る
+        if ! mv -n "$dst" "$backup"; then
+          echo "warning: could not back up $dst; skipped" >&2
+          continue
+        fi
+        if [ -e "$dst" ] || [ -L "$dst" ]; then
+          echo "warning: could not back up $dst; skipped" >&2
+          continue
+        fi
+      fi
+      # -n: すでにあるリンクがフォルダを指していても、その中でなくリンク自体を置き換える
+      if ! ln -sfn ~/dotfiles/herdr-app/$f "$dst"; then
+        echo "warning: could not link $dst; skipped" >&2
+      fi
+    done
+    # sounds はフォルダへのリンクなので、既存の実ファイルや実フォルダを退避せず保護する
+    dst=~/.config/herdr-app/sounds
+    if [ -e "$dst" ] && [ ! -L "$dst" ]; then
+      echo "warning: $dst is not a symlink; skipped" >&2
+    elif ! ln -sfn ~/dotfiles/herdr/sounds "$dst"; then
+      echo "warning: could not link $dst; skipped" >&2
+    fi
+  else
+    echo "warning: could not create ~/.config/herdr-app/layouts; skipped" >&2
+  fi
+fi
+
 # druk
 mkdir -p ~/.config/druk
 ln -sf ~/dotfiles/druk/config.json ~/.config/druk/config.json
