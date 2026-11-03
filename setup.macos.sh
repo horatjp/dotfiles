@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# どこ: dotfiles/setup.macos.sh。Mac の初期設定を手動で適用する入口。
+# 何: ツール・設定・LaunchAgent を導入する。
+# なぜ: 再セットアップ時に同じ構成を再現する。
 
 set -e
 sudo -v
@@ -397,6 +400,12 @@ ln -sf ~/dotfiles/launchagents/com.user.mountsmb.plist ~/Library/LaunchAgents/co
 # 読み込み済みだと load が失敗し set -e で以降が実行されないため、先に unload する
 launchctl unload ~/Library/LaunchAgents/com.user.mountsmb.plist 2>/dev/null || true
 launchctl load ~/Library/LaunchAgents/com.user.mountsmb.plist
+
+# notes 自動保存(mountsmb と同じくリンクし直してから再読み込みする)
+mkdir -p ~/Library/LaunchAgents ~/Library/Logs
+ln -sf ~/dotfiles/launchagents/com.user.notes-sync.plist ~/Library/LaunchAgents/com.user.notes-sync.plist
+launchctl unload ~/Library/LaunchAgents/com.user.notes-sync.plist 2>/dev/null || true
+launchctl load ~/Library/LaunchAgents/com.user.notes-sync.plist
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
