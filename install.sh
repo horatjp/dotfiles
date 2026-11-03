@@ -236,7 +236,10 @@ ln -sf ~/dotfiles/claude/AGENTS.md ~/.claude/CLAUDE.md
 # 共有ベース(settings.base.json)を jq でマージして反映する。
 # スカラーはベース優先、配列は和集合(ローカル分を先に保ち重複は落とす)、ローカルだけのキーは残す。
 # マシン固有の絶対パスを含むフック等はベースに入れず、ローカル側に書く。
-# ベースの permissions.defaultMode = bypassPermissions で、ただの `claude` 起動も確認なし(--dangerously-skip-permissions と同じ)になる。
+# ベースの permissions.defaultMode = auto で、ただの `claude` 起動も auto モードになる。いつもの確認の代わりに判定役のモデルが
+# 実行前に操作を見て、元に戻せない・壊す・環境の外へ向く・読んだ内容に動かされた操作を止める。deny と明示の ask は先に効く。
+# skipDangerousModePermissionPrompt は bypass に切り替えたときの初回の同意で、--dangerously-skip-permissions を使うときのために残す。
+# advisorModel = fable は、契約によっては Fable の助言の分が usage credits から引かれ、同意が要る場合は /model fable で同意しないと効かない。
 # マージはキーを足すだけなので、ベースから消しても各マシンの ~/.claude/settings.json の値は残る。解除は各マシンでも消す。
 [ -L ~/.claude/settings.json ] && rm ~/.claude/settings.json  # 旧 symlink 方式からの移行
 [ -f ~/.claude/settings.json ] || echo '{}' > ~/.claude/settings.json

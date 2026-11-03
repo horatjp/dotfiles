@@ -3,7 +3,7 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "permissions": {
-    "defaultMode": "bypassPermissions",
+    "defaultMode": "auto",
     "allow": [
       "Read(./**/*)",
       "Edit(./**/*)",
@@ -64,6 +64,7 @@
     "command": "sh ~/.claude/hooks/usagebar-statusline.sh"
   },
   "skipDangerousModePermissionPrompt": true,
+  "advisorModel": "fable",
   "inputNeededNotifEnabled": false,
   "agentPushNotifEnabled": true,
   "syncClaudeAiSkills": false,
