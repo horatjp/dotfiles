@@ -1,10 +1,12 @@
 #!/bin/sh
 # Claude Code の statusLine 用。モデル・作業フォルダ・ブランチ・文脈/利用枠の残りを1行で出す。
 # モデルはクリーム、フォルダは青、ブランチ・区切りは灰色。各部品に Nerd Font のアイコンを付ける。
+# モデル・フォルダ・ブランチと ctx・5h・7d の各まとまり内は空白2つで結ぶ。
+# 両方のまとまりがあるときだけ、灰色の │ を前後に空白1つずつ付けて挟む。
 # ctx・5h・7d はラベル・電池・数字を残り50超=緑、20〜50=黄、20未満=赤の1色にする。
 # 戻るまでの目安は7dだけに同じ色で付け、5hには付けない。
 # 同じ入力を herdr-agent-usage にも渡し、herdr のサイドバーの利用枠表示を保つ。
-# プラグインの文字出力は使わず、失敗しても自前の表示を続ける。情報がない部品だけ省く。
+# プラグインの文字出力は使わず、失敗しても自前の表示を続ける。情報がない部品だけ省き、全部空なら改行も出さない。
 # プラグインの置き場所はコミットごとに変わるため、herdr が有効にしているものを毎回聞く。
 # /bin/sh (macOS / dash) 用。jq が無ければ入力を読み捨て、何も出さず正常終了する。
 input=$(cat)
@@ -55,15 +57,19 @@ printf '%s' "$input" | jq -r --arg branch "$branch" --argjson now "$now" '
   # オブジェクト型を部品ごとに絞り、壊れた部品をほかへ波及させない。
   objects | . as $data |
   [
-    ($data.model | objects | .display_name | name | select(length > 0) |
-      "󰚩 " + . + ([$data.effort | objects | .level | name | select(length > 0) | " " + .] | join("")) | paint(cream)),
-    ($data.workspace | objects | .current_dir | name | select(length > 0) |
-      sub("/+$"; "") | if . == "" then "/" else split("/") | last end |
-      "󰉋 " + . | paint("110;150;190")),
-    ($branch | name | select(length > 0) | "󰘬 " + . | paint(muted)),
-    ($data.context_window | objects | .used_percentage | remaining | . as $n | ("ctx " + amount) | paint($n | remaining_color)),
-    ($data.rate_limits | objects | .five_hour | window("5h")),
-    ($data.rate_limits | objects | .seven_day | window("7d"))
-  ] | select(length > 0) | join(" " + ("│" | paint(muted)) + " ")
+    ([
+      ($data.model | objects | .display_name | name | select(length > 0) |
+        "󰚩 " + . + ([$data.effort | objects | .level | name | select(length > 0) | " " + .] | join("")) | paint(cream)),
+      ($data.workspace | objects | .current_dir | name | select(length > 0) |
+        sub("/+$"; "") | if . == "" then "/" else split("/") | last end |
+        "󰉋 " + . | paint("110;150;190")),
+      ($branch | name | select(length > 0) | "󰘬 " + . | paint(muted))
+    ] | join("  ")),
+    ([
+      ($data.context_window | objects | .used_percentage | remaining | . as $n | ("ctx " + amount) | paint($n | remaining_color)),
+      ($data.rate_limits | objects | .five_hour | window("5h")),
+      ($data.rate_limits | objects | .seven_day | window("7d"))
+    ] | join("  "))
+  ] | map(select(length > 0)) | select(length > 0) | join(" " + ("│" | paint(muted)) + " ")
 ' 2>/dev/null
 exit 0
