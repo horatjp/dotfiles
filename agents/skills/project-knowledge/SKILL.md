@@ -1,17 +1,19 @@
 ---
 name: project-knowledge
 description: >
-  プロジェクトの意思決定・技術調査・バグ解決・参照資料・学び・作業状態・出来事の時系列(journal)の記録・参照・更新に使用。
+  プロジェクトの意思決定・調査・バグ解決・参照資料・学び・作業状態・journal を記録・参照・更新する。
   「意思決定を残して」「決定記録(ADR・PDR)に追加して」「PDRに残して」「調査結果を残して」「学びを残して」
   「このURLを保存して」「棚卸しして」「ナレッジ管理を始めて」「引き継ぎを残して」「日誌に書いて」「今日の出来事を記録して」
-  「議事録を残して」などのフレーズや、docs/decisions/・docs/knowledge/・docs/learnings.md・docs/STATUS.md・docs/journal/ を扱う時。ユーザーの依頼が無くても、
-  方針や技術選定を決めた直後・調査を終えた直後・バグの原因を特定した直後・
-  作業が途中のままセッションを終える時にも使う。
-  ただし project-template 導入済みプロジェクト(docs/decisions/_template.md がある)では
-  使わない — そちらの AGENTS.md と _template.md に従う。
+  「議事録を残して」などのフレーズや、docs/ 配下の decisions・knowledge・learnings.md・STATUS.md・journal を扱う時に使う。
+  依頼が無くても、方針・技術選定を決めた直後、調査やバグ原因の特定を終えた直後、作業が途中のままセッションを終える時にも使う。
+  project-template 導入済みプロジェクトでは使わない(使い分けは本文冒頭)。
 ---
 
 # project-knowledge スキル
+
+## 使い分け
+
+project-template 導入済みプロジェクト(`docs/decisions/_template.md` がある)では使わない — そちらの AGENTS.md と `_template.md` に従う。
 
 プロジェクトのナレッジ(意思決定・調査・参照資料・学び)の記録・整理ルール。
 [project-template](https://github.com/horatjp/project-template) と同じ方式の単体利用版。

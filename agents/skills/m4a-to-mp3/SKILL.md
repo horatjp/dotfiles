@@ -1,6 +1,6 @@
 ---
 name: m4a-to-mp3
-description: m4a(AAC)ファイルをLAME 320kbps CBRのMP3に変換し、音量を-11.0 LUFS(EBU R128)に揃え(旧方式のMP3Gain 96dBも選択可)、アルバム名と読みがな(ソート)タグを削除し、「アーティスト名 - タイトル.mp3」にリネームし、用意された歌詞ファイル(.lrc/.txt)があれば埋め込むワークフロー。ユーザーがm4a/AACのMP3変換、音量調整(MP3Gain・ReplayGain・ノーマライズ)、音楽ファイルのタグ削除・整理のいずれかに言及したら必ずこのスキルを使うこと。「昔MusicBeeでやっていた変換」「iTunesの曲をMP3にしたい」のような依頼でも使う。
+description: m4a(AAC)をLAME 320kbps CBRのMP3に変換し、音量を-11.0 LUFS(旧方式のMP3Gain 96dBも選択可)に揃え、アルバム名・読みがなタグを削除し、「アーティスト名 - タイトル.mp3」にリネームし、歌詞ファイル(.lrc/.txt)があれば埋め込むワークフロー。ユーザーがm4a/AACのMP3変換、音量調整(MP3Gain・ReplayGain・ノーマライズ)、タグ削除・整理のいずれかに言及したら必ず使う。「昔MusicBeeでやっていた変換」「iTunesの曲をMP3にしたい」のような依頼でも使う。
 ---
 
 # m4a → MP3 変換 (MusicBee + MP3Gain + タグ整理の再現)

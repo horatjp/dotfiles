@@ -1,6 +1,6 @@
 ---
 name: herdr-app
-description: Herdr のデスクトップアプリ(herdr-app。Herdr.app + herdr-core、コマンドは hc)で、ペインを分けて別のエージェント(Codex・Pi・Claude)を開く、依頼を送る、画面を読む、終わるのを待つ、閉じるときに使う。ユーザーが「herdr-app」「Herdr App」「hc」と言ったとき、または名指しが無くても、環境変数 HC_TERMINAL_ID があり HERDR_ENV=1 が無いセッションでペインやエージェントを操作するときに使う。HERDR_ENV=1 だけのセッション(TUI の herdr)は herdr スキル、両方あるときはユーザーに聞く。
+description: Herdr のデスクトップアプリ(herdr-app。Herdr.app + herdr-core、コマンドは hc)で、ペインを分けて別のエージェント(Codex・Pi・Claude)を開く・依頼を送る・画面を読む・待つ・閉じるときに使う。ユーザーが「herdr-app」「Herdr App」「hc」と言ったとき、または名指しが無くても、環境変数 HC_TERMINAL_ID があり HERDR_ENV=1 が無いセッションでペインやエージェントを操作するときに使う。TUI の herdr は herdr スキル(使い分けは本文冒頭)。
 ---
 
 # herdr-app でペインとエージェントを扱う
