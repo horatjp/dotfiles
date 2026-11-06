@@ -56,6 +56,11 @@ description: 複数のAIエージェント(監督・実装・レビューなど)
 
 役割ごとの起動プロンプト(実装・レビュー・見回り・再現テスト係・事実確認・週1回の全体監査)、監督の9つの仕事、これまでの失敗から決めたことは [references/playbook.md](references/playbook.md) にある。起動の前に、該当する節を読む。
 
+依頼文のひな形と待ち方のスクリプト(playbook §3・§5 の決まりを入れてある。決まりの原本は playbook):
+- [references/templates/request-impl.md](references/templates/request-impl.md) — 作業役への依頼文のひな形
+- [references/templates/request-review.md](references/templates/request-review.md) — レビュー役への依頼文のひな形
+- `scripts/wait-signal.sh <報告ファイル> <impl|review> [秒数=600]` — 報告ファイルの最後の行を待つ。出力は1行で、終了コードは合図あり 0・合図なし 1・読み取り失敗やパスの誤り 2
+
 ## 始めるときの1プロンプト
 
 [references/playbook.md](references/playbook.md) の「6. プロジェクトを始めるときの1プロンプト」をそのまま使う。`# 依頼` とチーム表の `<…>` だけを埋める。
@@ -72,6 +77,8 @@ description: 複数のAIエージェント(監督・実装・レビューなど)
 | レビュー(Claude の作業) | Codex GPT-6.1 Terra medium(混雑で動かないときは Astra medium) | B |
 | 重いレビュー(お金・停止条件・測定の結論・保存データ・セキュリティ) | Sol の作業は Claude Fable 5.1 xhigh、Claude の作業は Codex Astra xhigh、さらにもう1者(少なくとも1者は作業した側と別会社) | A / B |
 | 見回り | Claude Haiku 5.5 | A |
+
+起動の前に Claude(ステータスラインの `7d`)と Codex(Codex の画面下の `weekly N% left`)の残りの枠を確かめる。どちらかが残り 20% を下回ったら、少ない側はレビューだけに回し、実装は多い側にする(別系統の決まりは必須で例外にしない。両方が下回る・別系統の組が組めないときはユーザーに相談。20% は目安。playbook §2「利用枠が少ないときのチーム」)。
 
 Opus は主のレビュー役にしない。Luna は使わない(根拠は playbook §2)。
 
