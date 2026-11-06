@@ -87,6 +87,7 @@ DESIGN.mdに正確に従ってコードを書く。色・書体・余白の値�
 3. **忠実再現が目的**ならDESIGN.mdは観察結果から逆算して作り、比率・色を厳密に一致させる。**参考程度**なら雰囲気だけ取り込みStep 0からの通常フローに乗せる（どちらかは依頼文から判断し、宣言する）
 4. 技術スタック未指定ならプレーンHTML/CSSをデフォルトにする
 5. **権利物の丸写しはしない**: 実在の他社サイト・有料テンプレートのピクセル単位の複製依頼は断る（DNA=骨格・書体の性格・明度帯・アクセントの使い方を言語化して参考にするのは可）。ユーザー自身が権利を持つデザインの再現は問題ない
+6. **複数の参照画像がある場合**は作り始める前に関係性を判定し、宣言する: ①同一サイトの別ページに見える → 別ページとして作り、ナビで繋ぐ ②同じ画面の別タブ/別状態に見える → 同一ページ内でナビ・タブ切り替えとして繋ぐ ③互いに無関係 → 「参照1」「参照2」のように分けたセクション/ページにし、無理に1つの物語に統合しない
 
 ## デザイン原則（迷ったときの判断基準）
 
@@ -109,7 +110,7 @@ DESIGN.mdに正確に従ってコードを書く。色・書体・余白の値�
 | `references/images.md` | 画像の扱い: 素材の優先順位・FPO作法・直リンク実装形・Unsplash調達手順・base64埋め込み | 画像を使うStep 3 |
 | `references/screenshot-verify.md` | スクリーンショット検証: PlaywrightヘッドレスChromiumのセットアップ・依存復旧・撮影コマンド・確認観点 | Step 4 |
 | `references/japanese-web.md` | 日本語サイトのデフォルト: フォントスタック・行高・禁則処理・混植・文化的UX（安心・情報密度・信頼シグナル） | 日本語サイトのStep 1 |
-| `references/*-notes.md` | 元ネタ6スキルの調査メモ（frontend-design / web-design-guidelines / taste-skill / screenshot-to-code / japanese-webdesign / awesome-design-md-jp） | 設計判断の背景を深掘りしたいとき |
+| `references/*-notes.md` | 元ネタ7スキルの調査メモ（frontend-design / web-design-guidelines / taste-skill / screenshot-to-code / screenshot-to-code-abi / japanese-webdesign / awesome-design-md-jp） | 設計判断の背景を深掘りしたいとき |
 
 スクリプト（`<スキルのパス>/scripts/` から実行）: `roll_layout.py`（骨格抽選。`--count N --exclude S02,H02`）、`check_contrast.py`（WCAGコントラスト比の機械チェック）。
 
