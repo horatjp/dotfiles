@@ -82,5 +82,17 @@
   "inputNeededNotifEnabled": false,
   "agentPushNotifEnabled": true,
   "syncClaudeAiSkills": false,
-  "syncClaudeAiPlugins": false
+  "syncClaudeAiPlugins": false,
+  "skillOverrides": {
+    "turnstile-spin": "name-only",
+    "cloudflare-one": "name-only",
+    "cloudflare-one-migrations": "name-only",
+    "sandbox-stable": "name-only",
+    "sandbox-next": "name-only",
+    "sandbox-migrate-to-next": "name-only",
+    "durable-objects": "name-only",
+    "agents-sdk": "name-only",
+    "cloudflare-email-service": "name-only",
+    "find-docs": "name-only"
+  }
 }
