@@ -209,10 +209,11 @@ if command -v herdr-app >/dev/null || [ -d ~/Applications/Herdr.app ] || [ -d /A
     elif ! ln -sfn ~/dotfiles/herdr/sounds "$dst"; then
       echo "warning: could not link $dst; skipped" >&2
     fi
-    # 自作の mod(pane-named: 端末の名前・ラベル role を出すペインの見出し。mine.json が使う)もフォルダごとリンクする。
+    # 自作の mod もフォルダごとリンクする(どちらも mine.json が使う)。pane-named: 端末の名前・ラベル role を出すペインの見出し。
+    # agents-named: 同じ役名を出す左の Agents 一覧(同梱の agents の写し)。
     # 同梱の mod は Herdr が置き直すので管理しない。sounds と同じく、実フォルダがあれば触らずに飛ばす
     if mkdir -p ~/.config/herdr-app/mods; then
-      for m in pane-named; do
+      for m in pane-named agents-named; do
         dst=~/.config/herdr-app/mods/$m
         if [ -e "$dst" ] && [ ! -L "$dst" ]; then
           echo "warning: $dst is not a symlink; skipped" >&2
