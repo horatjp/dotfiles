@@ -77,3 +77,6 @@ agents/skills/music-production/
 /.github/
 /.claude/
 .project-command-history/
+# herdr-app が自作の mod のフォルダに書く型定義(生成物。毎回書き直される)
+/herdr-app/mods/*/gpui-kit.d.ts
+/herdr-app/mods/*/jsconfig.json
