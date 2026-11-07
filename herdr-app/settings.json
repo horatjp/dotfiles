@@ -1,13 +1,13 @@
 {
-  "zoom": 1.0,
+  "zoom": 1,
   "sounds": {
     "enabled": true,
     "done": "sounds/done.mp3",
     "blocked": "sounds/request.mp3"
   },
   "font": "HackGen Console NF",
-  "font_size": 13.0,
+  "font_size": 14,
   "ui_font": "HackGen Console NF",
-  "minimum_contrast": 1.0,
+  "minimum_contrast": 1,
   "appearance": "dark"
 }
