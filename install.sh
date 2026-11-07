@@ -285,14 +285,12 @@ fi
 npm install -g @openai/codex
 
 # Pi (earendil-works/pi)
-# 共有スキルは ~/.claude/skills 経由で読み、agmsg は Pi 用に合成した版を使うため標準の場所から除外する。
-# settings.json は Pi も書き込むため dotfiles では管理せず、skills の2項目だけを冪等に追加する。
+# 共有スキルは ~/.claude/skills 経由で読む。
+# settings.json は Pi も書き込むため dotfiles では管理せず、skills の1項目だけを冪等に追加する。
 npm install -g @earendil-works/pi-coding-agent
 mkdir -p ~/.pi/agent
 [ -f ~/.pi/agent/settings.json ] || echo '{}' > ~/.pi/agent/settings.json
 jq '.skills = ((.skills // []) | if index(["~/.claude/skills"]) then . else . + ["~/.claude/skills"] end)' ~/.pi/agent/settings.json > ~/.pi/agent/settings.json.tmp
-mv ~/.pi/agent/settings.json.tmp ~/.pi/agent/settings.json
-jq '.skills = ((.skills // []) | if index(["-~/.agents/skills/agmsg"]) then . else . + ["-~/.agents/skills/agmsg"] end)' ~/.pi/agent/settings.json > ~/.pi/agent/settings.json.tmp
 mv ~/.pi/agent/settings.json.tmp ~/.pi/agent/settings.json
 # 拡張(確認ダイアログ・保護パス)はディレクトリごとリンクする。実ディレクトリがあると ln が中にリンクを作るので退避する
 [ -d ~/.pi/agent/extensions ] && [ ! -L ~/.pi/agent/extensions ] && mv ~/.pi/agent/extensions ~/.pi/agent/extensions.bak.$(date +%Y%m%d%H%M%S)
@@ -337,11 +335,6 @@ npx -y skills add yusukebe/ax -g -a claude-code --copy -y
 
 # Context7 (ctx7 CLI + find-docs スキル + ~/.claude/rules/context7.md を生成 / 対話プロンプトあり)
 npx -y ctx7 setup
-
-# agmsg (agent messaging)
-bash <(curl -fsSL https://raw.githubusercontent.com/fujibee/agmsg/main/setup.sh)
-# agmsg は Pi を種類として持たないため、Pi 用のプラグインとスキルを足す(受信は pi/extensions/agmsg.ts)
-bash ~/dotfiles/pi/agmsg/install.sh
 
 # Change default shell
 # 以前はここで exec zsh していたが、それより後ろが実行されなくなるため最後に置き、再ログインは案内だけにする

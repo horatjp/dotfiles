@@ -2,7 +2,7 @@
 # どこ: dotfiles/scripts/migrate-agents-skills.sh(各マシンで1回だけ手で実行する)
 # 何: スキルの実体を agents/skills に統一した変更(2026-10-23)を、このマシンのホームへ反映する。
 #   1. ~/.claude/skills と ~/.codex/skills を ~/dotfiles/agents/skills へのリンクにする
-#   2. Pi の settings.json の skills に、共有先と agmsg の除外を足す
+#   2. Pi の settings.json の skills に、共有先を足す(agmsg は 2026-11-07 に外したので、その除外はもう足さない)
 #   3. ~/.agents/skills に残っている、agents/skills と同じ名前の写しを退避する(Pi と Codex で二重に見えるため)
 # なぜ: Claude Code はセッションの中から ~/.claude/skills を張り替えても、コマンドの終わりに
 #   セッション開始時の状態へ戻す。そのため Claude Code をすべて終了してから、ターミナルで実行する。
@@ -70,12 +70,12 @@ link_skills() {
 link_skills "$HOME/.claude/skills"
 link_skills "$HOME/.codex/skills"
 
-# --- 2. Pi の settings(skills の2項目だけを冪等に足す) ---
+# --- 2. Pi の settings(skills の1項目だけを冪等に足す) ---
 if [ -f "$PI_SETTINGS" ]; then
   cp -p "$PI_SETTINGS" "$(backup_path "$PI_SETTINGS")"
   tmp="$(mktemp "$PI_SETTINGS.XXXXXX")"
   jq '.skills = ((.skills // [])
-        | reduce ("~/.claude/skills", "-~/.agents/skills/agmsg") as $e (.; if index([$e]) then . else . + [$e] end))' \
+        | reduce ("~/.claude/skills") as $e (.; if index([$e]) then . else . + [$e] end))' \
     "$PI_SETTINGS" > "$tmp"
   mv "$tmp" "$PI_SETTINGS"
   echo "Pi の skills: $(jq -c .skills "$PI_SETTINGS")"
