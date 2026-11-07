@@ -1,6 +1,8 @@
 // どこ: dotfiles/herdr-app/mods/agents-named(install.sh が ~/.config/herdr-app/mods/agents-named へリンクする)
 // 何: 左の Agents 一覧。Herdr 同梱の agents mod(2026-11-05 の版。installed.json の main.js b574e15d7b0f15e5)の写しで、
-//   端末の名前かラベル role(hc label <t> role=<役>)があれば、各行の名前の前に色付きで出す。変えたのは「dotfiles:」の印の箇所だけ。
+//   端末の名前かラベル role(hc label <t> role=<役>)があれば、各行の名前の前に色付きで出す。
+//   名前の後ろの文字は、ラベル task(hc label <t> task=<作業>)か、同じタブに複数いれば各自のペインのタイトルにする。
+//   変えたのは「dotfiles:」の印の箇所だけ。
 // なぜ: 同梱の一覧はタブ単位の名前を出すので、同じタブに並べた監督・実装・レビューが同じ名前になり見分けられない。
 // 注意: 同梱の agents が更新されても、この写しには入らない。Herdr の更新後は同梱の main.js と差分を見て取り込む。
 //
@@ -46,11 +48,20 @@ function leadPanes(all) {
   return leads;
 }
 
-function title(tab, l) {
+// dotfiles: ペインのタイトルが何かを伝えるか(パス・user@host・プログラム名だけは伝えない)の判定を title から切り出した。
+//   Pi の「π - dotfiles」のような、フォルダ名を除くと記号か1〜2文字しか残らないタイトルも伝えないとみなす。
+function telling(l) {
   const prog = l?.program?.name;
   const live = clean(l?.title);
-  const telling = live && live !== prog && !/^[~/]|^[A-Za-z]:\\/.test(live) && !live.includes("@") && live.toLowerCase() !== l?.program?.key;
-  return (tab.name === prog || !tab.named) && telling ? live : tab.name;
+  if (!live || live === prog || /^[~/]|^[A-Za-z]:\\/.test(live) || live.includes("@") || live.toLowerCase() === l?.program?.key) return null;
+  const folder = (l?.cwd ?? "").split(/[\\/]/).filter(Boolean).pop();
+  const rest = folder ? live.split(folder).join("") : live;
+  return rest.replace(/[^\p{L}\p{N}]/gu, "").length > 2 ? live : null;
+}
+
+function title(tab, l) {
+  const live = telling(l);
+  return (tab.name === l?.program?.name || !tab.named) && live ? live : tab.name;
 }
 const RANK = { blocked: 4, done: 3, working: 2, idle: 1 };
 // A sub-agent without a pane isn't in agents(): its raw word, error counting as
@@ -288,9 +299,20 @@ export default class Agents extends View {
     // agent's own title, never an automatic tab number unless two rows would
     // otherwise read the same.
     // Read the pane snapshot once: every host read copies the whole list into JS.
-    const leads = leadPanes(panes());
+    const paneList = panes();
+    const leads = leadPanes(paneList);
     const tabLabels = new Map(spaces().flatMap(s => s.tabs).map(tab => [tab.id, title(tab, leads.get(tab.id))]));
-    const labels = new Map(list.map(a => [a.address, tabLabels.get(a.tab) ?? (a.title || a.program?.name || "")]));
+    // dotfiles: タブ単位の名前だと同じタブのエージェントが全部同じ文字になるので、行ごとに
+    //   ラベル task(hc label <t> task=<作業>)→ 同じタブに2つ以上いれば自分のペインのタイトル → タブの名前、の順で選ぶ。
+    const tasks = new Map((all || []).map((x) => [x?.address, x?.labels?.task || null]));
+    const paneOf = new Map(paneList.map((p) => [p.pane, p]));
+    const perTab = {};
+    for (const a of list) perTab[a.tab] = (perTab[a.tab] ?? 0) + 1;
+    //   同じタブに複数いて自分のタイトルが何も伝えないときは、ほかのエージェントのタイトルを借りないよう、
+    //   名前を付けたタブならその名前、そうでなければプログラム名(Pi など)にする。
+    const tabOf = new Map(spaces().flatMap(s => s.tabs).map(tab => [tab.id, tab]));
+    const own = (a) => tasks.get(a.address) || (perTab[a.tab] > 1 ? telling(paneOf.get(a.pane)) || (tabOf.get(a.tab)?.named ? tabOf.get(a.tab).name : a.program?.name) : null);
+    const labels = new Map(list.map(a => [a.address, own(a) || (tabLabels.get(a.tab) ?? (a.title || a.program?.name || ""))]));
     const label = (a) => labels.get(a.address);
     const detail = new Map(list.map(a => [a.address, /^\d+$/.test(label(a)) ? null : label(a)]));
     const seen = {};
