@@ -34,15 +34,15 @@ herdr-app commands  # 使えるコマンドと引数の一覧
 
 ## エージェントを開く(名前を付けて、右側に上下で並べる)
 
-ユーザーの好みは「監督を左に残し、右側の1列に上下で並べる」。端末には役名(`impl`・`review` など)を名前として付け、`hc send <名前>` で送れるようにする(2026-11-07 に zsh・Codex・Pi で試した手順)。
+ユーザーの好みは「監督を左に残し、右側の1列に上下で並べる」。端末には頭にプロジェクト名を付けた役名(`aiw-impl`・`aiw-review` など。下の注意)を名前として付け、`hc send <名前>` で送れるようにする(2026-11-07 に zsh・Codex・Pi で試した手順)。
 
 ```sh
 # 1. 名前を付けて、ペイン無しで起動する。返事の address(例 t6w)を控える
-hc run --bg --no-parent --name impl --cwd '<作業ディレクトリ>' --json -- \
+hc run --bg --no-parent --name aiw-impl --cwd '<作業ディレクトリ>' --json -- \
   env AGENT_MODEL='<モデル>' zsh -ic 'exec codex --no-daemon -m "$AGENT_MODEL"'
 # (Pi なら exec pi --model "$AGENT_MODEL")
 # 2. 起動が終わるのを待つ(返事の見方は下)。入力待ちになってからペインに置く
-hc wait impl --timeout 90
+hc wait aiw-impl --timeout 90
 # 3. 基準のペインにフォーカスを移し、その右に置く。返事の pane を控える
 herdr-app do pane.focus '{"pane":"<自分のペインID>"}'
 herdr-app do terminal.keep '{"terminal":"<address>","place":"right"}'
@@ -56,6 +56,7 @@ hc label "$HC_TERMINAL_ID" role=lead
 ```
 
 - 名前は生きている端末の中で重ならない、a-z 0-9 - _ の1〜32文字。同じ名前の端末が残っていると起動できないので、片付けでは `hc kill` と `hc rm` まで行う。
+- 名前はスペース(プロジェクト)ごとではなく、そのマシンの Herdr 全体で1つ。別のスペースで `impl` が動いていると、こちらの `impl` は `name_taken` で起動に失敗する(2026-11-07 に確認)。そのため名前の頭に短いプロジェクト名を付ける(`aiw-impl`・`dot-review` など)。届け先を取り違えることはない(重なった名前は付けられず、役名のラベル `role` は重なっても送り先に使われない)。ただ、受け取った側に付く `<hc from=…>` は番号なので、依頼文や報告には役名とプロジェクト名を書く。
 - `terminal.keep` には名前でなく番号(address)を渡す。名前を渡すと `no running terminal` で失敗した。
 - 起動の直後に `terminal.keep` すると、番号でも `no running terminal` で失敗することがある(2026-11-07、Pi で起きた。Codex は直後でも置けた)。手順2の起動確認のあとに置けば成功した。それでも失敗したら数秒おいて一度だけやり直し、だめならペインに置かずにユーザーに上げる。
 - 起動に失敗した端末(手順2で `finished` など)はペインに置かず、`hc read` で理由を見てから `hc rm` する。
