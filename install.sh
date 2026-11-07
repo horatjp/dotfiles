@@ -209,6 +209,20 @@ if command -v herdr-app >/dev/null || [ -d ~/Applications/Herdr.app ] || [ -d /A
     elif ! ln -sfn ~/dotfiles/herdr/sounds "$dst"; then
       echo "warning: could not link $dst; skipped" >&2
     fi
+    # 自作の mod(pane-named: 端末の名前・ラベル role を出すペインの見出し。mine.json が使う)もフォルダごとリンクする。
+    # 同梱の mod は Herdr が置き直すので管理しない。sounds と同じく、実フォルダがあれば触らずに飛ばす
+    if mkdir -p ~/.config/herdr-app/mods; then
+      for m in pane-named; do
+        dst=~/.config/herdr-app/mods/$m
+        if [ -e "$dst" ] && [ ! -L "$dst" ]; then
+          echo "warning: $dst is not a symlink; skipped" >&2
+        elif ! ln -sfn ~/dotfiles/herdr-app/mods/$m "$dst"; then
+          echo "warning: could not link $dst; skipped" >&2
+        fi
+      done
+    else
+      echo "warning: could not create ~/.config/herdr-app/mods; skipped" >&2
+    fi
   else
     echo "warning: could not create ~/.config/herdr-app/layouts; skipped" >&2
   fi
