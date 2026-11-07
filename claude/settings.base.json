@@ -1,36 +1,6 @@
 {
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-  },
   "permissions": {
     "defaultMode": "auto",
-    "allow": [
-      "Read(./**/*)",
-      "Edit(./**/*)",
-      "Bash(npm:*)",
-      "Bash(pnpm:*)",
-      "Bash(yarn:*)",
-      "Bash(git status:*)",
-      "Bash(git diff:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git log:*)",
-      "Bash(docker:*)",
-      "Bash(python:*)",
-      "Bash(node:*)",
-      "Bash(touch:*)",
-      "Bash(mkdir:*)",
-      "Bash(mv:*)",
-      "Bash(cp:*)",
-      "Bash(ls:*)",
-      "Bash(codex:*)",
-      "WebSearch",
-      "WebFetch",
-      "Skill(git-commit)",
-      "Skill(issues)",
-      "Skill(codex)",
-      "mcp__chrome-devtools"
-    ],
     "deny": [
       "Read(**/.env)",
       "Read(**/.env.*)",
@@ -57,7 +27,6 @@
       }
     }
   },
-  "alwaysThinkingEnabled": true,
   "tui": "fullscreen",
   "statusLine": {
     "type": "command",
