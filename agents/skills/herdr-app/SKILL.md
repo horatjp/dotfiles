@@ -51,6 +51,8 @@ herdr-app do pane.focus '{"pane":"<1つ前のペインID>"}'
 herdr-app do terminal.keep '{"terminal":"<2体目の address>","place":"down"}'
 # 4. フォーカスを自分のペインに戻す
 herdr-app do pane.focus '{"pane":"<自分のペインID>"}'
+# 5. 自分(監督)にも役名を付ける。ユーザーが開いたペインには名前が無く、見出しと一覧で自分だけ空になる
+hc label "$HC_TERMINAL_ID" role=lead
 ```
 
 - 名前は生きている端末の中で重ならない、a-z 0-9 - _ の1〜32文字。同じ名前の端末が残っていると起動できないので、片付けでは `hc kill` と `hc rm` まで行う。
