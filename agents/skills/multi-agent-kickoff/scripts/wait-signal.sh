@@ -30,6 +30,8 @@ while :; do
     # あるのに通常ファイルでない(フォルダなど)ものは、待たずに止める
     [ -f "$f" ] || { echo "通常ファイルでない: $f"; exit 2; }
     last=$(tail -n 1 "$f" 2>/dev/null) || { echo "読み取り失敗: $f"; exit 2; }
+    # Windows の改行(CRLF)で書かれた報告でも合図を拾えるよう、行末の \r を落とす
+    last=${last%$'\r'}
     if printf '%s\n' "$last" | grep -Eq "$re"; then
       echo "合図あり: $f: $last"; exit 0
     fi
