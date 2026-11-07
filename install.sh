@@ -139,11 +139,6 @@ ln -sf ~/dotfiles/starship/starship.toml ~/.config/starship.toml
 # tmux
 mkdir -p ~/.config/tmux
 ln -sf ~/dotfiles/tmux/tmux.conf ~/.config/tmux/tmux.conf
-# TPM (tmux plugin manager)
-if [ ! -d ~/.config/tmux/plugins/tpm ]; then
-  mkdir -p ~/.config/tmux/plugins
-  git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
-fi
 
 # herdr
 # 設定ディレクトリにはログ・ソケットも作られるため config.toml のみリンクする
