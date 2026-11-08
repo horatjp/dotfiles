@@ -4,13 +4,13 @@
 # なぜ: playbook §4 の待ち方(最後の空でない行だけを見る・ファイルでないパスや読み取り失敗は
 #       「合図なし」と分ける・上限の時間で「合図なし」)を、毎回の長い1行コマンドでなく同じ判定で使うため。
 # 位置づけ: 報告ファイルの最後の空でない行を合図にして待つ(playbook §4)。
-# 使い方: wait-signal.sh <報告ファイルのパス> <impl|review> [待つ秒数=600]
-# 終了コード: 0 合図あり / 1 合図なし(時間切れ) / 2 読み取り失敗・パスの誤り・引数の誤り
+# 使い方: wait-signal.sh <報告ファイルのパス> <impl|review> [待つ秒数=600] [相手]
+# 終了コード: 0 合図あり / 1 合図なし(時間切れ) / 2 読み取り失敗・パスの誤り・引数の誤り / 3 相手の停止
 set -u
 
-f=${1:-}; kind=${2:-}; max=${3:-600}
-if [ -z "$f" ] || [ -z "$kind" ]; then
-  echo "引数の誤り: wait-signal.sh <報告ファイル> <impl|review> [秒数]"; exit 2
+f=${1:-}; kind=${2:-}; max=${3:-600}; peer=${4:-}
+if [ "$#" -gt 4 ] || [ -z "$f" ] || [ -z "$kind" ]; then
+  echo "引数の誤り: wait-signal.sh <報告ファイル> <impl|review> [秒数] [相手]"; exit 2
 fi
 case $kind in
   impl)   re='^実装完了$' ;;
@@ -25,6 +25,21 @@ max=$((10#$max))
 
 interval=5
 elapsed=0
+stopped=0
+# 相手を省けば従来どおり。状態の取得・JSON の解釈の失敗は合図なしと分ける。
+read_state() {
+  local json field
+  if [ "${HERDR_ENV:-}" = 1 ]; then
+    json=$(herdr agent get "$peer" 2>/dev/null) || return 1
+    field='.result.agent.agent_status'
+  elif [ -n "${HC_TERMINAL_ID:-}" ]; then
+    json=$(hc get "$peer" --json 2>/dev/null) || return 1
+    field='.status.state'
+  else
+    return 1
+  fi
+  printf '%s\n' "$json" | jq -ers "if length == 1 then .[0] | $field | select(type == \"string\" and length > 0) else empty end" 2>/dev/null
+}
 while :; do
   if [ -e "$f" ]; then
     # あるのに通常ファイルでない(フォルダなど)ものは、待たずに止める
@@ -39,6 +54,17 @@ while :; do
     if printf '%s\n' "$last" | grep -Eq "$re"; then
       echo "合図あり: $f: $last"; exit 0
     fi
+  fi
+  # 完了の合図を先に見てから、各回の相手の状態を確かめる。
+  if [ -n "$peer" ]; then
+    state=$(read_state) || { echo "状態の読み取り失敗: $peer"; exit 2; }
+    case "$state" in
+      blocked) stopped=$((stopped + 1)) ;;
+      error)
+        if [ "${HERDR_ENV:-}" != 1 ]; then stopped=$((stopped + 1)); else stopped=0; fi ;;
+      *) stopped=0 ;;
+    esac
+    [ "$stopped" -lt 2 ] || { echo "止まり: $peer: $state"; exit 3; }
   fi
   # ファイルがまだ無いのは待つ。上限で「合図なし」
   [ "$elapsed" -ge "$max" ] && { echo "合図なし: $f"; exit 1; }
