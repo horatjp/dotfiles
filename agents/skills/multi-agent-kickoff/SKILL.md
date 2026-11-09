@@ -27,4 +27,4 @@ description: 複数のAIエージェント(監督・実装・レビューなど)
 Claude と Codex が使えないとき、またはそれ以外のモデルを入れたいとき。費用の上限と見張り(OpenRouter は費用の自動の見張り、Go は枠の残りを監督が見る)・提供元の固定・承認は境界なので、[references/pi.md](references/pi.md) を確かめてから。
 
 ## 原本と更新
-原本は `<ai-watch>/docs/knowledge/multi-agent-playbook.md`(`<ai-watch>` は ai-watch リポジトリを置いた場所。マシンごとに違う)と同 `multi-agent-pi.md`。`references/` はその写し(同じ内容)。日付つきの経過・測定・旧版は同 `multi-agent-trials.md`。ai-watch で原本を直すきっかけは、新しいモデルを測り終えたとき・週1回の全体監査のとき・同じ詰まりが2回起きたとき。ここへ写すときは、ユーザーの了承を得る。
+原本は `<ai-watch>/docs/knowledge/multi-agent-playbook.md`(`<ai-watch>` は ai-watch リポジトリを置いた場所。マシンごとに違う)と同 `multi-agent-pi.md`。`references/` はその写し(同じ内容)。日付つきの経過・測定・旧版は同 `multi-agent-trials.md`。ai-watch で原本を直すきっかけは、新しいモデルを測り終えたとき・週1回の全体監査のとき・同じ詰まりが2回起きたとき。ここへの写し直しは常設の了承(2026-10-09、10-23 に確認)で行い、直した内容をユーザーに1〜2行で報告する。
