@@ -6,6 +6,11 @@
 # 位置づけ: 報告ファイルの最後の空でない行を合図にして待つ(playbook §4)。
 # 使い方: wait-signal.sh <報告ファイルのパス> <impl|review> [待つ秒数=600] [相手]
 # 終了コード: 0 合図あり / 1 合図なし(時間切れ) / 2 読み取り失敗・パスの誤り・引数の誤り / 3 相手の停止
+# 相手(TUI は agent 名、herdr-app は端末): 役を問わず渡すのを基本にする。渡すと毎回、報告ファイルの合図を先に見てから
+#   相手の状態を読む(合図が状態より先なので、合図があれば相手が止まっていても 0)。状態は
+#   blocked は両方、error・finished は herdr-app だけ停止に数える(TUI の error・finished は今までどおり待つ):
+#   blocked・error が2回続いたら 3、herdr-app の finished は1回で 3。状態の取得に失敗したら 2。
+#   相手を省くと報告だけを待つ。herdr-app の実機の blocked は未確認。
 set -u
 
 f=${1:-}; kind=${2:-}; max=${3:-600}; peer=${4:-}
@@ -34,7 +39,8 @@ read_state() {
     field='.result.agent.agent_status'
   elif [ -n "${HC_TERMINAL_ID:-}" ]; then
     json=$(hc get "$peer" --json 2>/dev/null) || return 1
-    field='.status.state'
+    # 終わった端末は {"state":"finished","status":null,...} を返すので、finished は .state から読む
+    field='(if .state == "finished" then "finished" else .status.state end)'
   else
     return 1
   fi
@@ -60,6 +66,10 @@ while :; do
     state=$(read_state) || { echo "状態の読み取り失敗: $peer"; exit 2; }
     case "$state" in
       blocked) stopped=$((stopped + 1)) ;;
+      finished)
+        # herdr-app だけ。報告に合図が無いまま終わった相手は待っても来ないので、すぐ 3
+        if [ "${HERDR_ENV:-}" != 1 ]; then echo "止まり: $peer: finished"; exit 3; fi
+        stopped=0 ;;
       error)
         if [ "${HERDR_ENV:-}" != 1 ]; then stopped=$((stopped + 1)); else stopped=0; fi ;;
       *) stopped=0 ;;
