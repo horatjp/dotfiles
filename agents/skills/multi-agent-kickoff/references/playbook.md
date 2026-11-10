@@ -31,15 +31,16 @@
 | 監督 | Claude Opus 5.5 medium | 常に(主のレビュー役にはしない) |
 | 実装 | Codex GPT-6.1 Sol medium | 常に |
 | レビュー(Sol の作業) | Claude Sonnet 5.5 medium | 常に |
-| レビュー(Claude の作業) | Codex GPT-6.1 Terra medium(混雑で動かないときは Astra medium。2026-11-30 までに再比較) | Sonnet・Fable など Claude 側が実装・執筆したとき |
+| レビュー(Claude の作業) | Codex GPT-6.1 Terra medium(混雑で動かないときは GPT-6 Astra medium。2026-11-30 までに再比較) | Sonnet・Fable など Claude 側が実装・執筆したとき |
 | 2本目の実装 | Claude Sonnet 5.5 medium | 並行させたいとき(手戻りの影響が小さい作業) |
-| 重いレビュー | Sol の作業は Claude Fable 5.1 xhigh、Claude の作業は Codex Astra xhigh、さらにもう1者(少なくとも1者は作業した側と別会社) | 重い変更(§2) |
-| 再現テスト係・事実確認 | Claude Sonnet 5.5 medium(事実確認は書き手が Claude なら Codex Sol) | 仕様が細かい実装の前・新モデルの ID や料金の確認。書き手と別系統 |
-| 週1回の全体監査 | Fable 5.1 xhigh + Codex Astra xhigh | 週1回。Codex の週の枠に余裕がある日 |
+| 重いレビュー | Sol の作業は Claude Fable 5.1 xhigh、Claude の作業は Codex GPT-6 Astra xhigh、さらにもう1者(少なくとも1者は作業した側と別会社) | 重い変更(§2) |
+| 再現テスト係・事実確認 | Claude Sonnet 5.5 medium(事実確認は書き手が Claude なら Codex GPT-6.1 Sol) | 仕様が細かい実装の前・新モデルの ID や料金の確認。書き手と別系統 |
+| 週1回の全体監査 | Claude Fable 5.1 xhigh + Codex GPT-6 Astra xhigh | 週1回。Codex の週の枠に余裕がある日 |
 
 - Luna は使わない(理由は trials)。xhigh は週の枠を大きく使うので、必要なときだけ呼び、使う前に残りを見る。
 - **枠が少ないとき:** 起動の前に Claude の `7d`(ステータスライン)と Codex の `weekly N% left`(画面下)の残りを見る。どちらかが 20% を下回ったら、少ない側はレビューだけに回し、実装は多い側にする(別系統は例外にしない。20% は目安)。両方が下回る・別系統の組が組めないときはユーザーに相談する。残りの少ない側では xhigh を呼ばない。
 - 小さく続きものの項目は、実装役が同じペインで続けるのを基本にする。コンテキストが大きくなったときや前と関係のない項目では新しいペインにしてよい。
+- モデル名は `data/models.jsonl` の `name` と同じ表記で書く(略称は結び付かない)。
 - この表は使うAIのページの入力(`derive`)。行や見出しを変えたら全体の試験を回し、月1回の見直しの記録の役割と合わせる。
 - Claude と Codex が使えないとき、またはそれ以外のモデルを入れたいとき: Pi(`<ai-watch>/docs/knowledge/multi-agent-pi.md`)。
 
