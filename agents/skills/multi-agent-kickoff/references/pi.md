@@ -1,6 +1,6 @@
 # Pi を予備環境で使うとき(multi-agent-playbook から分けたもの)
 
-Claude と Codex が使えないとき、または Claude・Codex 以外のモデルをチームに入れたいときだけ読む。通常のチームでは使わない。経過・測定・試し A〜G・旧版の全文は `<ai-watch>/docs/knowledge/multi-agent-trials.md`(根拠の置き場。ここに新しい決まりは書かない)。
+Claude と Codex が使えないとき、または Claude・Codex 以外のモデルをチームに入れたいときだけ読む。通常のチームでは使わない。経過・測定・試し A〜G・旧版の全文を読める git のコミットの案内は `<ai-watch>/docs/knowledge/multi-agent-trials.md`(根拠の置き場。ここに新しい決まりは書かない)。
 
 ## 境界(必ず守る)
 - **OpenRouter は有料の実行として扱う。** 1回ごとに払うので、起動の前に使ってよい上限(金額)をユーザーに決めてもらう。承認のないまま走らせない。
