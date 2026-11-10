@@ -26,6 +26,7 @@ project-template 導入済みプロジェクト(`docs/decisions/_template.md` �
 主題が同じものがあれば新規作成せず更新する(編集前に候補の本文を必ず読む。
 ただし decisions の決定内容の変更は、更新ではなく下記運用ルールに従い新規記録で置き換える)。
 置き場が無ければその時に作る。
+認証情報(パスワード・API キー・トークン)の値は記録に書かない。場所だけ書く。
 
 | 何が起きたか | 書き先 | 内容 |
 |---|---|---|
@@ -77,7 +78,7 @@ learnings のゲート(3条件すべて「はい」のときのみ追記):
 type: decision          # decisions/ は decision。knowledge/ は research(調査・バグ解決) | reference(一次資料・URL・外部仕様)
 title: <一言>
 description: <一行要約。ファイルを開かずに関連判断できる粒度で>
-status: draft           # draft(承認待ち) | stable(現行) | deprecated(無効)
+status: <draft|stable>   # decisions は draft(承認待ち) で起こし、承認で stable(現行)。knowledge の既定は stable。deprecated は無効
 superseded_by:          # deprecated のとき必須。置き換えたファイル名
 stale_after:            # 任意(YYYY-MM-DD)。reference は特に推奨(外部情報は腐る)
 tags: []
@@ -104,17 +105,19 @@ decisions / knowledge へ書き、STATUS からは要点とファイル名の参
 
 ## 運用ルール
 
-- **承認フロー**: 重要な決定はまず `status: draft` で起こし、ユーザーの承認を得て `stable` にする。
+- **承認**: 決定はまず `status: draft` で起こし、ユーザーの承認が確認できたら同じファイルで `stable` にする
+  (重要度によらない。AI の判断だけでは stable にしない)。
   決める内容に未決事項が残る間は draft のまま。暫定採用は採る内容・適用条件・再検討の条件を明記して承認を得る
-- **既存の決定の編集は、開始前にユーザーへ「更新か上書きか」を確認する**:
-  誤字・てにをは・補足説明(決定は不変)→ 上書き(そのまま編集)/
-  決定内容・status の変更 → 更新(新しい決定記録を起こし、旧を `status: deprecated` + `superseded_by` に)
-- `verified` は**実際にレビューを実施した主体**だけが付ける。同じ tool-name は role・
-  セッションが違っても本人(自己検証=不可)。架空の検証者を書かない。
+- **既存の決定の編集**: 誤字・補足(決定は不変)はそのまま直す。決定内容の変更は新しい記録を起こし、
+  それが承認され適用が始まった時点で旧を `status: deprecated` + `superseded_by` にする(それまでは旧が現行)。
+  迷うときだけユーザーに確認する
+- **verified**: 実際に中身を確かめた主体だけが付ける。書いた文脈そのものは不可。
+  別セッション・別の AI・人間は可(別ベンダー推奨)。架空の検証者を書かない。
   本文の内容を変更したら既存の `verified` を削除する(誤字修正は除く)
-- 読むとき: `deprecated`・`stale_after` 超過は判断根拠にしない(超過を見つけたら
-  更新か deprecated 化をユーザーに提案する)。`draft` や未検証
-  (`verified` が空)の記録は参考扱いとし、重要な判断の根拠にする前に検証する。
+- **読むとき**: `stable` の決定はユーザー承認済みとして根拠にしてよい。`draft` の決定と、`verified` が空の knowledge は参考扱いとし、
+  重要な判断の根拠にする前に検証する。`deprecated`・`stale_after` 超過は判断根拠にしない(超過を見つけたら
+  更新か deprecated 化をユーザーに提案する)。
+  2026-11-10 より前に作った `stable` の決定は、本文に承認の出所が無ければ承認済みとして扱わず、ユーザーに確認を提案する(`status` は勝手に書き換えない)。
   不備(リンク切れ・欠けたフィールド)があっても読み取りを止めず、修正提案として報告する
 - `docs/learnings.md` が100行を超えたら、削除せず棚卸し(統合・整理・恒常ルール化)を
   ユーザーに提案する。学びを勝手に恒常ルールへ昇格しない(提案して承認を得る)
@@ -128,12 +131,8 @@ decisions / knowledge へ書き、STATUS からは要点とファイル名の参
   実物と照らして候補を出す。結果は一時フォルダに置いてリポジトリに入れず、直す案と消す候補を見せて了承を得てから直す
 - 既存の決定が関わる領域を変更するときは、着手前に関連する decisions を確認する
 - `docs/STATUS.md` があるプロジェクトで作業を始めるときは、まず STATUS を読んで現在地を把握する
-- **会話が縮んでも困らないように、区切りで先に記録する**(2026-11-06): 作業の区切り(機能が1つできた・
-  調査が終わった・方針が決まった)では、言われなくても STATUS と決定・調査をその場で書く
-  (書き込みを許された範囲に限る。読み取りだけの依頼や書き先を限った依頼では、範囲外は書かずに提案する)。
-  会話は自動の要約(compaction)で縮むことがあり、要約では細かい事実が落ちる。記録が先にあれば、
-  要約の後や新しいセッションでも STATUS から続けられる。ユーザーに `/clear`・`/compact` を頼まない
-  (ユーザーの手間を増やさない。要約のタイミングは設定 `autoCompactWindow` に任せる)
+- 作業の区切りでは、言われなくても STATUS と決定・調査をその場で書く(書き込みを許された範囲に限る)。
+  ユーザーに `/clear`・`/compact` を頼まない。
 - 日付は環境の現在日付を確認して書く。記憶から推測しない
 - そのプロジェクトのコード・構成に依存しない汎用的な知見は、プロジェクト内に書かず
   保存先をユーザーに確認する
@@ -148,12 +147,15 @@ decisions / knowledge へ書き、STATUS からは要点とファイル名の参
 project-template の導入を提案する。記録の形式(frontmatter・置き場・STATUS の見出し)は
 project-template と同一なので、既存の `docs/` は変換せずそのまま使える。ユーザーの承認後:
 
-1. `gh repo clone horatjp/project-template <tmp> -- --depth 1` で取得し、`templates/repo/` から
-   **まだ存在しないファイルだけ**をコピーする(`changes/`・`scripts/`・`.claude/settings.json`・
-   `.codex/hooks.json`・`docs/PROJECT.md`・`docs/requirements.md`・`docs/rules/` など)。
+移行の前に、既存の `stable` の決定の承認の出所を確かめる(確かめ方は上の「読むとき」と同じ)。確かめられない決定が残るうちは移行しない(ユーザーが確かめるか、`draft` に戻すと決めてから進める)。
+
+1. `gh repo clone horatjp/project-template <tmp> -- --depth 1` で取得し、`templates/repo/` のうち、
+   まだ無いファイルを全部コピーする。
    既存の `docs/decisions/`・`docs/knowledge/`・`docs/learnings.md`・`docs/STATUS.md`・`docs/journal/` は上書きしない
    (`docs/journal/` は project-template のリポジトリ層には無い。移行後もそのまま使い続けてよい)
-2. 既存の `AGENTS.md` / `CLAUDE.md` は上書きしない。統合案を提示して承認を得てから統合する
+2. 既存の `AGENTS.md`・`CLAUDE.md`・`.claude/settings.json`・`.codex/hooks.json`・`.gitignore` は上書きしない。
+   足す中身(hooks の項目・除外の行)の統合案を見せ、承認を得てから統合する。
+   統合のあと、使う環境(Claude Code・Codex)ごとに、未承認の proposal の隣に `design.md` を書こうとして止められることと、認証情報の検査が動くことを、実際の Claude Code・Codex で確かめる(`scripts/hooks-selftest.sh` は台本だけの確認で、設定に登録されているかは分からない)。確かめられない環境や検査は未確認と書く。
 3. `docs/PROJECT.md` と `docs/requirements.md` を、既存の記録から埋める。推測で埋めず、
    不足はユーザーに聞く
 4. 移行後は、このスキルではなくプロジェクトの `AGENTS.md` と `_template.md` に従う
