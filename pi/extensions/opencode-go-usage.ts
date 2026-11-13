@@ -4,7 +4,7 @@
  * Console を開かず残り枠を把握するため、公式資料にない usage 入口を使う。
  * この入口と応答形式は変更され得る。
  * 各窓を個別に読み、壊れた窓は ?、3窓とも壊れたときだけ取得失敗とする。
- * 窓ごとに残量の色と電池を付け、週だけ復帰目安を表示。古い場合は (stale) だけ黄。名前とアイコンは紫(openrouter と同じ)、表示と通知は英語。
+ * 窓ごとに残量の色と電池を付け、週と月に復帰目安を表示。古い場合は (stale) だけ黄。名前とアイコンは紫(openrouter と同じ)、表示と通知は英語。
  * 窓間は空白2つ。管理キーを持つ openrouter が有効なときだけ、Go 側の末尾に灰色の「 │」を付ける。
  * キーは Pi 本体も同じ環境変数を使うので消さない（子プロセスに渡る）。
  */
@@ -86,7 +86,7 @@ export function formatUsage(usage: GoUsage, now: number): string {
 	const format = (label: string, window: UsageWindow) => {
 		if (!window) return paint("168;157;118", `${label} ?`);
 		const value = remaining(window);
-		const estimate = label === "7d" ? resetEstimate(window.resetsAt, now) : undefined;
+		const estimate = label === "7d" || label === "mo" ? resetEstimate(window.resetsAt, now) : undefined;
 		return paint(remainingColor(value), `${label} ${battery(value)} ${value}%${estimate ? ` (${estimate})` : ""}`);
 	};
 	// Pi 1.5.0 は連続空白を圧縮するが SGR は保持するため、リセットを挟んで空白2つを保つ。
