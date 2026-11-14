@@ -20,11 +20,11 @@ Claude と Codex が使えないとき、または Claude・Codex 以外のモ�
 | 役割 | モデル | 備考 |
 |---|---|---|
 | 監督 | DeepSeek V4 Pro | 依頼とまとめだけ |
-| 実装 | DeepSeek V4.1 Flash | |
+| 実装 | DeepSeek V4.1 Flash | Go では遅い(読んで答える課題で MiniMax M3.1 Flash の約3倍。`<ai-watch>/docs/knowledge/pi-speed-and-billion-context.md`)。急ぐ作業は MiniMax M3.1 Flash も候補 |
 | レビュー | MiniMax M3.1 Flash | 監督・実装と別の会社。重さと説明は監督が付け直す |
 | 重いレビューの候補 | Kimi K3 | 未確認 |
 
-予備なら監督も Pi にしてよい。Pi を使うときは、役割と、OpenRouter を使うなら金額をその都度ユーザーに決めてもらう。
+予備なら監督も Pi にしてよい。Pi を使うときは、役割と、OpenRouter を使うなら金額をその都度ユーザーに決めてもらう。Pi の既定は 11/15 から Go の MiniMax M3.1 Flash(モデルを付け忘れても OpenRouter に流れない)。
 
 - 起動: ペインの作成・配置・1体ずつの起動は人か監督が用意し、Pi にはさせない。Pi は同時に起動すると落ちることがあるので1体ずつ間をあける。同時に動かす Pi はまず2体まで。区切りごとに `/compact` を送る。終わりは Ctrl+C でなく `/quit`。
 - 連絡: 依頼はファイル、声かけは `hc send`(TUI は `herdr agent prompt`)。Pi のスキルは `/skill:<名前>`。
