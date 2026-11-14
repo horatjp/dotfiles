@@ -206,10 +206,11 @@ if command -v herdr-app >/dev/null || [ -d ~/Applications/Herdr.app ] || [ -d /A
     fi
     # 自作の mod もフォルダごとリンクする(いずれも mine.json が使う)。pane-named: 端末の名前・ラベル role を出すペインの見出し。
     # agents-named: 同じ役名を出す左の Agents 一覧(同梱の agents の写し)。
+    # spaces-compact: 左の Spaces 一覧(同梱の spaces の写し)。余白と行の高さだけ詰める。
     # tabs-graph: 上のタブバー(同梱の tabs の写し)。git-graph mod があれば Graph ボタンを出す。git-graph 自体は管理外
     # 同梱の mod は Herdr が置き直すので管理しない。sounds と同じく、実フォルダがあれば触らずに飛ばす
     if mkdir -p ~/.config/herdr-app/mods; then
-      for m in pane-named agents-named tabs-graph; do
+      for m in pane-named agents-named tabs-graph spaces-compact; do
         dst=~/.config/herdr-app/mods/$m
         if [ -e "$dst" ] && [ ! -L "$dst" ]; then
           echo "warning: $dst is not a symlink; skipped" >&2
