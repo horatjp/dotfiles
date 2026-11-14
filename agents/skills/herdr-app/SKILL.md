@@ -46,6 +46,7 @@ hc wait aiw-impl --timeout 90
 # 3. 基準のペインにフォーカスを移し、その右に置く。返事の pane を控える
 herdr-app do pane.focus '{"pane":"<自分のペインID>"}'
 herdr-app do terminal.keep '{"terminal":"<address>","place":"right"}'
+#    置いたら `herdr-app ls` で、そのペインが一覧に出ることを確かめる。出なければユーザーに案内せず、置き直すか監督に上げる(置く操作は黙って失敗することがある)
 #    2体目からは、1つ前のペインにフォーカスを移して下に置く
 herdr-app do pane.focus '{"pane":"<1つ前のペインID>"}'
 herdr-app do terminal.keep '{"terminal":"<2体目の address>","place":"down"}'
