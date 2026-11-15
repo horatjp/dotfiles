@@ -20,7 +20,7 @@ Claude と Codex が使えないとき、または Claude・Codex 以外のモ�
 | 役割 | モデル | 備考 |
 |---|---|---|
 | 監督 | DeepSeek V4 Pro | 依頼とまとめだけ |
-| 実装 | DeepSeek V4.1 Flash | Go では遅い(読んで答える課題で MiniMax M3.1 Flash の約3倍。`<ai-watch>/docs/knowledge/pi-speed-and-billion-context.md`)。急ぐ作業は MiniMax M3.1 Flash も候補 |
+| 実装 | DeepSeek V4.1 Flash か MiniMax M3.1 Flash | 11/15 の実装の課題2つで出来・時間とも同じくらい(読んで答えるだけの作業は MiniMax が約3倍速い)。`<ai-watch>/docs/knowledge/pi-speed-and-billion-context.md` |
 | レビュー | MiniMax M3.1 Flash | 監督・実装と別の会社。重さと説明は監督が付け直す |
 | 重いレビューの候補 | Kimi K3 | 未確認 |
 
