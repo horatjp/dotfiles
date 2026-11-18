@@ -29,12 +29,12 @@
 | 役割 | モデル | 使う場面 |
 |---|---|---|
 | 監督 | Claude Opus 5.5 medium | 常に(主のレビュー役にはしない) |
-| 実装 | Codex GPT-6.1 Sol medium | 常に |
+| 実装 | Codex GPT-6.2 Sol medium | 常に(11/18 に 6.1 から替えた。同じ値段の後継) |
 | レビュー(Sol の作業) | Claude Sonnet 5.5 medium | 常に |
 | レビュー(Claude の作業) | Codex GPT-6.1 Terra medium(混雑で動かないときは GPT-6 Astra medium。2026-11-30 までに再比較) | Sonnet・Fable など Claude 側が実装・執筆したとき |
 | 2本目の実装 | Claude Sonnet 5.5 medium | 並行させたいとき(手戻りの影響が小さい作業) |
 | 重いレビュー | Sol の作業は Claude Fable 5.2 xhigh、Claude の作業は Codex GPT-6 Astra xhigh、さらにもう1者(少なくとも1者は作業した側と別会社) | 重い変更(§2) |
-| 再現テスト係・事実確認 | Claude Sonnet 5.5 medium(事実確認は書き手が Claude なら Codex GPT-6.1 Sol) | 仕様が細かい実装の前・新モデルの ID や料金の確認。書き手と別系統 |
+| 再現テスト係・事実確認 | Claude Sonnet 5.5 medium(事実確認は書き手が Claude なら Codex GPT-6.2 Sol) | 仕様が細かい実装の前・新モデルの ID や料金の確認。書き手と別系統 |
 | 週1回の全体監査 | Claude Fable 5.2 xhigh + Codex GPT-6 Astra xhigh | 週1回。Codex の週の枠に余裕がある日 |
 
 - Luna は使わない(名前を伏せた比較で絵・文章とも Sol 6.1 に負け、Sol と同じ週の枠を使うので節約にならない)。xhigh は週の枠を大きく使うので、必要なときだけ呼び、使う前に残りを見る。作業の質が足りないときは、試験などで確かめられるかを見る → effort を1段上げる → 上のモデルを低い effort で試す、の順に考える(枠と別系統の決まりは守り、表を変えるのは測定か月1回の見直しのあと)。
