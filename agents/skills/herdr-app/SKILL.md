@@ -39,8 +39,9 @@ herdr-app commands  # 使えるコマンドと引数の一覧
 ```sh
 # 1. 名前を付けて、ペイン無しで起動する。返事の address(例 t6w)を控える
 hc run --bg --no-parent --name aiw-impl --cwd '<作業ディレクトリ>' --json -- \
-  env AGENT_MODEL='<モデル>' zsh -ic 'exec codex --no-daemon -m "$AGENT_MODEL"'
-# (Pi なら exec pi --model "$AGENT_MODEL")
+  env AGENT_MODEL='<モデル>' AGENT_EFFORT='<effort>' zsh -ic 'exec codex --no-daemon -m "$AGENT_MODEL" -c model_reasoning_effort="$AGENT_EFFORT"'
+# (Pi なら exec pi --model "$AGENT_MODEL" --thinking "$AGENT_EFFORT"、Claude なら exec claude --model "$AGENT_MODEL" --effort "$AGENT_EFFORT")
+# effort は必ず渡す。付けないと各自の既定(Claude は settings.json の effortLevel、Codex は config.toml)で動く
 # 2. 起動が終わるのを待つ(返事の見方は下)。入力待ちになってからペインに置く
 hc wait aiw-impl --timeout 90
 # 3. 基準のペインにフォーカスを移し、その右に置く。返事の pane を控える
