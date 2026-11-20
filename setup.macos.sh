@@ -267,6 +267,15 @@ brew install --cask claude
 # Codex
 brew install --cask codex
 
+# ChatGPT
+brew install --cask chatgpt
+
+# Gemini (Google 公式。cask の gemini は MacPaw の別アプリなので google-gemini を使う)
+brew install --cask google-gemini
+
+# Google Antigravity (agy CLI は install.sh で入れる)
+brew install --cask antigravity
+
 # Google Chrome
 brew install --cask google-chrome
 

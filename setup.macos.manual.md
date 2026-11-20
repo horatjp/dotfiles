@@ -82,6 +82,9 @@
 | Microsoft Office | |
 | Claude | |
 | Codex | |
+| ChatGPT | |
+| Gemini | |
+| Antigravity | |
 | DBeaver | |
 | OrbStack | |
 | CyberDuck | |
