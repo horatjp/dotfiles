@@ -1,5 +1,6 @@
 #!/bin/sh
 # Antigravity CLI の JSON から、モデル・作業場所・コンテキストと利用枠の残りを1行で表示する。
+# 利用枠の ID が 3p と一致するか、3p- で始まる場合は表示しない。
 if ! command -v jq >/dev/null 2>&1; then
   command -p cat >/dev/null
   exit 0
@@ -62,7 +63,8 @@ printf '%s' "$input" | jq -rs --arg branch "$branch" '
     end;
   def quota_items:
     objects | to_entries |
-    map(select(.value | objects | select(.disabled != true) |
+    map(select(.key | (. == "3p" or startswith("3p-")) | not) |
+        select(.value | objects | select(.disabled != true) |
           [(.remaining_fraction, .remaining_amount) | number] | length > 0) |
         . + (.key | name | quota_name)) |
     # 表示できる枠で短縮名が重なったときだけ接頭辞を付け、最後に元の ID 順へ戻す。
