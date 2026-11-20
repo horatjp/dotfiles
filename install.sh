@@ -332,6 +332,35 @@ jq -e '.mcpServers["context-mode"]' ~/.pi/agent/mcp.json >/dev/null 2>&1 || pi m
 mkdir -p ~/.gemini/config
 [ -d ~/.gemini/config/skills ] && [ ! -L ~/.gemini/config/skills ] && mv ~/.gemini/config/skills ~/.gemini/config/skills.bak.$(date +%Y%m%d%H%M%S)
 ln -sfn ~/dotfiles/agents/skills ~/.gemini/config/skills
+# agy も設定を書き込むため、実ファイルの statusLine だけを更新する。
+(
+  agy_settings=~/.gemini/antigravity-cli/settings.json
+  mkdir -p "$(dirname "$agy_settings")"
+  if [ -L "$agy_settings" ] || { [ -e "$agy_settings" ] && [ ! -f "$agy_settings" ]; }; then
+    printf '通常のファイルではありません: %s\n' "$agy_settings" >&2
+    exit 1
+  fi
+  agy_tmp="$(mktemp "${agy_settings}.XXXXXX")"
+  trap 'rm -f "$agy_tmp"' EXIT
+  # shellcheck disable=SC2016 # チルダの展開は statusLine を実行するシェルに任せる。
+  agy_filter='
+    if length == 1 and (.[0] | type == "object") then
+      .[0] | .statusLine = (((.statusLine | objects) // {}) +
+        {"type":"command","command":"sh ~/dotfiles/agy/statusline.sh"})
+    else error("settings.json must contain one JSON object") end
+  '
+  if [ -f "$agy_settings" ]; then
+    jq -se "$agy_filter" "$agy_settings" > "$agy_tmp"
+    if cmp -s "$agy_settings" "$agy_tmp"; then
+      exit 0
+    fi
+    agy_mode="$(stat -c '%a' "$agy_settings" 2>/dev/null || stat -f '%Lp' "$agy_settings")"
+    chmod "$agy_mode" "$agy_tmp"
+  else
+    jq -se "$agy_filter" > "$agy_tmp" <<< '{}'
+  fi
+  mv -f "$agy_tmp" "$agy_settings"
+)
 
 # Cloudflare cf (Wrangler 後継の統合CLI。beta)
 npm install -g cf
