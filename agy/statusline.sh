@@ -34,6 +34,8 @@ printf '%s' "$input" | jq -rs --arg branch "$branch" '
     if . > 50 then "107;131;96" elif . >= 20 then "168;157;118" else "200;96;90" end;
   def amount: battery + " " + tostring + "%";
   def context_remaining:
+    # サイズが不明なときや初回応答の前は、残量を表示しない。
+    select((.context_window_size | number | . > 0) and .current_usage != null) |
     (.remaining_percentage | number) // (.used_percentage | number | 100 - .);
   def quota_name:
     . as $id |
