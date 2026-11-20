@@ -325,6 +325,10 @@ done
 npm install -g context-mode@1.0.169
 jq -e '.mcpServers["context-mode"]' ~/.pi/agent/mcp.json >/dev/null 2>&1 || pi mcp add context-mode -- context-mode
 
+# Antigravity CLI (Google。コマンドは agy)
+# 公式スクリプトは ~/.local/bin/agy に置き、既にあれば何もせず終わる(以後は agy 自身が裏で更新する)。
+curl -fsSL https://antigravity.google/cli/install.sh | bash
+
 # Cloudflare cf (Wrangler 後継の統合CLI。beta)
 npm install -g cf
 
