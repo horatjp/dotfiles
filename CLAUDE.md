@@ -28,7 +28,7 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 `install.sh` がリポジトリ内ファイルを `~/` や `~/.config/` へ**シンボリックリンク**する。つまりこのリポジトリのファイルを編集すると、稼働中の環境設定が即座に変わる。例:
 
 - `claude/AGENTS.md` → `~/.claude/CLAUDE.md`（ユーザーのグローバル指示）
-- `agents/skills` → `~/.claude/skills` と `~/.codex/skills`（共有スキルの実体）、`claude/agents` → `~/.claude/agents`
+- `agents/skills` → `~/.claude/skills`・`~/.codex/skills`・`~/.gemini/config/skills`（共有スキルの実体。最後は Antigravity のアプリと CLI が共通で読む）、`claude/agents` → `~/.claude/agents`
 - `pi/extensions` → `~/.pi/agent/extensions`（Pi の拡張。確認ダイアログと保護パスは Pi 公式 examples からのコピー。`openrouter-credits.ts` は OpenRouter の残高を表示し、管理用のキーを `~/.env` の `OPENROUTER_MANAGEMENT_KEY` から環境変数経由で読む。`opencode-go-usage.ts` は OpenCode Go の5時間・週・月の使用率を表示する(公式の資料に無い入口 `/inference/go/v1/usage` を `OPENCODE_GO_API_KEY` で読む。入口が変われば取得失敗と出るだけで Pi は止まらない)。`herdr-agent-state.ts` は `herdr integration install pi` が書く herdr への状態報告で、手で編集しない。`claude/hooks/herdr-agent-state.sh` も同様）
 - `pi/models.json` → `~/.pi/agent/models.json`（Pi は OpenCode Go を優先し、そこに無いモデルだけ OpenRouter で使う。Pi に「Go に無ければ OpenRouter」の切り替えは無いので、モデルを選ぶときに `opencode-go/` か `openrouter/` かを決める。起動時の既定（Pi が書く settings.json の `defaultProvider`）やセッションの復元では Pi がモデルを選ぶことがあるので、課金先は画面で確かめる。OpenCode Go のキーは `~/.env` の `OPENCODE_GO_API_KEY` を読む（Pi の既定の `OPENCODE_API_KEY` は従量課金の OpenCode Zen とも共通のため使わない）。`~/.env` にキーがあるほかのプロバイダー（anthropic・openai・google・xai・kimi-coding）と Zen は、キーを未定義の `$PI_DISABLED_KEY` に向けて外す。`~/.env` に Pi が読む別のキーを足したら、ここにも足す（`pi --list-models` の provider 列が `opencode-go` と `openrouter` だけなら外れている）。`/login` などで `~/.pi/agent/auth.json` に保存したキーは models.json より優先され、この外し方が効かなくなるので保存しない。OpenRouter の振り分けモデルは文脈の上限を 128K に下げ、自動圧縮を早めにかける）
 - `herdr-app/settings.json`・`herdr-app/layouts/mine.json`・`herdr-app/mods/pane-named`（mine の見出し。端末の名前かラベル `role` を出す自作の mod）・`herdr-app/mods/agents-named`（同じ役名を出す左の Agents 一覧）・`herdr-app/mods/spaces-compact`（左の Spaces 一覧。同梱の spaces の写しで、余白と行の高さだけ詰める）・`herdr-app/mods/tabs-graph`（上のタブバー。同梱の tabs の写しに、git-graph mod を開く Graph ボタンを足したもの。git-graph 本体は rabeeh-ta/herdr-git-graph から手で `~/.config/herdr-app/mods/` に入れる管理外の mod で、無いマシンではボタンが出ない。写しは Herdr の更新に追従しない） → `~/.config/herdr-app/` の同じ場所、`herdr/sounds` → `~/.config/herdr-app/sounds`（Herdr のデスクトップアプリ。試用中で、herdr-app の CLI・アプリ本体・設定フォルダのどれかがあるマシンだけ。通知音は TUI の herdr と同じ音を settings.json の `sounds` から相対パスで読む。settings.json と mine.json は既存の実ファイルを `.bak.<日時>.<pid>` に退避してからリンクする。sounds の実ファイル・実フォルダや、mine.json などの位置にあるフォルダ、自作の mod の位置にある実フォルダは触らず警告して飛ばす。Herdr が書く状態のファイルや生成物は管理しない。Herdr は settings.json をリンク先へ書き込むので、アプリで設定を変えると dotfiles に差分が出る。自作の mod はリンク越しなので保存しても自動では読み直されない。`herdr-app check ~/.config/herdr-app/mods/<名前>` のあと `herdr-app do layout.switch '{"name":"main"}'` → `'{"name":"mine"}'` と切り替えて読み直す）
@@ -48,7 +48,7 @@ Windows側設定のバックアップ手順（Windows Terminal / VS Code / winge
 ### AIエージェント設定の並行管理
 
 - `claude/AGENTS.md` と `codex/AGENTS.md` は内容を統一して維持する（日本語）。一方だけ変更しない
-- 共有スキルの実体は `agents/skills/` の1か所に置き、Claude Code と Codex はディレクトリごとのリンクで同じ中身を読む。Codex が置く `.system/` は git で無視する。外部ツールが使う `~/.agents/skills/` は dotfiles 管理外として残す
+- 共有スキルの実体は `agents/skills/` の1か所に置き、Claude Code・Codex・Antigravity はディレクトリごとのリンクで同じ中身を読む。Codex が置く `.system/` は git で無視する。外部ツールが使う `~/.agents/skills/` は dotfiles 管理外として残す
 - skills CLI（`npx skills`）で導入する外部配布スキル（Cloudflare公式など）はgitで追跡せず `.gitignore` に列挙し、`install.sh` で再インストールする。`--all` は全エージェント（約50個の `~/.<agent>/`）へ配布する意味なので使わず、`-a claude-code -s '*' --copy` のように明示する。`skills remove -s '*'` はリンク先の `agents/skills` 内の追跡ファイルまで消すので使わない
 - スキルはコピーして他マシンでも使う前提。マシン固有の絶対パスを書かず `<skill-dir>` 等のプレースホルダを使う
 
