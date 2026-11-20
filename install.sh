@@ -327,7 +327,7 @@ jq -e '.mcpServers["context-mode"]' ~/.pi/agent/mcp.json >/dev/null 2>&1 || pi m
 
 # Antigravity CLI (Google。コマンドは agy)
 # 公式スクリプトは ~/.local/bin/agy に置き、既にあれば何もせず終わる(以後は agy 自身が裏で更新する)。
-curl -fsSL https://antigravity.google/cli/install.sh | bash
+(agy_installer="$(curl -fsSL https://antigravity.google/cli/install.sh)" && bash <<< "$agy_installer")
 # スキルは Antigravity のアプリと CLI が共通で読むグローバルの置き場(~/.gemini/config/skills)を共有スキルへリンクする
 mkdir -p ~/.gemini/config
 [ -d ~/.gemini/config/skills ] && [ ! -L ~/.gemini/config/skills ] && mv ~/.gemini/config/skills ~/.gemini/config/skills.bak.$(date +%Y%m%d%H%M%S)
