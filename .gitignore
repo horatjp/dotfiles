@@ -61,6 +61,15 @@ agents/skills/herdr/
 agents/skills/web-perf/
 agents/skills/workers-best-practices/
 agents/skills/wrangler/
+agents/skills/basin/
+agents/skills/cf-cli/
+agents/skills/cloudflare-app-bootstrap/
+agents/skills/frameworks-on-cloudflare/
+agents/skills/gateway-workers/
+agents/skills/k2/
+agents/skills/nextjs-on-cloudflare/
+agents/skills/workers-development/
+agents/skills/workers-profiling/
 
 # --- ローカル専用スキル ---
 # 手元でのみ使う(配布・共有しない)スキルは追跡しない。
