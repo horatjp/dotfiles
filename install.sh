@@ -320,6 +320,21 @@ ln -sf ~/dotfiles/pi/models.json ~/.pi/agent/models.json
 for pkg in pi-web-access@0.41.0 @juicesharp/rpiv-ask-user-question@2.13.8 cc-safety-net@2.6.12 context-mode@1.0.169; do
   pi install "npm:$pkg"
 done
+# Node のメジャー版を変えると、Pi に残った旧版向けの better-sqlite3 が開けなくなる。
+(
+  [ -d "$HOME/.pi/agent/npm" ] || exit 0
+  cd "$HOME/.pi/agent/npm" || exit 0
+  sqlite_probe='
+    const load = require("node:module").createRequire(require.resolve("context-mode"));
+    new (load("better-sqlite3"))(":memory:").close();
+  '
+  if ! node -e "$sqlite_probe" >/dev/null 2>&1; then
+    printf 'Pi の better-sqlite3 を組み立て直します（Node %s）\n' "$(node -v)"
+    if ! npm rebuild better-sqlite3 || ! node -e "$sqlite_probe" >/dev/null 2>&1; then
+      printf '警告: Pi の better-sqlite3 を開けません。python3、make、C++ コンパイラを確認してください。\n' >&2
+    fi
+  fi
+)
 # context-mode は MCP サーバー本体を別に入れる。postinstall が ~/.claude/settings.json の enabledPlugins に
 # 勝手に true を書くため、settings.base.json で false(明示的な opt-out は書き換えない)を先に入れておく
 npm install -g context-mode@1.0.169
