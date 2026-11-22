@@ -3,7 +3,9 @@
 
 [tools]
 # Node.js
-node = "lts"
+# 26 系(LTS "Lithium")に固定する。"lts" は mise が 24 系(Krypton)と解決するため。
+# 版を変えると install.sh の npm install -g で入れた CLI(codex・pi・cf など)が消えるので、入れ直す
+node = "26"
 
 # pnpm（プロジェクト側で使う用。install.sh のグローバル CLI は npm のまま）
 pnpm = "latest"
