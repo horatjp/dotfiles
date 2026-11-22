@@ -194,6 +194,19 @@
                                 "type": "basic"
                             }
                         ]
+                    },
+                    {
+                        "description": "Cmd+Ctrl+Shift+B で画面をすぐ消す(pmset displaysleepnow)。外付けモニターが映らないときに、消してからキーでつけ直して結び直す",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "b",
+                                    "modifiers": { "mandatory": ["command", "control", "shift"] }
+                                },
+                                "to": [{ "shell_command": "/usr/bin/pmset displaysleepnow" }],
+                                "type": "basic"
+                            }
+                        ]
                     }
                 ]
             },
