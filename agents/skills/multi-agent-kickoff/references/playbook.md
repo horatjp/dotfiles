@@ -38,6 +38,8 @@
 | 週1回の全体監査 | Claude Fable 5.2 xhigh + Codex GPT-6 Astra xhigh | 週1回。Codex の週の枠に余裕がある日 |
 
 - **Gemini 4 Neon(agy)と Go の使いどころ(0024):** 個人の契約で動かすときだけ(会社は Claude Max・ChatGPT Pro $100 のままで、表どおり。個人の Google・Go のアカウントに会社のコードを送らない)。急がない・量が多い実装は Gemini 4 Neon medium(速さは Sonnet の約6分の1)。レビューは、Claude の枠が少なければ Sol の作業を Neon に、量の多い Claude の作業のレビューも Neon にしてよい。重いレビューで枠が足りなければ Neon high を足す。Gemini の枠が尽きたとき・もう1者欲しいときの予備のレビュー役は MiniMax M3.1 Flash(Pi、OpenCode Go)。Neon は台帳(`data/models.jsonl`)に未登録なので、表の行には入れていない(登録は月1回の見直しで)。
+- **3体で組む型(Opus・Sol・Neon。11/25 の検証の1位、個人の契約のときだけ):** 指揮・判定は監督の Opus(左)。計画と依頼者への質問は Neon medium(右上。依頼を読んで PLAN.md・QUESTIONS.md を書かせ、質問は監督がユーザーに取り次いで答えを返す)。実装は Sol(右下)。レビューは新しいセッションの Claude Opus 5.5 medium(par_review。再確認は1回)。判定は Sol に任せない(厳しすぎてやり直しが増えた)。Neon は計画の1手順だけに使い、枠と遅さ(ほかの約2倍)を抑える。依頼がはっきりした小さな作業は Neon を抜いて Sol と Opus の2体でよい。検証役(先に受け入れテストを書く)は出来が変わらず時間が約1.5倍なので、テストを成果物に残したいときだけ。架空の小さな課題・各2回の結果で、大きな作業では未確認。Sonnet のレビューとは比べていないので、表の行は変えていない。結果は `reports/work-2026-11-25/team-assignment/results.md`・`models.md`。
+- **仕事の組(Claude と ChatGPT だけ)で依頼者に確かめる点(11/25 の第3段階):** 監督の Opus は計画の前に「依頼に書かれておらず、依頼者にしか決められない点」を書き出し、質問と一緒に「聞かずに仮定で決めた点」の一覧もユーザーに見せる(試しでは、料金の上限を質問したのは4回中1回だけだが、残りの3回も仮定に明記していた)。レビューは表どおり Sonnet(Opus と比べて検出は 6/12 対 4/12 で、替える基準に届かなかった)。結果は `reports/work-2026-11-25/team-assignment/results.md` の第3段階。
 
 - Luna は使わない(名前を伏せた比較で絵・文章とも Sol 6.1 に負け、Sol と同じ週の枠を使うので節約にならない)。xhigh は週の枠を大きく使うので、必要なときだけ呼び、使う前に残りを見る。作業の質が足りないときは、試験などで確かめられるかを見る → effort を1段上げる → 上のモデルを低い effort で試す、の順に考える(枠と別系統の決まりは守り、表を変えるのは測定か月1回の見直しのあと)。
 - **effort は起動の旗で必ず渡す:** Claude は `--effort`、Codex は `-c model_reasoning_effort=`、Pi は `--thinking`。付けないと各自の既定で動く(11/19 に数えると、付け忘れが Codex で約95回中36回・Claude で約55回中16回あり、表と違う effort で動いていた。個人の既定は 11/19 から Claude・Codex とも medium)。
