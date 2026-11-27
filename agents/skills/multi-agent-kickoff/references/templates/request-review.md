@@ -1,7 +1,7 @@
 <!--
 どこ: multi-agent-kickoff/references/templates/request-review.md
 何: レビュー役への依頼文のひな形。`<…>` を埋めて、報告ディレクトリの req-review-<名前>.md に置き、`hc send <端末> -- '<このファイル>を読んでその依頼どおりに進めてください'` で知らせる。
-なぜ: 依頼文の共通部分(playbook §2・§5)を毎回書き直さないため。決まりの原本は playbook。
+なぜ: 依頼文の共通部分(playbook §2・§5)を毎回書き直さないため。決まりは同じスキルの playbook を読む。
 -->
 # 依頼: <件名>のレビュー(<レビュー役>)
 
