@@ -29,11 +29,11 @@
 | 監督 | Claude Opus 5.5 medium | 常に(主のレビュー役にはしない) |
 | 実装 | Codex GPT-6.2 Sol medium | 常に |
 | レビュー(Sol の作業) | Claude Sonnet 5.5 medium | 常に |
-| レビュー(Claude の作業) | Codex GPT-6.1 Terra medium(混雑で動かないときは GPT-6 Astra medium) | Sonnet・Fable など Claude 側が実装・執筆したとき |
+| レビュー(Claude の作業) | Codex GPT-6.2 Astra medium(混雑で動かないときは GPT-6.1 Terra medium) | Sonnet・Fable など Claude 側が実装・執筆したとき |
 | 2本目の実装 | Claude Sonnet 5.5 medium | 並行させたいとき(手戻りの影響が小さい作業) |
-| 重いレビュー | Sol の作業は Claude Fable 5.2 xhigh、Claude の作業は Codex GPT-6 Astra xhigh、さらにもう1者(少なくとも1者は作業した側と別会社) | 重い変更(§2) |
+| 重いレビュー | Sol の作業は Claude Fable 5.2 xhigh、Claude の作業は Codex GPT-6.2 Astra xhigh、さらにもう1者(少なくとも1者は作業した側と別会社) | 重い変更(§2) |
 | 再現テスト係・事実確認 | Claude Sonnet 5.5 medium(事実確認は書き手が Claude なら Codex GPT-6.2 Sol) | 仕様が細かい実装の前・新モデルの ID や料金の確認。書き手と別系統 |
-| 週1回の全体監査 | Claude Fable 5.2 xhigh + Codex GPT-6 Astra xhigh | 週1回。Codex の週の枠に余裕がある日 |
+| 週1回の全体監査 | Claude Fable 5.2 xhigh + Codex GPT-6.2 Astra xhigh | 週1回。Codex の週の枠に余裕がある日 |
 
 - **使えるAIで組を2つに分ける(最初に決める)** 会社のリポジトリは A、個人の作業を個人の契約で動かすときは B。どちらか分からなければ A として扱い、ユーザーに聞く。agy と Pi(Go・OpenRouter)は B のときだけ使う。会社のコードを個人の Google・Go のアカウントに送らない。A・B とも、監督は計画の前に、依頼に書かれておらず依頼者にしか決められない点を質問し、仮定で決めた点もユーザーに見せる。大きな作業と B の組全体での実績は未確認。
   - **A. Claude・ChatGPT だけ(会社)** 上の表を使う。会社の Claude の枠に余裕がある間は、Sol の作業のレビューを Claude Opus 5.5 high に任せ、監督とは別のペインで開く。Opus は計画にある問題を名前だけで済ませがちなので、依頼文に「計画・報告に書かれた点も、場所と中身を書く」を入れる。枠が減ったら Sonnet に戻す。実装役は medium のまま。
@@ -50,7 +50,7 @@
 - **複数の作業を並べる。** 別のファイルを触る作業ごとに、取り込み先のブランチを起点として `git worktree add` で作業場所を分ける。依頼文・共通の指示・報告は各 worktree に置き、ファイル名も作業ごとに分ける。監督は各 worktree で実装役を起動し、報告の合図を見張り、別系統に作業ごとの差分をレビューさせる。門番を通った作業から監督がコミットして取り込み、取り込み先で全体の試験を回す。片付けは自分が開いた端末と、対象を確かめて承認を得た worktree・ブランチに限る(`git worktree remove`・`git branch -d`)。
   - プロジェクトに並行作業の台本があればそれを使ってよい。
   - agy も新しい worktree で信頼の確認が出る(扱いは上の確認画面の項)。並べて負荷が高いと既存のテストが揺れることがある。
-  - **会社の組では2本をふつうにする。** Claude の枠に余裕があり、別のファイルを触る作業が2つあれば、Sol(レビュー Claude Opus 5.5 high)と Claude Sonnet 5.5 medium(レビュー Codex GPT-6.1 Terra medium)で並べる。3本以上は監督のレビューと取り込みが詰まるため、ふだんはしない。
+  - **会社の組では2本をふつうにする。** Claude の枠に余裕があり、別のファイルを触る作業が2つあれば、Sol(レビュー Claude Opus 5.5 high)と Claude Sonnet 5.5 medium(レビュー Codex GPT-6.2 Astra medium)で並べる。3本以上は監督のレビューと取り込みが詰まるため、ふだんはしない。
 - Gemini のモデルは agy で使う(Google AI Pro の定額)。
 
 ## 4. 連絡と見張り
